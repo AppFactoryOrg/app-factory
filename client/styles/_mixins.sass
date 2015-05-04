@@ -1,0 +1,512 @@
+/** Define the mixins **/
+=border-radius($radius)
+	border-radius: $radius
+
+=border-bottom-radius($radius)
+	border-bottom-left-radius: $radius
+	-moz-border-bottom-left-radius: $radius
+	border-bottom-right-radius: $radius
+	-moz-border-bottom-right-radius: $radius
+
+=border-top-radius($radius)
+	border-top-left-radius: $radius
+	-moz-border-top-left-radius: $radius
+	border-top-right-radius: $radius
+	-moz-border-top-right-radius: $radius
+
+=border-left-radius($radius)
+	border-top-left-radius: $radius
+	-moz-border-top-left-radius: $radius
+	border-bottom-left-radius: $radius
+	-moz-border-bottom-left-radius: $radius
+
+=border-top-left-radius($radius)
+	border-top-left-radius: $radius
+	-moz-border-top-left-radius: $radius
+
+=border-bottom-left-radius($radius)
+	border-bottom-left-radius: $radius
+	-moz-border-bottom-left-radius: $radius
+
+=border-right-radius($radius)
+	border-top-right-radius: $radius
+	-moz-border-top-right-radius: $radius
+	border-bottom-right-radius: $radius
+	-moz-border-bottom-right-radius: $radius
+
+=border-top-right-radius($radius)
+	border-top-right-radius: $radius
+	-moz-border-top-right-radius: $radius
+
+=border-bottom-right-radius($radius)
+	border-bottom-right-radius: $radius
+	-moz-border-bottom-right-radius: $radius
+
+=box-shadow($left, $top, $amount, $color)
+	box-shadow: $left $top $amount $color
+	-webkit-box-shadow: $left $top $amount $color
+	-moz-box-shadow: $left $top $amount $color
+
+=inner-box-shadow($left, $top, $amount, $color)
+	box-shadow: inset $left $top $amount $color
+	-webkit-box-shadow: inset $left $top $amount $color
+	-moz-box-shadow: inset $left $top $amount $color
+
+=glow($amount, $color)
+	box-shadow: 0px 0px $amount $color
+	-webkit-box-shadow: 0px 0px $amount $color
+	-moz-box-shadow: 0px 0px $amount $color
+
+=inner-glow($amount, $color)
+	box-shadow: inset 0px 0px $amount $color
+	-webkit-box-shadow: inset 0px 0px $amount $color
+	-moz-box-shadow: inset 0px 0px $amount $color
+
+=shadow($amount, $color: #000000)
+	box-shadow: 0px $amount/3 $amount $color
+	-webkit-box-shadow: 0px $amount/3 $amount $color
+	-moz-box-shadow: 0px $amount/3 $amount $color
+
+=inner-shadow($amount, $color: #000000)
+	box-shadow: inset 0px $amount/3 $amount $color
+	-webkit-box-shadow: inset 0px $amount/3 $amount $color
+	-moz-box-shadow: inset 0px $amount/3 $amount $color
+
+=text-shadow($x: 2px, $y: 2px, $blur: 5px, $color: rgba(0,0,0,.4))
+	text-shadow: $x $y $blur $color
+
+=opacity($opacity)
+	opacity: $opacity
+	-moz-opacity: $opacity
+	-webkit-opacity: $opacity
+	-o-opacity: $opacity
+	$opacity-ie: $opacity * 100
+	filter: alpha(opacity=$opacity-ie)
+
+=picture-glow($width)
+	+box-shadow(0px, 1px, $width*3, #d8d8d8)
+	+border-radius($width)
+	border: $width solid #ffffff
+
+=picture-border($width, $color: #ffffff, $shadow: #999999)
+	+glow($width - 1, $shadow)
+	border: $width solid $color
+
+=gradient($start, $finish)
+	background-color: mix($start,$finish)
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=0, startColorstr='#{$start}', endColorstr='#{$finish}')
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=0, startColorstr='#{$start}', endColorstr='#{$finish}')"
+	background: -webkit-gradient(linear, left top, left bottom, from($start), to($finish))
+	background: -moz-linear-gradient(top,  $start,  $finish)
+	background: -o-linear-gradient(top, $start, $finish)
+
+=horizontal-gradient($start, $finish)
+	background-color: mix($start,$finish)
+	filter: progid:DXImageTransform.Microsoft.Gradient(GradientType=1, startColorstr='#{$start}', endColorstr='#{$finish}')
+	-ms-filter: "progid:DXImageTransform.Microsoft.gradient(GradientType=1, startColorstr='#{$start}', endColorstr='#{$finish}')"
+	background: -webkit-gradient(linear, left top, right top, from($start), to($finish))
+	background: -moz-linear-gradient(left,  $start,  $finish)
+	background: -o-linear-gradient(left, $start,$finish)
+
+=no-gradient
+	background-color: none
+	filter: none
+	-ms-filter: none
+	background: none
+
+=rotate($deg)
+	-webkit-transform: rotate(#{$deg}deg)
+	-moz-transform: rotate(#{$deg}deg)
+	-o-transform: rotate(#{$deg}deg)
+	-ms-transform: rotate(#{$deg}deg)
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=#{$deg/180})
+	transform: rotate(#{$deg}deg)
+
+=rotateX($deg)
+	-webkit-transform: rotateX(#{$deg}deg)
+	-moz-transform: rotateX(#{$deg}deg)
+	-o-transform: rotateX(#{$deg}deg)
+	-ms-transform: rotateX(#{$deg}deg)
+	filter: progid:DXImageTransform.Microsoft.BasicImage(rotation=#{$deg/180})
+	transform: rotateX(#{$deg}deg)
+
+=transition($property: all, $duration: 0.25s, $easing: ease-out)
+	@if length($property) > 1
+		+transition-property($property)
+		+transition-duration($duration)
+		+transition-timing-function($easing)
+	else
+		-moz-transition: $property $duration $easing
+		-webkit-transition: $property $duration $easing
+		-o-transition: $property $duration $easing
+		-ms-transition: $property $duration $easing
+		transition: $property $duration $easing
+
+=transition-property($property: all)
+	-moz-transition-property: join($property, (), comma)
+	-webkit-transition-property: join($property, (), comma)
+	-o-transition-property: join($property, (), comma)
+	-ms-transition-property: join($property, (), comma)
+	transition-property: join($property, (), comma)
+
+=transition-duration($duration: 0.25s)
+	-moz-transition-duration: join($duration, (), comma)
+	-webkit-transition-duration: join($duration, (), comma)
+	-o-transition-duration: join($duration, (), comma)
+	-ms-transition-duration: join($duration, (), comma)
+	transition-duration: join($duration, (), comma)
+
+=transition-timing-function($easing: ease-out)
+	-moz-transition-timing-function: join($easing, (), comma)
+	-webkit-transition-timing-function: join($easing, (), comma)
+	-o-transition-timing-function: join($easing, (), comma)
+	-ms-transition-timing-function: join($easing, (), comma)
+	transition-timing-function: join($easing, (), comma)
+
+=transition-delay($delay)
+	-moz-transition-delay: join($delay, (), comma)
+	-webkit-transition-delay: join($delay, (), comma)
+	-o-transition-delay: join($delay, (), comma)
+	-ms-transition-delay: join($delay, (), comma)
+	transition-delay: join($delay, (), comma)
+
+=text-gradient($start, $finish)
+	background: -webkit-gradient(linear, #{"left top"}, #{"left bottom"}, from($start), to($finish))
+	-webkit-background-clip: text
+	-webkit-text-fill-color: transparent
+
+=blur( $amount )
+	-webkit-filter: blur( $amount )
+	-moz-filter: blur( $amount )
+	-ms-filter: blur( $amount )
+	-o-filter: blur( $amount )
+	filter: blur( $amount )
+
+=no-tap
+	-webkit-tap-highlight-color: rgba(0,0,0,0)
+	outline: none
+
+=no-select
+	-webkit-touch-callout: none
+	-webkit-user-select: none
+	-khtml-user-select: none
+	-moz-user-select: none
+	-ms-user-select: none
+	user-select: none
+
+=placeholder($selector: "")
+	#{$selector}::-webkit-input-placeholder
+		@content
+	#{$selector}:-moz-placeholder
+		@content
+	#{$selector}::-moz-placeholder
+		@content
+	#{$selector}:-ms-input-placeholder
+		@content
+
+=border-box
+	-webkit-box-sizing: border-box
+	box-sizing: border-box
+
+=translate( $x, $y )
+	transform: translate( $x, $y )
+	-webkit-transform: translate( $x, $y )
+
+=translateY( $y )
+	transform: translateY( $y )
+	-webkit-transform: translateY( $y )
+
+=translateX( $x )
+	transform: translateX( $x )
+	-webkit-transform: translateX( $x )
+
+=translateZ( $z )
+	transform: translateZ( $z )
+	-webkit-transform: translateZ( $z )
+
+=translate3d( $x: 0, $y: 0, $z: 0)
+	transform: translate3d( $x, $y, $z )
+	-webkit-transform: translate3d( $x, $y, $z )
+
+=scale( $x, $y )
+	transform: scale( $x, $y )
+	-webkit-transform: scale( $x, $y )
+
+=transform( $transform )
+	transform: $transform
+	-webkit-transform: $transform
+
+//------------------------------------------
+// Media Queries
+//------------------------------------------
+
+$phone-portrait-width: 360px
+$phone-landscape-width: 640px
+
+$tablet-portrait-width: 768px
+$tablet-landscape-width: 1024px
+$desktop-portrait-width: 1200px
+$desktop-landscape-width: 1600px
+
+=phone
+	@media screen and (max-width: $phone-portrait-width) and (orientation: portrait), screen and (max-width: $phone-landscape-width) and (orientation: landscape), handheld and (max-device-width: $phone-portrait-width) and (orientation: portrait), handheld and (max-device-width: $phone-landscape-width) and (orientation: landscape)
+		@content
+
+=phone-portrait
+	@media screen and (max-width: $phone-portrait-width) and (orientation: portrait), handheld and (max-device-width: $phone-portrait-width) and (orientation: portrait)
+		@content
+
+=phone-landscape
+	@media screen and (max-width: $phone-landscape-width) and (orientation: landscape), handheld and (max-device-width: $phone-landscape-width) and (orientation: landscape)
+		@content
+
+=tablet
+	@media screen and (max-width: $tablet-portrait-width) and (min-width: $phone-portrait-width+1) and (orientation: portrait), screen and (max-width: $tablet-landscape-width) and (min-width: $phone-landscape-width+1) and (orientation: landscape), screen and (max-device-width: $tablet-portrait-width) and (min-device-width: $phone-portrait-width+1) and (orientation: portrait), screen and (max-device-width: $tablet-landscape-width) and (min-device-width: $phone-landscape-width+1) and (orientation: landscape)
+		@content
+
+=tablet-portrait
+	@media screen and (max-width: $tablet-portrait-width) and (min-width: $phone-portrait-width+1) and (orientation: portrait), screen and (max-device-width: $tablet-portrait-width) and (min-device-width: $phone-portrait-width+1) and (orientation: portrait)
+		@content
+
+=tablet-landscape
+	@media screen and (max-width: $tablet-landscape-width) and (min-width: $phone-landscape-width+1) and (orientation: landscape), screen and (max-device-width: $tablet-landscape-width) and (min-device-width: $phone-landscape-width+1) and (orientation: landscape)
+		@content
+
+=mobile
+	@media screen and (max-width: $tablet-portrait-width) and (orientation: portrait), screen and (max-width: $tablet-landscape-width) and (orientation: landscape), screen and (max-device-width: $tablet-portrait-width) and (orientation: portrait), screen and (max-device-width: $tablet-landscape-width) and (orientation: landscape)
+		@content
+
+=mobile-portrait
+	@media screen and (max-width: $tablet-portrait-width) and (orientation: portrait), screen and (max-device-width: $tablet-portrait-width) and (orientation: portrait)
+		@content
+
+=mobile-landscape
+	@media screen and (max-width: $tablet-landscape-width) and (orientation: landscape), screen and (max-device-width: $tablet-landscape-width) and (orientation: landscape)
+		@content
+
+=desktop
+	@media screen and (max-width: $desktop-portrait-width) and (min-width: $tablet-portrait-width+1) and (orientation: portrait), screen and (max-width: $desktop-landscape-width) and (min-width: $tablet-landscape-width+1) and (orientation: landscape), screen and (max-device-width: $desktop-portrait-width) and (min-device-width: $tablet-portrait-width+1) and (orientation: portrait), screen and (max-device-width: $desktop-landscape-width) and (min-device-width: $tablet-landscape-width+1) and (orientation: landscape)
+		@content
+
+=wide-screen
+	@media screen and (min-width: $desktop-landscape-width+1) and (orientation: landscape), screen and (min-width: $desktop-portrait-width+1) and (orientation: portrait), screen and (min-device-width: $desktop-landscape-width+1) and (orientation: landscape), screen and (min-device-width: $desktop-portrait-width+1) and (orientation: portrait)
+		@content
+
+=portrait
+	@media screen and (orientation: portrait)
+		@content
+
+=landscape
+	@media screen and (orientation: landscape)
+		@content
+
+=iphone4
+	@media screen and (device-width: 320px) and (device-height: 480px) and (orientation: portrait)
+		@content
+
+=iphone
+	@media screen and (min-device-width: 320px) and (max-device-width: 321px) and (orientation: portrait)
+		@content
+
+=iphone6
+	@media screen and (min-device-width: 375px) and (max-device-width: 376px) and (-webkit-min-device-pixel-ratio: 2) and (orientation: portrait)
+		@content
+
+=iphone6plus
+	@media screen and (min-device-width: 414px) and (max-device-width: 414px) and (-webkit-min-device-pixel-ratio: 3) and (orientation: portrait)
+		@content
+
+=breakpoint($breakpoint-width)
+	@media screen and (max-width: $breakpoint-width), handheld and (max-device-width: $breakpoint-width)
+		@content
+
+=keyframes($name)
+	@-webkit-keyframes #{$name}
+		@content
+	@-moz-keyframes #{$name}
+		@content
+	@-ms-keyframes #{$name}
+		@content
+	@keyframes #{$name}
+		@content
+
+=animation($properties)
+	animation: $properties
+	-moz-animation: $properties
+	-webkit-animation: $properties
+	-o-animation: $properties
+
+=animation-name($name)
+	animation-name: $name
+	-moz-animation-name: $name
+	-webkit-animation-name: $name
+	-o-animation-name: $name
+
+=animation-iteration-count($iterationCount)
+	animation-iteration-count: $iterationCount
+	-moz-animation-iteration-count: $iterationCount
+	-webkit-animation-iteration-count: $iterationCount
+	-o-animation-iteration-count: $iterationCount
+
+=animation-timing-function($timingFunction)
+	animation-timing-function: $timingFunction
+	-moz-animation-timing-function: $timingFunction
+	-webkit-animation-timing-function: $timingFunction
+	-o-animation-timing-function: $timingFunction
+
+=animation-duration($duration)
+	animation-duration: $duration
+	-moz-animation-duration: $duration
+	-webkit-animation-duration: $duration
+	-o-animation-duration: $duration
+
+=animation-delay($delay)
+	animation-delay: $delay
+	-moz-animation-delay: $delay
+	-webkit-animation-delay: $delay
+	-o-animation-delay: $delay
+
+=animation-direction($direction)
+	animation-direction: $direction
+	-moz-animation-direction: $direction
+	-webkit-animation-direction: $direction
+	-o-animation-direction: $direction
+
+=animation-fill-mode($fillMode)
+	animation-fill-mode: $fillMode
+	-moz-animation-fill-mode: $fillMode
+	-webkit-animation-fill-mode: $fillMode
+	-o-animation-fill-mode: $fillMode
+
+=animation-play-state($playState)
+	animation-play-state: $playState
+	-moz-animation-play-state: $playState
+	-webkit-animation-play-state: $playState
+	-o-animation-play-state: $playState
+
+=backface-visibility($visibility)
+	-webkit-backface-visibility: #{$visibility}
+	-moz-backface-visibility: #{$visibility}
+	-ms-backface-visibility: #{$visibility}
+	backface-visibility: #{$visibility}
+
+=sticky($top: 0px)
+	position: -webkit-sticky
+	position: -moz-sticky
+	position: -ms-sticky
+	position: -o-sticky
+	top: $top
+
+=drop-shadow($x-offset, $y-offset, $blur-radius, $color)
+	-webkit-filter: drop-shadow($x-offset $y-offset $blur-radius $color )
+	filter: drop-shadow($x-offset $y-offset $blur-radius $color )
+
+=touch-overflow
+	overflow-y: auto
+	overflow-x: hidden
+	-webkit-overflow-scrolling: touch
+
+=appearance($appearance: none)
+	-webkit-appearance: $appearance
+	-moz-appearance: $appearance
+	appearance: $appearance
+
+=flex-container($flex-direction: row, $justify-content: flex-start)
+	display: -webkit-box
+	display: -moz-box
+	display: -ms-flexbox
+	display: -moz-flex
+	display: -webkit-flex
+	display: flex
+
+	-webkit-flex-direction: $flex-direction
+	-ms-flex-direction: $flex-direction
+	flex-direction: $flex-direction
+
+	+justify-content($justify-content)
+
+
+//=====================================================================================
+	The CSS justify-content property defines how a browser distributes available
+	space between and around elements when aligning flex items in the main-axis of
+	the current line. The alignment is done after the lengths and auto margins are
+	applied, meaning that, if there is at least one flexible element, with flex-grow
+	different than 0, it will have no effect as there won't be any available space.
+
+	Valid Options:
+		flex-start | flex-end | center | space-between | space-around
+
+	https://developer.mozilla.org/en-US/docs/Web/CSS/justify-content
+//=====================================================================================
+=justify-content($justify-content: flex-start)
+	-webkit-justify-content: $justify-content
+	justify-content: $justify-content
+
+//=====================================================================================
+	The CSS align-items property aligns flex items of the current flex line the
+	same way as justify-content but in the perpendicular direction.
+
+	Valid Options:
+		stretch | center | flex-start | flex-end | baseline | initial | inherit
+
+	https://developer.mozilla.org/en-US/docs/Web/CSS/align-items
+//=====================================================================================
+=align-items($alignment: stretch)
+	-webkit-align-items: $alignment
+	align-items: $alignment
+
+//=====================================================================================
+	The align-self CSS property aligns flex items of the current flex line overriding
+	the align-items value. If any of the flex item's cross-axis margin is set to
+	auto, then align-self is ignored.
+
+	Valid Options:
+		stretch | center | flex-start | flex-end | baseline | initial | inherit
+
+	http://www.w3schools.com/cssref/css3_pr_align-self.asp
+//=====================================================================================
+=align-self($alignment: auto)
+	-webkit-align-self: $alignment
+	align-self: $alignment
+
+
+//=====================================================================================
+	The CSS align-content property aligns a flex container's lines within the flex
+	container when there is extra space on the cross-axis. This property has no
+	effect on single line flexible boxes.
+
+	Valid Options:
+		stretch | center | flex-start | flex-end | space-between | space-around | initial | inherit
+
+	https://developer.mozilla.org/en-US/docs/Web/CSS/align-content
+//=====================================================================================
+=align-content($alignment: stretch)
+	-webkit-align-content: $alignment
+	align-content: $alignment
+
+=flex($flex: 0 1 auto)
+	-webkit-flex: $flex
+	-ms-flex: $flex
+	flex: $flex
+
+=flex-to-fill
+	+flex(1 0 0)
+
+=flex-to-size($size)
+	+flex(0 0 $size)
+
+=flex-wrap($wrap: nowrap)
+	-ms-flex-direction: $wrap
+	flex-direction: $wrap
+
+=flex-order($order)
+	-ms-order: $order
+	order: $order
+
+=flex-grow($grow: 0)
+	-ms-flex-grow: $grow
+	flex-grow: $grow
+
+=flex-basis($basis: auto)
+	-ms-flex-basis: $basis
+	flex-basis: $basis

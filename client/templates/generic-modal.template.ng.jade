@@ -1,0 +1,18 @@
+.generic-modal
+	form(novalidate ng-submit="submit()")
+		.modal-header
+			.modal-title {{parameters.title}}
+
+		.modal-body
+			.row
+				.form-group.col-sm-12(ng-repeat="attribute in parameters.attributes")
+					label {{attribute.displayAs}}
+					input.form-control(
+						type="text" 
+						ng-model="attribute.value"
+					)
+		.modal-footer
+			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+			button.btn.btn-primary(type="submit") 
+				span {{parameters.submitAction}} 
+				i.fa.fa-chevron-right

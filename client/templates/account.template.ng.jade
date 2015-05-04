@@ -1,3 +1,18 @@
 .account-view(ng-controller="AccountCtrl")
-	h1 Account
-	button.btn.btn-xs.btn-link(type="button" ng-click="logout()") Log out
+	.clearfix
+		h1.pull-left Account
+		button.btn.btn-xs.btn-link.pull-right(type="button" ng-click="logout()") 
+			span Log out
+			i.fa.fa-sign-out
+
+	hr/
+	
+	tabset
+		tab(heading="Applications")
+			.application-summary.well(ng-repeat="application in applications")
+				.name {{application.name}}
+
+				i.icon.fa.fa-gear
+
+			.clearfix
+				button.btn.btn-success.pull-right(type="button" ng-click="createApplication()") Create

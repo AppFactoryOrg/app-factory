@@ -1,4 +1,4 @@
-angular.module('app-factory').config ($urlRouterProvider, $stateProvider) ->
+angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($urlRouterProvider, $stateProvider) ->
 
 	$stateProvider
 
@@ -22,3 +22,4 @@ angular.module('app-factory').config ($urlRouterProvider, $stateProvider) ->
 					return $meteor.requireUser()
 				]
 			}
+])
