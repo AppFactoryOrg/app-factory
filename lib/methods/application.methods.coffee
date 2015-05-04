@@ -11,6 +11,7 @@ Meteor.methods
 
 		blueprint = Blueprint.new()
 		blueprint['version'] = '1.0.0'
+		blueprint['status'] = Blueprint.STATUS['Draft']
 		blueprint['application_id'] = application['_id']
 		blueprint['_id'] = Blueprint.db.insert(blueprint)
 
@@ -18,7 +19,7 @@ Meteor.methods
 		environment['name'] = 'Development'
 		environment['type'] = Environment.TYPE['Development']
 		environment['application_id'] = application['_id']
-		environment['application_id'] = blueprint['_id']
+		environment['blueprint_id'] = blueprint['_id']
 		environment['_id'] = Environment.db.insert(environment)
 
 		return {application, blueprint, environment}
