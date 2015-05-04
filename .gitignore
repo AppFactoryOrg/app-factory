@@ -28,3 +28,5 @@ node_modules
 
 .meteor/local
 .meteor/meteorite
+
+client/vendor

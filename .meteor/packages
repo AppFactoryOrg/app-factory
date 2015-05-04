@@ -7,9 +7,14 @@
 meteor-platform
 urigo:angular
 coffeescript
-accounts-ui
 accounts-password
+fortawesome:fontawesome
 particle4dev:sass
+angularui:angular-ui-router
 civilframe:angular-jade
 reactive-var
-email
+selchenkov:angular-bootstrap-ui
+jquery
+twbs:bootstrap
+stevezhu:lodash
+jirikavi:angularjs-toaster
