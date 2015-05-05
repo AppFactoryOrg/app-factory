@@ -17,4 +17,7 @@ angular.module('app-factory').controller('AccountCtrl', ['$scope', '$meteor', '$
 		)).result.then (application) ->
 			$meteor.call('Application.create', application)
 
+	$scope.edit = (application) ->
+		$state.go('factory.dashboard', 'application_id': application['_id'])
+
 ])

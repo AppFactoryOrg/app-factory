@@ -21,4 +21,9 @@ Meteor.methods
 		environment['application_id'] = blueprint['_id']
 		environment['_id'] = Environment.db.insert(environment)
 
+		Application.db.update(application['_id'],
+			$set:
+				'default_environment_id': environment['_id']
+		)
+
 		return {application, blueprint, environment}
