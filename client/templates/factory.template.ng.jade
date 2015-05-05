@@ -1,7 +1,89 @@
 .factory
 	div#wrapper
+
 		nav.navbar-default.navbar-static-side(role="navigation")
+			ul.nav#side-menu
+				li.nav-header#side-menu
+					img.af-logo(src="/images/factory.png")
+					.af-title App Factory
+					.af-version v1.0.0
+
+				li(ui-sref-active="active")
+					a(ui-sref="factory.dashboard")
+						i.fa.fa-tachometer
+						span.nav-label Dashboard
+
+				li(ui-sref-active="active")
+					a(ng-click="documentsExpanded=!documentsExpanded")
+						i.fa.fa-files-o
+						span.nav-label Documents
+						span.fa.pull-right(ng-class="{'fa-angle-down': !documentsExpanded, 'fa-angle-right': documentsExpanded}")
+					ul.nav.nav-second-level(collapse="!documentsExpanded")
+						li
+							a
+								i.fa.fa-plus
+								span New Document
+
+
+				li(ui-sref-active="active")
+					a(ng-click="screensExpanded=!screensExpanded")
+						i.fa.fa-desktop
+						span.nav-label Screens
+						span.fa.pull-right(ng-class="{'fa-angle-down': !screensExpanded, 'fa-angle-right': screensExpanded}")
+					ul.nav.nav-second-level(collapse="!screensExpanded")
+						li
+							a
+								i.fa.fa-plus
+								span New Screen
+
+				li(ui-sref-active="active")
+					a(ng-click="routinesExpanded=!routinesExpanded")
+						i.fa.fa-gears
+						span.nav-label Routines
+						span.fa.pull-right(ng-class="{'fa-angle-down': !routinesExpanded, 'fa-angle-right': routinesExpanded}")
+					ul.nav.nav-second-level(collapse="!routinesExpanded")
+						li
+							a
+								i.fa.fa-plus
+								span New Routine
+
+				li(ui-sref-active="active")
+					a(ui-sref="factory.users")
+						i.fa.fa-users
+						span.nav-label Users
+
+				li(ui-sref-active="active")
+					a(ui-sref="factory.settings")
+						i.fa.fa-wrench
+						span.nav-label Settings
+
+
 		div#page-wrapper.gray-bg
-			div.wrapper.wrapper-content
+			div#top-nav.row.border-bottom
+				nav.navbar.navbar-static-top(role="navigation")
+					.navbar-header
+						i.fa.fa-gear
+						.app-name {{application.name}}
+					ul.nav.navbar-top-links.navbar-right
+						li
+							span.text-muted Welcome, {{currentUser.profile.name}}
+							.user-avatar
+								i.fa.fa-user
+
+						li
+							a(ng-click="logout")
+								span Log out
+								i.fa.fa-sign-out
+
+			div(ui-view="")
+
+			#footer.footer
+				strong
+					a(href="http://app-factory.io" target="_blank") App Factory
+				a License
+				a Privacy
+				a Terms
+				a Support
+
 
 
