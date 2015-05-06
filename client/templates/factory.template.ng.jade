@@ -64,9 +64,23 @@
 			div#top-nav.row.border-bottom
 				nav.navbar.navbar-static-top(role="navigation")
 					.navbar-header
-						i.fa.fa-gear
+						i.fa.fa-globe
 						.app-name {{application.name}}
-						.environment-name.label.label-primary {{environment.name}}
+						.app-label.label.label-primary(
+							tooltip="You are in the {{environment.name}} environment."
+							tooltip-animation="true" 
+							tooltip-placement="bottom"
+						) {{environment.name}}
+						.app-label.label.label-info(
+							tooltip="You are viewing version {{blueprint.version}} of the application."
+							tooltip-animation="true" 
+							tooltip-placement="bottom"
+						) {{blueprint.version}}
+						.app-label.label.label-default(
+							tooltip="This version is currently in the {{blueprint.status | dictionary:blueprintStatuses}} status."
+							tooltip-animation="true" 
+							tooltip-placement="bottom"
+						) {{blueprint.status | dictionary:blueprintStatuses}}
 					ul.nav.navbar-top-links.navbar-right
 						li
 							span.text-muted Welcome, {{currentUser.profile.name}}

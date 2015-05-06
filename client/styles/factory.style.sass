@@ -1,4 +1,5 @@
 @import "_mixins"
+@import "theme/_variables"
 
 .factory
 
@@ -18,49 +19,57 @@
 			border-bottom: 1px solid rgba(white, 0.05)
 
 		.nav-second-level > li > a
-			padding: 5px 19px 5px 31px
+			padding: 5px 19px 5px 29px
 
 		.af-logo
 			width: 120px
 
 		.af-title
-			color: white
-			+opacity(0.9)
+			color: rgba(white, 0.8)
 			letter-spacing: 0.1px
 			margin-top: 5px
-			font-size: 16px
+			font-size: 17px
+			font-weight: 200
+			letter-spacing: 0.1px
 
 		.af-version
 			text-align: right
-			color: white
-			+opacity(0.4)
+			color: rgba(white, 0.4)
 			font-size: 9px
 
 	#top-nav
 		.navbar-header
-			padding: 13px 0 0 23px
+			padding: 13px 0 0 15px
 
-			.fa-gear
+			.fa
+				+transition-property(color)
+				+transition-duration(0.1s)
 				font-size: 30px
 				display: inline-block
-				+opacity(0.35)
+				cursor: pointer
+				color: rgba(black, 0.2)
+
+				&:hover
+					color: $blue
 
 			.app-name
 				font-size: 23px
 				display: inline-block
 				margin-left: 7px
-				margin-right: 7px
+				margin-right: 5px
 				position: relative
 				top: -2px
 
-			.environment-name
+			.app-label
 				text-transform: uppercase
 				font-size: 8px
 				font-weight: normal
 				letter-spacing: 0.1px
+				margin-left: 3px
 				padding: 3px 5px
 				position: relative
 				top: -6px
+				cursor: pointer
 
 		.navbar-static-top
 			margin-bottom: 0
@@ -81,8 +90,7 @@
 			i.fa-user
 				padding: 3px 0 0 0
 				font-size: 27px
-				+opacity(0.3)
-				color: #4e97d4
+				color: rgba(#4e97d4, 0.3)
 
 	#footer
 		> *
