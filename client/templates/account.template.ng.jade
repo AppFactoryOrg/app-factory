@@ -4,11 +4,12 @@
 		button.btn.btn-xs.btn-link.pull-right(type="button" ng-click="logout()") 
 			span Log out
 			i.fa.fa-sign-out
-
-	hr/
+	br/
 	
-	tabset
-		tab(heading="Applications")
+	.ibox
+		.ibox-title 
+			h5 Applications
+		.ibox-content
 			.application-summary.well(ng-repeat="application in applications")
 				.name {{application.name}}
 
@@ -20,4 +21,7 @@
 				i.icon.fa.fa-gear
 
 			.clearfix
-				button.btn.btn-success.pull-right(type="button" ng-click="createApplication()") Create
+				button.btn.btn-success.pull-right(type="button" ng-click="createApplication()") 
+					span New Application
+					i.fa.fa-plus
+
