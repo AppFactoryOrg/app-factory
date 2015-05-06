@@ -19,10 +19,14 @@
 						span.nav-label Documents
 						span.fa.pull-right(ng-class="{'fa-angle-down': !documentsExpanded, 'fa-angle-right': documentsExpanded}")
 					ul.nav.nav-second-level(collapse="!documentsExpanded")
-						li
-							a
+						li(ng-repeat="documentSchema in documentSchemas" ng-class="{'active': documentSchemaIsSelected(documentSchema)}")
+							a(ui-sref="factory.document({ document_schema_id: documentSchema['_id'] })")
+								span {{documentSchema.name}}
+								span.fa.pull-right(ng-class="{'fa-caret-right': documentSchemaIsSelected(documentSchema)}")
+						li(ng-if="blueprintIsEditable()")
+							a(ng-click="createDocument()")
 								i.fa.fa-plus
-								span New Document
+								span New
 
 				li(ui-sref-active="active")
 					a(ng-click="screensExpanded=!screensExpanded")
@@ -30,10 +34,10 @@
 						span.nav-label Screens
 						span.fa.pull-right(ng-class="{'fa-angle-down': !screensExpanded, 'fa-angle-right': screensExpanded}")
 					ul.nav.nav-second-level(collapse="!screensExpanded")
-						li
+						li(ng-if="blueprintIsEditable()")
 							a
 								i.fa.fa-plus
-								span New Screen
+								span New
 
 				li(ui-sref-active="active")
 					a(ng-click="routinesExpanded=!routinesExpanded")
@@ -41,10 +45,10 @@
 						span.nav-label Routines
 						span.fa.pull-right(ng-class="{'fa-angle-down': !routinesExpanded, 'fa-angle-right': routinesExpanded}")
 					ul.nav.nav-second-level(collapse="!routinesExpanded")
-						li
+						li(ng-if="blueprintIsEditable()")
 							a
 								i.fa.fa-plus
-								span New Routine
+								span New
 
 				li(ui-sref-active="active")
 					a(ui-sref="factory.users")
@@ -62,6 +66,7 @@
 					.navbar-header
 						i.fa.fa-gear
 						.app-name {{application.name}}
+						.environment-name.label.label-primary {{environment.name}}
 					ul.nav.navbar-top-links.navbar-right
 						li
 							span.text-muted Welcome, {{currentUser.profile.name}}

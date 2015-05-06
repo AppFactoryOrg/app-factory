@@ -2,7 +2,7 @@ Meteor.methods
 	'Application.create': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
-		throw new Error('Application name is required') if _.isEmpty(parameters['name'])
+		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
 
 		application = Application.new()
 		application['name'] = parameters['name']
@@ -27,4 +27,4 @@ Meteor.methods
 				'default_environment_id': environment['_id']
 		)
 
-		return {application, blueprint, environment}
+		return application['_id']

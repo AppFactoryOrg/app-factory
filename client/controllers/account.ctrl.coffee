@@ -9,15 +9,12 @@ angular.module('app-factory').controller('AccountCtrl', ['$scope', '$meteor', '$
 
 	$scope.createApplication = ->
 		$modal.open(new GenericModal(
-			title: 'Create Application'
+			title: 'New Application'
 			submitAction: 'Create'
 			attributes: [
-				{name: 'name', displayAs: 'Name'}
+				{name: 'name', displayAs: 'Name', required: true, autofocus: true}
 			]
 		)).result.then (application) ->
 			$meteor.call('Application.create', application)
-
-	$scope.edit = (application) ->
-		$state.go('factory.dashboard', 'application_id': application['_id'])
 
 ])

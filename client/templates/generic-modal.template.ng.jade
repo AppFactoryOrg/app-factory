@@ -1,5 +1,5 @@
 .generic-modal
-	form(novalidate ng-submit="submit()")
+	form(novalidate name="form" ng-submit="submit()")
 		.modal-header
 			.modal-title {{parameters.title}}
 
@@ -9,8 +9,19 @@
 					label {{attribute.displayAs}}
 					input.form-control(
 						type="text" 
+						name="{{attribute.name}}"
 						ng-model="attribute.value"
+						ng-required="attribute.required"
+						autofocus="{{attribute.autofocus}}"
 					)
+
+			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+				ul
+					li(
+						ng-repeat="attribute in parameters.attributes"
+						ng-show="form.{{attribute.name}}.$error.required"
+					) 
+						span {{attribute.displayAs}} is required.
 		.modal-footer
 			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
 			button.btn.btn-primary(type="submit") 

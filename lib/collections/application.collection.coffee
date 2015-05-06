@@ -5,3 +5,4 @@
 	new: ->
 		'name': 					null
 		'owner_id': 				null
+		'default_environment_id':	null
