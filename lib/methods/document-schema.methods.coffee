@@ -11,7 +11,29 @@ Meteor.methods
 
 		documentSchema = DocumentSchema.new()
 		documentSchema['name'] = parameters['name']
+		documentSchema['description'] = parameters['description']
 		documentSchema['blueprint_id'] = blueprint['_id']
+		documentSchema['attributes'] = []
 		documentSchema['_id'] = DocumentSchema.db.insert(documentSchema)
 
 		return documentSchema['_id']
+
+	'DocumentSchema.update': (parameters) ->
+		throw new Error('Unauthorized') unless Meteor.user()?
+		throw new Error('Parameters object is required') unless parameters?
+
+		documentSchema = DocumentSchema.db.findOne(parameters['_id'])
+		throw new Error('Cannot find Document') unless documentSchema?
+
+		updates = _.pick(parameters, DocumentSchema.MUTABLE_PROPERTIES)
+		DocumentSchema.db.update({'_id': documentSchema['_id']}, {$set: updates})
+
+		return documentSchema['_id']
+
+	'DocumentSchema.delete': (id) ->
+		throw new Error('Unauthorized') unless Meteor.user()?
+		throw new Error('Id is required') if _.isEmpty(id) and _.isString(id)
+
+		DocumentSchema.db.remove(id)
+
+		return

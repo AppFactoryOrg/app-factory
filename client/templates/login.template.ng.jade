@@ -25,10 +25,9 @@
 					)
 
 				.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
-					ul
-						li(ng-show="form.email.$error.required") Email is required.
-						li(ng-show="form.email.$error.email") Email format is invalid.
-						li(ng-show="form.password.$error.required") Password is required.
+					div(ng-show="form.email.$error.required") Email is required.
+					div(ng-show="form.email.$error.email") Email format is invalid.
+					div(ng-show="form.password.$error.required") Password is required.
 
 				button.btn.btn-primary(type="submit")
 					span Login

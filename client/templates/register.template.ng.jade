@@ -48,14 +48,13 @@
 					)
 
 				.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
-					ul
-						li(ng-show="form.name.$error.required") Name is required.
-						li(ng-show="form.email.$error.required") Email is required.
-						li(ng-show="form.email.$error.email") Email format is invalid.
-						li(ng-show="form.password.$error.required") Password is required.
-						li(ng-show="form.password.$error.minlength") Password must be between 5-50 characters.
-						li(ng-show="form.password.$error.maxlength") Password must be between 5-50 characters.
-						li(ng-show="form.confirmPassword.$error.compareTo") Confirm Password must match.
+					div(ng-show="form.name.$error.required") Name is required.
+					div(ng-show="form.email.$error.required") Email is required.
+					div(ng-show="form.email.$error.email") Email format is invalid.
+					div(ng-show="form.password.$error.required") Password is required.
+					div(ng-show="form.password.$error.minlength") Password must be between 5-50 characters.
+					div(ng-show="form.password.$error.maxlength") Password must be between 5-50 characters.
+					div(ng-show="form.confirmPassword.$error.compareTo") Confirm Password must match.
 
 				button.btn.btn-primary(type="submit")
 					span Register

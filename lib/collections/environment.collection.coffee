@@ -3,8 +3,8 @@
 	db: new Mongo.Collection('environment')
 
 	TYPE:
-		'Development': 		0
-		'Production':		1
+		'Development': 		100
+		'Production':		200
 
 	new: ->
 		'name': 					null

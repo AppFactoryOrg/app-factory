@@ -1,4 +1,68 @@
-.factory-dashboard
+.document-schema
 	.row.wrapper.border-bottom.white-bg.page-heading
-		.col-lg-12
-			h2 {{documentSchema.name}}
+		.col-lg-12(ng-switch="editMode")
+			div(ng-switch-when="false")
+				.metadata.pull-left
+					h2 {{documentSchema.name}}
+					p {{documentSchema.description}}
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="startEditDocumentSchema()")
+						i.fa.fa-pencil
+						span Edit
+					button.btn.btn-xs.btn-default(ng-click="deleteDocumentSchema()")
+						i.fa.fa-trash
+			div(ng-switch-when="true")
+				.edit.metadata.pull-left
+					input.form-control.title(
+						type="text"
+						ng-model="documentSchema.name"
+					)
+					textarea.form-control.description(
+						rows="2"
+						cols="50"
+						ng-model="documentSchema.description"
+					)
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="saveDocumentSchema()")
+						i.fa.fa-save
+						span Save
+					button.btn.btn-xs.btn-default(ng-click="cancelEditDocumentSchema()")
+						i.fa.fa-close
+						span Cancel
+	br/
+	.row
+		.col-lg-5
+			.ibox.attributes
+				.ibox-title 
+					h5.pull-left Attributes
+					button.btn.btn-xs.btn-success.pull-right(ng-click="newAttribute()" ng-show="editMode")
+						i.fa.fa-plus
+				.ibox-content
+					.attribute(
+						ng-repeat="attribute in documentSchema.attributes" 
+						ng-click="selectAttribute(attribute)"
+					)
+						i.fa.fa-text(ng-css="attribute.type | iconDictionary:attributeTypes")
+						span {{attribute.type | dictionary:attributeIcons}}
+						span {{attribute.name}}
+					.text-muted(ng-hide="documentSchema.attributes.length") No Attributes
+			
+		.col-lg-7
+			.ibox(ng-show="selectedAttribute")
+				.ibox-title(ng-switch="editMode")
+					h5.pull-left Edit Attribute: {{selectedAttribute.name}}
+					.pull-right(ng-switch-when="false")
+						button.btn.btn-xs.btn-primary(ng-click="startEditAttribute()")
+							i.fa.fa-pencil
+							span Edit
+						button.btn.btn-xs.btn-default(ng-click="deleteAttribute()")
+							i.fa.fa-trash
+					.pull-right(ng-switch-when="true")
+						button.btn.btn-xs.btn-primary(ng-click="saveAttribute()")
+							i.fa.fa-save
+							span Save
+						button.btn.btn-xs.btn-default(ng-click="cancelEditAttribute()")
+							i.fa.fa-close
+							span Cancel
+				.ibox-content
+
