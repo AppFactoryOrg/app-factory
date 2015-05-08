@@ -2,25 +2,30 @@
 
 	db: new Mongo.Collection('document-schema')
 
-	ATTRIBUTE_TYPE: [
-		{name: 'Text',			value: 100,		iconClass: 'fa-font'}
-		{name: 'Number',		value: 200,		iconClass: 'fa-calculator'}
-		{name: 'Date',			value: 300,		iconClass: 'fa-calendar-o'}
-		{name: 'Currency',		value: 400,		iconClass: 'fa-dollar'}
-		{name: 'Document',		value: 500,		iconClass: 'fa-file-o'}
-		{name: 'Routine',		value: 600,		iconClass: 'fa-gear'}
-		{name: 'User',			value: 700,		iconClass: 'fa-user'}
-		{name: 'Image',			value: 800,		iconClass: 'fa-image'}
-		{name: 'Coordinates',	value: 900,		iconClass: 'fa-map'}
-		{name: 'Address',		value: 1000,	iconClass: 'fa-house'}
-		{name: 'Phone Number',	value: 1100,	iconClass: 'fa-phone'}
-		{name: 'Email',			value: 1200,	iconClass: 'fa-email'}
-	]
-
 	MUTABLE_PROPERTIES: [
 		'name'
 		'description'
 		'attributes'
+	]
+
+	ATTRIBUTE_DATA_TYPES: [
+		{name: 'Text',			value: 100,		iconClass: 'fa-font'}
+		{name: 'Number',		value: 150,		iconClass: 'fa-calculator'}
+		{name: 'Date',			value: 200,		iconClass: 'fa-calendar'}
+		{name: 'Currency',		value: 250,		iconClass: 'fa-dollar'}
+		{name: 'Document',		value: 300,		iconClass: 'fa-file-o'}
+		{name: 'User',			value: 350,		iconClass: 'fa-user'}
+		{name: 'Image',			value: 400,		iconClass: 'fa-image'}
+		{name: 'Coordinates',	value: 450,		iconClass: 'fa-map'}
+		{name: 'Address',		value: 500,	    iconClass: 'fa-home'}
+		{name: 'Phone Number',	value: 550,		iconClass: 'fa-phone'}
+		{name: 'Email',			value: 600,		iconClass: 'fa-at'}
+	]
+
+	ATTRIBUTE_VALUE_TYPE: [
+		{name: 'Input',			value: 100,		iconClass: 'fa-edit'}
+		{name: 'Fixed',			value: 150,		iconClass: 'fa-wrench'}
+		{name: 'Routine',		value: 200,		iconClass: 'fa-gear'}
 	]
 
 	new: ->
@@ -28,6 +33,11 @@
 		'description':				null
 		'attributes':				null
 		'blueprint_id': 			null
+
+	newAttribute: ->
+		'name':						null
+		'value_type':				null
+		'input_type':				null
 
 	getNextAttributeId: (documentSchema) ->
 		allIds = _.pluck(documentSchema.attributes, 'id')

@@ -30,39 +30,30 @@
 						i.fa.fa-close
 						span Cancel
 	br/
-	.row
-		.col-lg-5
-			.ibox.attributes
+	.row.wrapper
+		.col-lg-4
+			.ibox
 				.ibox-title 
 					h5.pull-left Attributes
 					button.btn.btn-xs.btn-success.pull-right(ng-click="newAttribute()" ng-show="editMode")
 						i.fa.fa-plus
 				.ibox-content
-					.attribute(
-						ng-repeat="attribute in documentSchema.attributes" 
-						ng-click="selectAttribute(attribute)"
-					)
-						i.fa.fa-text(ng-css="attribute.type | iconDictionary:attributeTypes")
-						span {{attribute.type | dictionary:attributeIcons}}
-						span {{attribute.name}}
-					.text-muted(ng-hide="documentSchema.attributes.length") No Attributes
+					.attributes
+						.attribute(
+							ng-repeat="attribute in documentSchema.attributes" 
+							ng-click="selectAttribute(attribute)"
+							ng-class="{'selected': attribute===selectedAttribute}"
+						)
+							i.fa.fa-text(ng-class="attribute.type | iconDictionary:attributeDataTypes")
+							span {{attribute.name}}
+							i.fa.fa-angle-right.pull-right
+						.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
 			
-		.col-lg-7
+		.col-lg-8
 			.ibox(ng-show="selectedAttribute")
-				.ibox-title(ng-switch="editMode")
-					h5.pull-left Edit Attribute: {{selectedAttribute.name}}
-					.pull-right(ng-switch-when="false")
-						button.btn.btn-xs.btn-primary(ng-click="startEditAttribute()")
-							i.fa.fa-pencil
-							span Edit
-						button.btn.btn-xs.btn-default(ng-click="deleteAttribute()")
-							i.fa.fa-trash
-					.pull-right(ng-switch-when="true")
-						button.btn.btn-xs.btn-primary(ng-click="saveAttribute()")
-							i.fa.fa-save
-							span Save
-						button.btn.btn-xs.btn-default(ng-click="cancelEditAttribute()")
-							i.fa.fa-close
-							span Cancel
+				.ibox-title
+					h5.pull-left {{selectedAttribute.name}}
+					button.btn.btn-xs.btn-default.pull-right(ng-click="deleteAttribute()" ng-show="editMode")
+						i.fa.fa-trash
 				.ibox-content
 

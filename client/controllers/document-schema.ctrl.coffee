@@ -2,8 +2,8 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.originalDocumentSchema = documentSchema
 	$scope.documentSchema = documentSchema
-	$scope.attributeTypes = DocumentSchema.ATTRIBUTE_TYPE
-
+	$scope.attributeDataTypes = DocumentSchema.ATTRIBUTE_DATA_TYPES
+	$scope.attributeValueTypes = DocumentSchema.ATTRIBUTE_VALUE_TYPES
 	$scope.selectedAttribute = null
 	$scope.editMode = false
 
@@ -26,7 +26,7 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 				$scope.originalDocumentSchema = documentSchema
 
 	$scope.deleteDocumentSchema = ->
-		return unless confirm('Are you sure you want to delete this document? Application data will be lost.')
+		return unless confirm('Are you sure you want to delete this document? Application data may be lost.')
 		$meteor.call('DocumentSchema.delete', $scope.documentSchema['_id']).then ->
 			$state.go('factory.dashboard')
 
@@ -36,7 +36,7 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			submitAction: 'Create'
 			attributes: [
 				{name: 'name', displayAs: 'Name', required: true, autofocus: true}
-				{name: 'type', displayAs: 'Type', type: 'select', options: DocumentSchema.ATTRIBUTE_TYPE, required: true}
+				{name: 'data_type', displayAs: 'Data Type', type: 'select', options: DocumentSchema.ATTRIBUTE_DATA_TYPES, required: true}
 			]
 		)).result.then (attribute) ->
 			attribute['id'] = DocumentSchema.getNextAttributeId($scope.documentSchema)
@@ -44,4 +44,10 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.selectAttribute = (attribute) ->
 		$scope.selectedAttribute = attribute
+
+	$scope.deleteAttribute = ->
+		return unless confirm('Are you sure you want to delete this attribute? Application data may be lost.')
+		Utils.removeFromArray($scope.selectedAttribute, $scope.documentSchema.attributes)
+		$scope.selectedAttribute = null
+
 ])
