@@ -7,7 +7,7 @@ Meteor.methods
 
 		blueprint = Blueprint.db.findOne(parameters['blueprint_id'])
 		throw new Error('Cannot find Blueprint') unless blueprint?
-		throw new Error('Blueprint is not in "Draft" status') unless blueprint.status is Blueprint.STATUS['Draft']
+		throw new Error('Blueprint is not in "Draft" status') unless blueprint.status is Blueprint.STATUS['Draft'].value
 
 		documentSchema = DocumentSchema.new()
 		documentSchema['name'] = parameters['name']

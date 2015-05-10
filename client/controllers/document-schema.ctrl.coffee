@@ -2,8 +2,8 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.originalDocumentSchema = documentSchema
 	$scope.documentSchema = documentSchema
-	$scope.attributeDataTypes = DocumentSchema.ATTRIBUTE_DATA_TYPES
-	$scope.attributeValueTypes = DocumentSchema.ATTRIBUTE_VALUE_TYPES
+	$scope.attributeDataTypes = Utils.mapToArray(DocumentSchema.ATTRIBUTE_DATA_TYPE)
+	$scope.attributeValueTypes = Utils.mapToArray(DocumentSchema.ATTRIBUTE_VALUE_TYPE)
 	$scope.selectedAttribute = null
 	$scope.editMode = false
 
@@ -35,12 +35,33 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			title: 'New Attribute'
 			submitAction: 'Create'
 			attributes: [
-				{name: 'name', displayAs: 'Name', required: true, autofocus: true}
-				{name: 'data_type', displayAs: 'Data Type', type: 'select', options: DocumentSchema.ATTRIBUTE_DATA_TYPES, required: true}
-				{name: 'value_type', displayAs: 'Value Type', type: 'select', options: DocumentSchema.ATTRIBUTE_VALUE_TYPES, required: true}
+				{
+					name: 'name'
+					displayAs: 'Name'
+					required: true
+					autofocus: true
+				}
+				{
+					name: 'data_type'
+					displayAs: 'Data Type'
+					type: 'select'
+					options: $scope.attributeDataTypes
+					required: true
+				}
+				{
+					name: 'value_type'
+					displayAs: 'Value Type'
+					type: 'select'
+					options: $scope.attributeValueTypes
+					required: true
+				}
 			]
-		)).result.then (attribute) ->
+		)).result.then (parameters) ->
+			attribute = DocumentSchema.newAttribute()
 			attribute['id'] = DocumentSchema.getNextAttributeId($scope.documentSchema)
+			attribute['name'] = parameters['name']
+			attribute['data_type'] = parameters['data_type']
+			attribute['value_type'] = parameters['value_type']
 			$scope.documentSchema.attributes.push(attribute)
 
 	$scope.selectAttribute = (attribute) ->

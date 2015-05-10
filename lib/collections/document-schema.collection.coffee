@@ -8,10 +8,12 @@
 		'attributes'
 	]
 
-	ATTRIBUTE_DATA_TYPES:
+	ATTRIBUTE_DATA_TYPE:
 		'Text':				{value: 100,		icon: 'fa-font'}
+		'Content':			{value: 125,		icon: 'fa-paragraph'}
 		'Number':			{value: 150,		icon: 'fa-calculator'}
 		'Date':				{value: 200,		icon: 'fa-calendar'}
+		'Duration':			{value: 225,		icon: 'fa-clock'}
 		'Currency':			{value: 250,		icon: 'fa-dollar'}
 		'Document':			{value: 300,		icon: 'fa-file-o'}
 		'User':				{value: 350,		icon: 'fa-user'}
@@ -21,9 +23,8 @@
 		'Phone Number':		{value: 550,		icon: 'fa-phone'}
 		'Email':			{value: 600,		icon: 'fa-at'}
 
-	ATTRIBUTE_VALUE_TYPES:
+	ATTRIBUTE_VALUE_TYPE:
 		'Input':			{value: 100,		icon: 'fa-edit'}
-		'Fixed':			{value: 150,		icon: 'fa-wrench'}
 		'Routine':			{value: 200,		icon: 'fa-gear'}
 
 	new: ->
@@ -48,10 +49,10 @@
 
 	attributeHasDefaultValue: (attribute) ->
 		return false unless attribute?
-		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPES['Input'].value
-		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPES['Fixed'].value
+		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPE['Input'].value
 		return false
 
 	attributeHasRoutineId: (attribute) ->
-		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPES['Routine'].value
+		return false unless attribute?
+		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPE['Routine'].value
 		return false

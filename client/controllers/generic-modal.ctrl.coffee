@@ -15,7 +15,6 @@ angular.module('app-factory').controller 'GenericModalCtrl', ($scope, $modalInst
 		if attribute['type'] is 'select'
 			$scope.result[attribute.name] = attribute.options[0].value
 
-
 	$scope.submit = ->
 		if $scope.form.$invalid
 			$scope.showValidationErrors = true

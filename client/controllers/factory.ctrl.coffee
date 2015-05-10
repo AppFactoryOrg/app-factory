@@ -9,9 +9,11 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$m
 	$scope.blueprintStatuses = Blueprint.STATUS
 
 	$scope.documentsExpanded = $state.includes('factory.document')
+	$scope.viewsExpanded = false
+	$scope.routinesExpanded = false
 
 	$scope.blueprintIsEditable = ->
-		return $scope.blueprint.status is Blueprint.STATUS['Draft']
+		return $scope.blueprint.status is Blueprint.STATUS['Draft'].value
 
 	$scope.documentSchemaIsSelected = (documentSchema) ->
 		return $state.includes('factory.document', {'document_schema_id': documentSchema['_id']})

@@ -63,36 +63,34 @@
 						button.btn.btn-xs.btn-default.pull-right(ng-click="deleteAttribute()")
 							i.fa.fa-trash
 				.ibox-content(ng-switch="editMode")
-					.form-group
-						label Data Type
-						select.form-control(
-							ng-switch-when="true"
-							ng-model="selectedAttribute.data_type"
-							ng-options="type.value as type.name for type in attributeDataTypes"
-						)
-						div.form-control-static.text-muted(ng-switch-when="false")
-							i.fa.data-type(ng-class="selectedAttribute.data_type | dictionary:attributeDataTypes:'icon'")
-							span(ng-bind="selectedAttribute.data_type | dictionary:attributeDataTypes")
-					.form-group
-						label Value Type
-						select.form-control(
-							ng-switch-when="true"
-							ng-model="selectedAttribute.value_type"
-							ng-options="type.value as type.name for type in attributeValueTypes"
-						)
-						div.form-control-static.text-muted(ng-switch-when="false")
-							i.fa.data-type(ng-class="selectedAttribute.value_type | dictionary:attributeValueTypes:'icon'")
-							span(ng-bind="selectedAttribute.value_type | dictionary:attributeValueTypes")
-					.form-group(ng-if="attributeHasDefaultValue(selectedAttribute)")
-						label Default Value
-						input.form-control(
-							ng-switch-when="true"
-							type="text"
-							ng-model="selectedAttribute.default_value"
-						)
-						div.form-control-static.text-muted(ng-switch-when="false")
-							span(ng-bind="selectedAttribute.default_value")
-
-
-					pre {{selectedAttribute | json}}
-
+					.row
+						.form-group.col-lg-6
+							label Data Type
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="selectedAttribute.data_type"
+								ng-options="type.value as type.name for type in attributeDataTypes"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								i.fa.data-type(ng-class="selectedAttribute.data_type | dictionary:attributeDataTypes:'icon'")
+								span(ng-bind="selectedAttribute.data_type | dictionary:attributeDataTypes")
+						.form-group.col-lg-6
+							label Value Type
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="selectedAttribute.value_type"
+								ng-options="type.value as type.name for type in attributeValueTypes"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								i.fa.data-type(ng-class="selectedAttribute.value_type | dictionary:attributeValueTypes:'icon'")
+								span(ng-bind="selectedAttribute.value_type | dictionary:attributeValueTypes")
+						.form-group.col-lg-12(ng-show="attributeHasDefaultValue(selectedAttribute)")
+							label Default Value
+							input.form-control(
+								ng-switch-when="true"
+								type="text"
+								ng-model="selectedAttribute.default_value"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								span(ng-bind="selectedAttribute.default_value")
+								span(ng-show="selectedAttribute.default_value===null") (none)
