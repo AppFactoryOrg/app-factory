@@ -3,8 +3,8 @@
 		.col-lg-12(ng-switch="editMode")
 			div(ng-switch-when="false")
 				.metadata.pull-left
-					h2 {{documentSchema.name}}
-					p {{documentSchema.description}}
+					h2(ng-bind="documentSchema.name")
+					p(ng-bind="documentSchema.description")
 				.controls.pull-right
 					button.btn.btn-xs.btn-primary(ng-click="startEditDocumentSchema()")
 						i.fa.fa-pencil
@@ -33,27 +33,41 @@
 	.row.wrapper
 		.col-lg-4
 			.ibox
-				.ibox-title 
+				.ibox-title(ng-switch="editMode")
 					h5.pull-left Attributes
-					button.btn.btn-xs.btn-success.pull-right(ng-click="newAttribute()" ng-show="editMode")
-						i.fa.fa-plus
+					div(ng-switch-when="true")
+						button.btn.btn-xs.btn-success.pull-right(ng-click="newAttribute()")
+							i.fa.fa-plus
 				.ibox-content
-					.attributes
-						.attribute(
+					.attributes-list
+						.attribute-item(
 							ng-repeat="attribute in documentSchema.attributes" 
 							ng-click="selectAttribute(attribute)"
 							ng-class="{'selected': attribute===selectedAttribute}"
 						)
-							i.fa.fa-text(ng-class="attribute.type | iconDictionary:attributeDataTypes")
-							span {{attribute.name}}
+							i.fa.data-type(ng-class="attribute.data_type | iconDictionary:attributeDataTypes")
+							span(ng-bind="attribute.name")
 							i.fa.fa-angle-right.pull-right
 						.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
 			
 		.col-lg-8
-			.ibox(ng-show="selectedAttribute")
-				.ibox-title
-					h5.pull-left {{selectedAttribute.name}}
-					button.btn.btn-xs.btn-default.pull-right(ng-click="deleteAttribute()" ng-show="editMode")
-						i.fa.fa-trash
+			.ibox.edit-attribute(ng-if="selectedAttribute")
+				.ibox-title.clearfix(ng-switch="editMode")
+					div(ng-switch-when="false")
+						h5.pull-left(ng-bind="selectedAttribute.name")
+					div(ng-switch-when="true")
+						input.form-control.pull-left.title(
+							type="text"
+							ng-model="selectedAttribute.name"
+						)
+						button.btn.btn-xs.btn-default.pull-right(ng-click="deleteAttribute()")
+							i.fa.fa-trash
 				.ibox-content
+					.form-group.text-muted
+						label Data Type
+						div.form-control-static
+							i.fa.data-type(ng-class="selectedAttribute.data_type | iconDictionary:attributeDataTypes")
+							span(ng-bind="selectedAttribute.data_type | dictionary:attributeDataTypes")
+					
+					pre {{selectedAttribute | json}}
 

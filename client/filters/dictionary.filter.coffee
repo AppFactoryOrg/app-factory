@@ -1,7 +1,7 @@
 angular.module('app-factory').filter 'dictionary', () ->
 	return (input, map) ->
 		result = ''
-		_.forIn map, (value, key) ->
-			result = key if value is input
+		for option in map
+			result = option.name if option.value is input
 
 		return result
