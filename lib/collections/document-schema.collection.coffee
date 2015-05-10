@@ -8,25 +8,23 @@
 		'attributes'
 	]
 
-	ATTRIBUTE_DATA_TYPES: [
-		{name: 'Text',			value: 100,		iconClass: 'fa-font'}
-		{name: 'Number',		value: 150,		iconClass: 'fa-calculator'}
-		{name: 'Date',			value: 200,		iconClass: 'fa-calendar'}
-		{name: 'Currency',		value: 250,		iconClass: 'fa-dollar'}
-		{name: 'Document',		value: 300,		iconClass: 'fa-file-o'}
-		{name: 'User',			value: 350,		iconClass: 'fa-user'}
-		{name: 'Image',			value: 400,		iconClass: 'fa-image'}
-		{name: 'Coordinates',	value: 450,		iconClass: 'fa-map'}
-		{name: 'Address',		value: 500,	    iconClass: 'fa-home'}
-		{name: 'Phone Number',	value: 550,		iconClass: 'fa-phone'}
-		{name: 'Email',			value: 600,		iconClass: 'fa-at'}
-	]
+	ATTRIBUTE_DATA_TYPES:
+		'Text':				{value: 100,		icon: 'fa-font'}
+		'Number':			{value: 150,		icon: 'fa-calculator'}
+		'Date':				{value: 200,		icon: 'fa-calendar'}
+		'Currency':			{value: 250,		icon: 'fa-dollar'}
+		'Document':			{value: 300,		icon: 'fa-file-o'}
+		'User':				{value: 350,		icon: 'fa-user'}
+		'Image':			{value: 400,		icon: 'fa-image'}
+		'Coordinates':		{value: 450,		icon: 'fa-map'}
+		'Address':			{value: 500,	    icon: 'fa-home'}
+		'Phone Number':		{value: 550,		icon: 'fa-phone'}
+		'Email':			{value: 600,		icon: 'fa-at'}
 
-	ATTRIBUTE_VALUE_TYPE: [
-		{name: 'Input',			value: 100,		iconClass: 'fa-edit'}
-		{name: 'Fixed',			value: 150,		iconClass: 'fa-wrench'}
-		{name: 'Routine',		value: 200,		iconClass: 'fa-gear'}
-	]
+	ATTRIBUTE_VALUE_TYPES:
+		'Input':			{value: 100,		icon: 'fa-edit'}
+		'Fixed':			{value: 150,		icon: 'fa-wrench'}
+		'Routine':			{value: 200,		icon: 'fa-gear'}
 
 	new: ->
 		'name': 					null
@@ -38,6 +36,8 @@
 		'name':						null
 		'value_type':				null
 		'input_type':				null
+		'default_value':			null
+		'routine_id':				null
 
 	getNextAttributeId: (documentSchema) ->
 		allIds = _.pluck(documentSchema.attributes, 'id')
@@ -45,3 +45,13 @@
 		highestId = _.first(allIds.sort((a,b) -> a < b))
 		highestId++ 
 		return highestId
+
+	attributeHasDefaultValue: (attribute) ->
+		return false unless attribute?
+		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPES['Input'].value
+		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPES['Fixed'].value
+		return false
+
+	attributeHasRoutineId: (attribute) ->
+		return true if attribute['value_type'] is DocumentSchema.ATTRIBUTE_VALUE_TYPES['Routine'].value
+		return false

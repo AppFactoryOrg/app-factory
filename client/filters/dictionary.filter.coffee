@@ -1,7 +1,8 @@
 angular.module('app-factory').filter 'dictionary', () ->
-	return (input, map) ->
+	return (input, map, propertyName) ->
 		result = ''
+		propertyName = 'name' unless propertyName?
 		for option in map
-			result = option.name if option.value is input
+			result = option[propertyName] if option.value is input
 
 		return result

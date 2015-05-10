@@ -2,9 +2,10 @@
 
 	db: new Mongo.Collection('blueprint')
 
-	STATUS:
-		'Draft':		100
-		'Finalized':	200
+	STATUS: [
+		{name: 'Draft',			value: 100}
+		{name: 'Finalized',		value: 200}
+	]
 
 	new: ->
 		'version':					null

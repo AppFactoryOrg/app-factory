@@ -11,7 +11,7 @@
 						ng-switch-when="select"
 						ng-options="option.value as option.name for option in attribute.options | orderBy:option.value"
 						name="{{attribute.name}}"
-						ng-model="attribute.value"
+						ng-model="result[attribute.name]"
 						ng-required="attribute.required"
 						autofocus="{{attribute.autofocus}}"
 					)
@@ -19,7 +19,7 @@
 						ng-switch-default
 						type="text" 
 						name="{{attribute.name}}"
-						ng-model="attribute.value"
+						ng-model="result[attribute.name]"
 						ng-required="attribute.required"
 						autofocus="{{attribute.autofocus}}"
 					)

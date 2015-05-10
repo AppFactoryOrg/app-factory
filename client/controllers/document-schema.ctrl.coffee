@@ -37,6 +37,7 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			attributes: [
 				{name: 'name', displayAs: 'Name', required: true, autofocus: true}
 				{name: 'data_type', displayAs: 'Data Type', type: 'select', options: DocumentSchema.ATTRIBUTE_DATA_TYPES, required: true}
+				{name: 'value_type', displayAs: 'Value Type', type: 'select', options: DocumentSchema.ATTRIBUTE_VALUE_TYPES, required: true}
 			]
 		)).result.then (attribute) ->
 			attribute['id'] = DocumentSchema.getNextAttributeId($scope.documentSchema)
@@ -49,5 +50,11 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 		return unless confirm('Are you sure you want to delete this attribute? Application data may be lost.')
 		Utils.removeFromArray($scope.selectedAttribute, $scope.documentSchema.attributes)
 		$scope.selectedAttribute = null
+
+	$scope.attributeHasDefaultValue = (attribute) ->
+		return DocumentSchema.attributeHasDefaultValue(attribute)
+
+	$scope.attributeHasRoutineId = (attribute) ->
+		return DocumentSchema.attributeHasRoutineId(attribute)
 
 ])

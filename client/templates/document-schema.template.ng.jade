@@ -4,7 +4,7 @@
 			div(ng-switch-when="false")
 				.metadata.pull-left
 					h2(ng-bind="documentSchema.name")
-					p(ng-bind="documentSchema.description")
+					p.text-muted(ng-bind="documentSchema.description")
 				.controls.pull-right
 					button.btn.btn-xs.btn-primary(ng-click="startEditDocumentSchema()")
 						i.fa.fa-pencil
@@ -45,7 +45,7 @@
 							ng-click="selectAttribute(attribute)"
 							ng-class="{'selected': attribute===selectedAttribute}"
 						)
-							i.fa.data-type(ng-class="attribute.data_type | iconDictionary:attributeDataTypes")
+							i.fa.data-type(ng-class="attribute.data_type | dictionary:attributeDataTypes:'icon'")
 							span(ng-bind="attribute.name")
 							i.fa.fa-angle-right.pull-right
 						.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
@@ -62,12 +62,37 @@
 						)
 						button.btn.btn-xs.btn-default.pull-right(ng-click="deleteAttribute()")
 							i.fa.fa-trash
-				.ibox-content
-					.form-group.text-muted
+				.ibox-content(ng-switch="editMode")
+					.form-group
 						label Data Type
-						div.form-control-static
-							i.fa.data-type(ng-class="selectedAttribute.data_type | iconDictionary:attributeDataTypes")
+						select.form-control(
+							ng-switch-when="true"
+							ng-model="selectedAttribute.data_type"
+							ng-options="type.value as type.name for type in attributeDataTypes"
+						)
+						div.form-control-static.text-muted(ng-switch-when="false")
+							i.fa.data-type(ng-class="selectedAttribute.data_type | dictionary:attributeDataTypes:'icon'")
 							span(ng-bind="selectedAttribute.data_type | dictionary:attributeDataTypes")
-					
+					.form-group
+						label Value Type
+						select.form-control(
+							ng-switch-when="true"
+							ng-model="selectedAttribute.value_type"
+							ng-options="type.value as type.name for type in attributeValueTypes"
+						)
+						div.form-control-static.text-muted(ng-switch-when="false")
+							i.fa.data-type(ng-class="selectedAttribute.value_type | dictionary:attributeValueTypes:'icon'")
+							span(ng-bind="selectedAttribute.value_type | dictionary:attributeValueTypes")
+					.form-group(ng-if="attributeHasDefaultValue(selectedAttribute)")
+						label Default Value
+						input.form-control(
+							ng-switch-when="true"
+							type="text"
+							ng-model="selectedAttribute.default_value"
+						)
+						div.form-control-static.text-muted(ng-switch-when="false")
+							span(ng-bind="selectedAttribute.default_value")
+
+
 					pre {{selectedAttribute | json}}
 
