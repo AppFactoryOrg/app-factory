@@ -6,7 +6,7 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$m
 	$scope.environment = environment
 	$scope.blueprint = blueprint
 	$scope.documentSchemas = $meteor.collection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
-	$scope.blueprintStatuses = Blueprint.STATUS
+	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
 
 	$scope.documentsExpanded = $state.includes('factory.document')
 	$scope.viewsExpanded = false
