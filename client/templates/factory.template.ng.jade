@@ -21,6 +21,7 @@
 					ul.nav.nav-second-level(collapse="!documentsExpanded")
 						li(ng-repeat="documentSchema in documentSchemas" ng-class="{'active': documentSchemaIsSelected(documentSchema)}")
 							a(ui-sref="factory.document({ document_schema_id: documentSchema['_id'] })")
+								i.fa.fa-file-o
 								span {{documentSchema.name}}
 								span.fa.pull-right(ng-class="{'fa-caret-right': documentSchemaIsSelected(documentSchema)}")
 						li(ng-if="blueprintIsEditable()")
@@ -29,11 +30,11 @@
 								span New
 
 				li(ui-sref-active="active")
-					a(ng-click="screensExpanded=!screensExpanded")
+					a(ng-click="viewsExpanded=!viewsExpanded")
 						i.fa.fa-desktop
-						span.nav-label Screens
-						span.fa.pull-right(ng-class="{'fa-angle-down': !screensExpanded, 'fa-angle-right': screensExpanded}")
-					ul.nav.nav-second-level(collapse="!screensExpanded")
+						span.nav-label Views
+						span.fa.pull-right(ng-class="{'fa-angle-down': !viewsExpanded, 'fa-angle-right': viewsExpanded}")
+					ul.nav.nav-second-level(collapse="!viewsExpanded")
 						li(ng-if="blueprintIsEditable()")
 							a
 								i.fa.fa-plus

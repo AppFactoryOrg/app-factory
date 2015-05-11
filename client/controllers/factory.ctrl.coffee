@@ -6,12 +6,14 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$m
 	$scope.environment = environment
 	$scope.blueprint = blueprint
 	$scope.documentSchemas = $meteor.collection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
-	$scope.blueprintStatuses = Blueprint.STATUS
+	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
 
 	$scope.documentsExpanded = $state.includes('factory.document')
+	$scope.viewsExpanded = false
+	$scope.routinesExpanded = false
 
 	$scope.blueprintIsEditable = ->
-		return $scope.blueprint.status is Blueprint.STATUS['Draft']
+		return $scope.blueprint.status is Blueprint.STATUS['Draft'].value
 
 	$scope.documentSchemaIsSelected = (documentSchema) ->
 		return $state.includes('factory.document', {'document_schema_id': documentSchema['_id']})

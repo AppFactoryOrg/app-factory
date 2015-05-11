@@ -3,8 +3,8 @@
 	db: new Mongo.Collection('blueprint')
 
 	STATUS:
-		'Draft':		0
-		'Finalized':	1
+		'Draft':		{value: 100}
+		'Finalized':	{value: 200}
 
 	new: ->
 		'version':					null

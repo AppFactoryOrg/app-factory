@@ -1,4 +1,96 @@
-.factory-dashboard
+.document-schema
 	.row.wrapper.border-bottom.white-bg.page-heading
-		.col-lg-12
-			h2 {{documentSchema.name}}
+		.col-lg-12(ng-switch="editMode")
+			div(ng-switch-when="false")
+				.metadata.pull-left
+					h2(ng-bind="documentSchema.name")
+					p.text-muted(ng-bind="documentSchema.description")
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="startEditDocumentSchema()")
+						i.fa.fa-pencil
+						span Edit
+					button.btn.btn-xs.btn-default(ng-click="deleteDocumentSchema()")
+						i.fa.fa-trash
+			div(ng-switch-when="true")
+				.edit.metadata.pull-left
+					input.form-control.title(
+						type="text"
+						ng-model="documentSchema.name"
+					)
+					textarea.form-control.description(
+						rows="2"
+						cols="50"
+						ng-model="documentSchema.description"
+					)
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="saveDocumentSchema()")
+						i.fa.fa-save
+						span Save
+					button.btn.btn-xs.btn-default(ng-click="cancelEditDocumentSchema()")
+						i.fa.fa-close
+						span Cancel
+	br/
+	.row.wrapper
+		.col-lg-4
+			.ibox
+				.ibox-title(ng-switch="editMode")
+					h5.pull-left Attributes
+					div(ng-switch-when="true")
+						button.btn.btn-xs.btn-success.pull-right(ng-click="newAttribute()")
+							i.fa.fa-plus
+				.ibox-content
+					.attributes-list
+						.attribute-item(
+							ng-repeat="attribute in documentSchema.attributes" 
+							ng-click="selectAttribute(attribute)"
+							ng-class="{'selected': attribute===selectedAttribute}"
+						)
+							i.fa.data-type(ng-class="attribute.data_type | dictionary:attributeDataTypes:'icon'")
+							span(ng-bind="attribute.name")
+							i.fa.fa-angle-right.pull-right
+						.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
+			
+		.col-lg-8
+			.ibox.edit-attribute(ng-if="selectedAttribute")
+				.ibox-title.clearfix(ng-switch="editMode")
+					div(ng-switch-when="false")
+						h5.pull-left(ng-bind="selectedAttribute.name")
+					div(ng-switch-when="true")
+						input.form-control.pull-left.title(
+							type="text"
+							ng-model="selectedAttribute.name"
+						)
+						button.btn.btn-xs.btn-default.pull-right(ng-click="deleteAttribute()")
+							i.fa.fa-trash
+				.ibox-content(ng-switch="editMode")
+					.row
+						.form-group.col-lg-6
+							label Data Type
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="selectedAttribute.data_type"
+								ng-options="type.value as type.name for type in attributeDataTypes"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								i.fa.data-type(ng-class="selectedAttribute.data_type | dictionary:attributeDataTypes:'icon'")
+								span(ng-bind="selectedAttribute.data_type | dictionary:attributeDataTypes")
+						.form-group.col-lg-6
+							label Value Type
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="selectedAttribute.value_type"
+								ng-options="type.value as type.name for type in attributeValueTypes"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								i.fa.data-type(ng-class="selectedAttribute.value_type | dictionary:attributeValueTypes:'icon'")
+								span(ng-bind="selectedAttribute.value_type | dictionary:attributeValueTypes")
+						.form-group.col-lg-12(ng-show="attributeHasDefaultValue(selectedAttribute)")
+							label Default Value
+							input.form-control(
+								ng-switch-when="true"
+								type="text"
+								ng-model="selectedAttribute.default_value"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								span(ng-bind="selectedAttribute.default_value")
+								span(ng-show="selectedAttribute.default_value===null") (none)

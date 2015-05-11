@@ -11,7 +11,7 @@ Meteor.methods
 
 		blueprint = Blueprint.new()
 		blueprint['version'] = '1.0.0'
-		blueprint['status'] = Blueprint.STATUS['Draft']
+		blueprint['status'] = Blueprint.STATUS['Draft'].value
 		blueprint['application_id'] = application['_id']
 		blueprint['_id'] = Blueprint.db.insert(blueprint)
 

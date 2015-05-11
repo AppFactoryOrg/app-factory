@@ -10,6 +10,11 @@ angular.module('app-factory').controller 'GenericModalCtrl', ($scope, $modalInst
 	$scope.parameters = angular.copy(parameters)
 	$scope.showValidationErrors = false
 
+	$scope.result = {}
+	_.each $scope.parameters.attributes, (attribute) ->
+		if attribute['type'] is 'select'
+			$scope.result[attribute.name] = attribute.options[0].value
+
 	$scope.submit = ->
 		if $scope.form.$invalid
 			$scope.showValidationErrors = true
@@ -17,6 +22,4 @@ angular.module('app-factory').controller 'GenericModalCtrl', ($scope, $modalInst
 		else
 			$scope.showValidationErrors = false
 			
-		result = {}
-		result[attribute.name] = attribute.value for attribute in $scope.parameters.attributes
-		$modalInstance.close(result)
+		$modalInstance.close($scope.result)

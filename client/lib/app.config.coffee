@@ -7,6 +7,7 @@ angular.module('app-factory', [
 
 angular.module('app-factory').run(['$rootScope', '$state', ($rootScope, $state) ->
 	$rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams, error) ->
-		console.error('Unauthorized route - redirecting to login')
-		$state.go('login') if (error is 'AUTH_REQUIRED')
+		 if error is 'AUTH_REQUIRED'
+		 	console.error('Unauthorized route - redirecting to login')
+			$state.go('login')
 ])
