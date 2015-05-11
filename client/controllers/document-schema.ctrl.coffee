@@ -2,8 +2,8 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.originalDocumentSchema = documentSchema
 	$scope.documentSchema = documentSchema
-	$scope.attributeDataTypes = Utils.mapToArray(DocumentSchema.ATTRIBUTE_DATA_TYPE)
-	$scope.attributeValueTypes = Utils.mapToArray(DocumentSchema.ATTRIBUTE_VALUE_TYPE)
+	$scope.attributeDataTypes = Utils.mapToArray(DocumentAttribute.DATA_TYPE)
+	$scope.attributeValueTypes = Utils.mapToArray(DocumentAttribute.VALUE_TYPE)
 	$scope.selectedAttribute = null
 	$scope.editMode = false
 
@@ -57,8 +57,8 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 				}
 			]
 		)).result.then (parameters) ->
-			attribute = DocumentSchema.newAttribute()
-			attribute['id'] = DocumentSchema.getNextAttributeId($scope.documentSchema)
+			attribute = DocumentAttribute.new()
+			attribute['id'] = DocumentAttribute.getNextId($scope.documentSchema)
 			attribute['name'] = parameters['name']
 			attribute['data_type'] = parameters['data_type']
 			attribute['value_type'] = parameters['value_type']
@@ -73,9 +73,9 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 		$scope.selectedAttribute = null
 
 	$scope.attributeHasDefaultValue = (attribute) ->
-		return DocumentSchema.attributeHasDefaultValue(attribute)
+		return DocumentAttribute.hasDefaultValue(attribute)
 
 	$scope.attributeHasRoutineId = (attribute) ->
-		return DocumentSchema.attributeHasRoutineId(attribute)
+		return DocumentAttribute.hasRoutineId(attribute)
 
 ])
