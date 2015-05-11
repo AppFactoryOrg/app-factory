@@ -87,6 +87,10 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 					return deferred.promise
 				]
 
+		.state 'factory.layout',
+			url: '/layout'
+			templateUrl: 'client/templates/factory-layout.template.html'
+
 		.state 'factory.users',
 			url: '/users'
 			templateUrl: 'client/templates/factory-users.template.html'

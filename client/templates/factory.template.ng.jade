@@ -31,7 +31,7 @@
 
 				li(ui-sref-active="active")
 					a(ng-click="viewsExpanded=!viewsExpanded")
-						i.fa.fa-desktop
+						i.fa.fa-list-alt
 						span.nav-label Views
 						span.fa.pull-right(ng-class="{'fa-angle-down': !viewsExpanded, 'fa-angle-right': viewsExpanded}")
 					ul.nav.nav-second-level(collapse="!viewsExpanded")
@@ -50,6 +50,11 @@
 							a
 								i.fa.fa-plus
 								span New
+
+				li(ui-sref-active="active")
+					a(ui-sref="factory.layout")
+						i.fa.fa-desktop
+						span.nav-label Layout
 
 				li(ui-sref-active="active")
 					a(ui-sref="factory.users")
