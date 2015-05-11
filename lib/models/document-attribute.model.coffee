@@ -11,7 +11,7 @@
 		'User':				{value: 350,		icon: 'fa-user'}
 		'Image':			{value: 400,		icon: 'fa-image'}
 		'Coordinates':		{value: 450,		icon: 'fa-map'}
-		'Address':			{value: 500,	    icon: 'fa-home'}
+		'Address':			{value: 500,		icon: 'fa-home'}
 		'Phone Number':		{value: 550,		icon: 'fa-phone'}
 		'Email':			{value: 600,		icon: 'fa-at'}
 

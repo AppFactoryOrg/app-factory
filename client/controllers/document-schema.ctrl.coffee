@@ -18,12 +18,9 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.saveDocumentSchema = ->
 		documentSchema = angular.copy($scope.documentSchema)
-		$meteor.call('DocumentSchema.update', documentSchema)
-			.catch (err) ->
-				console.error err
-			.then ->
-				$scope.editMode = false
-				$scope.originalDocumentSchema = documentSchema
+		$meteor.call('DocumentSchema.update', documentSchema).then ->
+			$scope.editMode = false
+			$scope.originalDocumentSchema = documentSchema
 
 	$scope.deleteDocumentSchema = ->
 		return unless confirm('Are you sure you want to delete this document? Application data may be lost.')
