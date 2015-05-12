@@ -1,11 +1,13 @@
 angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$meteor', '$modal', 'GenericModal', 'application', 'environment', 'blueprint', ($scope, $state, $meteor, $modal, GenericModal, application, environment, blueprint) ->
 		
 	$meteor.subscribe('DocumentSchema',  'blueprint_id': blueprint['_id'])
+	$meteor.subscribe('View',  'blueprint_id': blueprint['_id'])
 	
 	$scope.application = application
 	$scope.environment = environment
 	$scope.blueprint = blueprint
 	$scope.documentSchemas = $meteor.collection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
+	$scope.views = $meteor.collection -> View.db.find('blueprint_id': $scope.blueprint['_id'])
 	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
 
 	$scope.documentsExpanded = $state.includes('factory.document')
@@ -18,6 +20,9 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$m
 	$scope.documentSchemaIsSelected = (documentSchema) ->
 		return $state.includes('factory.document', {'document_schema_id': documentSchema['_id']})
 
+	$scope.viewIsSelected = (view) ->
+		return $state.includes('factory.view', {'view_id': view['_id']})
+
 	$scope.logout = ->
 		$meteor.logout()
 		$state.go('login')
@@ -28,10 +33,24 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$m
 			submitAction: 'Create'
 			attributes: [
 				{name: 'name', displayAs: 'Name', required: true, autofocus: true}
+				{name: 'description', displayAs: 'Description', type: 'textarea'}
 			]
 		)).result.then (parameters) ->
 			parameters['blueprint_id'] = $scope.environment['blueprint_id']
 			$meteor.call('DocumentSchema.create', parameters).then (document_schema_id) ->
 				$state.go('factory.document', {document_schema_id})
+
+	$scope.createView = ->
+		$modal.open(new GenericModal(
+			title: 'New View'
+			submitAction: 'Create'
+			attributes: [
+				{name: 'name', displayAs: 'Name', required: true, autofocus: true}
+				{name: 'description', displayAs: 'Description', type: 'textarea'}
+			]
+		)).result.then (parameters) ->
+			parameters['blueprint_id'] = $scope.environment['blueprint_id']
+			$meteor.call('View.create', parameters).then (view_id) ->
+				$state.go('factory.view', {view_id})
 
 ])

@@ -26,13 +26,6 @@
 		'default_value':			null
 		'routine_id':				null
 
-	getNextId: (documentSchema) ->
-		allIds = _.pluck(documentSchema.attributes, 'id')
-		return 1 if _.isEmpty(allIds)
-		highestId = _.first(allIds.sort((a,b) -> a < b))
-		highestId++ 
-		return highestId
-
 	hasDefaultValue: (attribute) ->
 		return false unless attribute?
 		return true if attribute['value_type'] is DocumentAttribute.VALUE_TYPE['Input'].value

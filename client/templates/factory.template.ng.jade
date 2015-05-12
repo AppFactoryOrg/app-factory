@@ -35,8 +35,13 @@
 						span.nav-label Views
 						span.fa.pull-right(ng-class="{'fa-angle-down': !viewsExpanded, 'fa-angle-right': viewsExpanded}")
 					ul.nav.nav-second-level(collapse="!viewsExpanded")
+						li(ng-repeat="view in views" ng-class="{'active': viewIsSelected(view)}")
+							a(ui-sref="factory.view({ view_id: view['_id'] })")
+								i.fa.fa-list-alt
+								span {{view.name}}
+								span.fa.pull-right(ng-class="{'fa-caret-right': viewIsSelected(view)}")
 						li(ng-if="blueprintIsEditable()")
-							a
+							a(ng-click="createView()")
 								i.fa.fa-plus
 								span New
 
@@ -98,7 +103,7 @@
 								span Log out
 								i.fa.fa-sign-out
 
-			div(ui-view="")
+			#main-content(ui-view="")
 
 			#footer.footer
 				strong

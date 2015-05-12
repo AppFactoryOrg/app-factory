@@ -1,0 +1,33 @@
+.view
+	.row.wrapper.border-bottom.white-bg.page-heading
+		.col-lg-12(ng-switch="editMode")
+			div(ng-switch-when="false")
+				.metadata.pull-left
+					h2(ng-bind="view.name")
+					p.text-muted(ng-bind="view.description")
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="startEditView()")
+						i.fa.fa-pencil
+						span Edit
+					button.btn.btn-xs.btn-default(ng-click="deleteView()")
+						i.fa.fa-trash
+			div(ng-switch-when="true")
+				.edit.metadata.pull-left
+					input.form-control.title(
+						type="text"
+						ng-model="view.name"
+					)
+					textarea.form-control.description(
+						rows="2"
+						cols="50"
+						ng-model="view.description"
+					)
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="saveView()")
+						i.fa.fa-save
+						span Save
+					button.btn.btn-xs.btn-default(ng-click="cancelEditView()")
+						i.fa.fa-close
+						span Cancel
+	br/
+	.row.wrapper

@@ -15,6 +15,14 @@
 						ng-required="attribute.required"
 						autofocus="{{attribute.autofocus}}"
 					)
+					textarea.form-control(
+						ng-switch-when="textarea"
+						rows="3"
+						name="{{attribute.name}}"
+						ng-model="result[attribute.name]"
+						ng-required="attribute.required"
+						autofocus="{{attribute.autofocus}}"
+					)
 					input.form-control(
 						ng-switch-default
 						type="text" 
