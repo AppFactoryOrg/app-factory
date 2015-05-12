@@ -1,0 +1,37 @@
+.viewSchema-schema
+	.row.wrapper.border-bottom.white-bg.page-heading
+		.col-lg-12(ng-switch="editMode")
+			div(ng-switch-when="false")
+				.metadata.pull-left
+					h2(ng-bind="viewSchema.name")
+					p.text-muted(ng-bind="viewSchema.description")
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="startEditViewSchema()")
+						i.fa.fa-pencil
+						span Edit
+					button.btn.btn-xs.btn-default(ng-click="deleteViewSchema()")
+						i.fa.fa-trash
+			div(ng-switch-when="true")
+				.edit.metadata.pull-left
+					input.form-control.title(
+						type="text"
+						ng-model="viewSchema.name"
+					)
+					textarea.form-control.description(
+						rows="2"
+						cols="50"
+						ng-model="viewSchema.description"
+					)
+				.controls.pull-right
+					button.btn.btn-xs.btn-primary(ng-click="saveViewSchema()")
+						i.fa.fa-save
+						span Save
+					button.btn.btn-xs.btn-default(ng-click="cancelEditViewSchema()")
+						i.fa.fa-close
+						span Cancel
+	br/
+	.wrapper
+		.ibox
+			.ibox-title
+				h5.pull-left Canvas
+			.ibox-content

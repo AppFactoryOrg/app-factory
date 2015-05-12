@@ -1,5 +1,5 @@
 Meteor.methods
-	'View.create': (parameters) ->
+	'ViewSchema.create': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -9,31 +9,31 @@ Meteor.methods
 		throw new Error('Cannot find Blueprint') unless blueprint?
 		throw new Error('Blueprint is not in "Draft" status') unless blueprint.status is Blueprint.STATUS['Draft'].value
 
-		view = View.new()
-		view['name'] = parameters['name']
-		view['description'] = parameters['description']
-		view['widgets'] = []
-		view['blueprint_id'] = blueprint['_id']
-		view['_id'] = View.db.insert(view)
+		viewSchema = ViewSchema.new()
+		viewSchema['name'] = parameters['name']
+		viewSchema['description'] = parameters['description']
+		viewSchema['widgets'] = []
+		viewSchema['blueprint_id'] = blueprint['_id']
+		viewSchema['_id'] = ViewSchema.db.insert(viewSchema)
 
-		return view['_id']
+		return viewSchema['_id']
 
-	'View.update': (parameters) ->
+	'ViewSchema.update': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 
-		view = View.db.findOne(parameters['_id'])
-		throw new Error('Cannot find View') unless view?
+		viewSchema = ViewSchema.db.findOne(parameters['_id'])
+		throw new Error('Cannot find ViewSchema') unless viewSchema?
 
-		updates = _.pick(parameters, View.MUTABLE_PROPERTIES)
-		View.db.update({'_id': view['_id']}, {$set: updates})
+		updates = _.pick(parameters, ViewSchema.MUTABLE_PROPERTIES)
+		ViewSchema.db.update({'_id': viewSchema['_id']}, {$set: updates})
 
-		return view['_id']
+		return viewSchema['_id']
 
-	'View.delete': (id) ->
+	'ViewSchema.delete': (id) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Id is required') if _.isEmpty(id) and _.isString(id)
 
-		View.db.remove(id)
+		ViewSchema.db.remove(id)
 
 		return

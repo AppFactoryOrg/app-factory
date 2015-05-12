@@ -1,6 +1,6 @@
-@View = 
+@ViewSchema = 
 
-	db: new Mongo.Collection('view')
+	db: new Mongo.Collection('view-schema')
 
 	MUTABLE_PROPERTIES: [
 		'name'

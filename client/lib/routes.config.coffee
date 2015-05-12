@@ -88,17 +88,17 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 				]
 
 		.state 'factory.view',
-			url: '/view/:view_id',
-			templateUrl: 'client/templates/view.template.html'
-			controller: 'ViewCtrl',
+			url: '/view/:view_schema_id',
+			templateUrl: 'client/templates/view-schema.template.html'
+			controller: 'ViewSchemaCtrl',
 			resolve: 
-				'view': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
+				'viewSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
 					deferred = $q.defer()
-					view_id = $stateParams.view_id
-					$meteor.subscribe('View', {view_id}).then ->
-						view = View.db.findOne(view_id)
-						deferred.resolve(view) if view?
-						deferred.reject('View could not be found') unless view?
+					view_schema_id = $stateParams.view_schema_id
+					$meteor.subscribe('ViewSchema', {view_schema_id}).then ->
+						viewSchema = ViewSchema.db.findOne(view_schema_id)
+						deferred.resolve(viewSchema) if viewSchema?
+						deferred.reject('ViewSchema could not be found') unless viewSchema?
 					return deferred.promise
 				]
 

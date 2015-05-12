@@ -35,13 +35,13 @@
 						span.nav-label Views
 						span.fa.pull-right(ng-class="{'fa-angle-down': !viewsExpanded, 'fa-angle-right': viewsExpanded}")
 					ul.nav.nav-second-level(collapse="!viewsExpanded")
-						li(ng-repeat="view in views" ng-class="{'active': viewIsSelected(view)}")
-							a(ui-sref="factory.view({ view_id: view['_id'] })")
+						li(ng-repeat="viewSchema in viewSchemas" ng-class="{'active': viewSchemaIsSelected(viewSchema)}")
+							a(ui-sref="factory.view({ view_schema_id: viewSchema['_id'] })")
 								i.fa.fa-list-alt
-								span {{view.name}}
-								span.fa.pull-right(ng-class="{'fa-caret-right': viewIsSelected(view)}")
+								span {{viewSchema.name}}
+								span.fa.pull-right(ng-class="{'fa-caret-right': viewSchemaIsSelected(viewSchema)}")
 						li(ng-if="blueprintIsEditable()")
-							a(ng-click="createView()")
+							a(ng-click="createViewSchema()")
 								i.fa.fa-plus
 								span New
 
@@ -83,7 +83,7 @@
 							tooltip-placement="bottom"
 						) {{environment.name}}
 						.app-label.label.label-info(
-							tooltip="You are viewing version {{blueprint.version}} of the application."
+							tooltip="You are viewSchemaing version {{blueprint.version}} of the application."
 							tooltip-animation="true" 
 							tooltip-placement="bottom"
 						) {{blueprint.version}}
