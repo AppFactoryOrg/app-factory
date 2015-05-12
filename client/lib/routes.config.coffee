@@ -97,6 +97,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 					view_schema_id = $stateParams.view_schema_id
 					$meteor.subscribe('ViewSchema', {view_schema_id}).then ->
 						viewSchema = ViewSchema.db.findOne(view_schema_id)
+						ViewSchema.buildWidgetHierarchy(viewSchema)
 						deferred.resolve(viewSchema) if viewSchema?
 						deferred.reject('ViewSchema could not be found') unless viewSchema?
 					return deferred.promise

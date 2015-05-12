@@ -11,7 +11,7 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$m
 	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
 
 	$scope.documentsExpanded = $state.includes('factory.document')
-	$scope.viewSchemasExpanded = $state.includes('factory.view')
+	$scope.viewsExpanded = $state.includes('factory.view')
 	$scope.routinesExpanded = false
 
 	$scope.blueprintIsEditable = ->

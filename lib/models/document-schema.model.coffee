@@ -9,7 +9,7 @@
 	]
 
 	new: ->
-		'name': 					null
-		'description':				null
-		'attributes':				null
-		'blueprint_id': 			null
+		'name': 			null
+		'description':		null
+		'attributes':		[]
+		'blueprint_id': 	null

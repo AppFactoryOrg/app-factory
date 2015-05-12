@@ -13,7 +13,6 @@ Meteor.methods
 		documentSchema['name'] = parameters['name']
 		documentSchema['description'] = parameters['description']
 		documentSchema['blueprint_id'] = blueprint['_id']
-		documentSchema['attributes'] = []
 		documentSchema['_id'] = DocumentSchema.db.insert(documentSchema)
 
 		return documentSchema['_id']

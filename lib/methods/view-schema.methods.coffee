@@ -9,10 +9,15 @@ Meteor.methods
 		throw new Error('Cannot find Blueprint') unless blueprint?
 		throw new Error('Blueprint is not in "Draft" status') unless blueprint.status is Blueprint.STATUS['Draft'].value
 
+		viewWidget = ViewWidget.new()
+		viewWidget['id'] = 1
+		viewWidget['name'] = 'View Container'
+		viewWidget['type'] = ViewWidget.TYPE['Container'].value
+
 		viewSchema = ViewSchema.new()
 		viewSchema['name'] = parameters['name']
 		viewSchema['description'] = parameters['description']
-		viewSchema['widgets'] = []
+		viewSchema['widgets'] = [viewWidget]
 		viewSchema['blueprint_id'] = blueprint['_id']
 		viewSchema['_id'] = ViewSchema.db.insert(viewSchema)
 
