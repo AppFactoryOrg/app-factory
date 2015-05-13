@@ -15,3 +15,4 @@
 		'type':				null
 		'configuration':	{}
 		'parent_id':		null
+		'child_ids':		[]
