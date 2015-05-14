@@ -7,7 +7,7 @@
 
 	mapToArray: (map) ->
 		results = []
-		_.forIn map, (entry, key) ->
+		for key, entry of map
 			result = _.clone(entry)
 			result['name'] = key
 			results.push(result)
