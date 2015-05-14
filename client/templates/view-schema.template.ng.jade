@@ -35,4 +35,9 @@
 			.ibox-title
 				h5.pull-left Canvas
 			.ibox-content
+				af-view-widget(
+					ng-repeat="widget in viewSchema.$rootWidgets"
+					view-schema="viewSchema"
+					widget="widget"
+				)
 				pre {{viewSchema | json}}

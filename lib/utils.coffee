@@ -1,3 +1,5 @@
+@_ = lodash # Overwrite underscore with lodash
+
 @Utils =
 
 	removeFromArray: (item, array) ->

@@ -6,7 +6,7 @@ angular.module('app-factory').controller('ViewSchemaCtrl', ['$scope', '$state', 
 
 	$scope.startEditViewSchema = ->
 		$scope.editMode = true
-		$scope.viewSchema = angular.copy($scope.originalViewSchema)
+		$scope.viewSchema = _.clone($scope.originalViewSchema)
 
 	$scope.cancelEditViewSchema = ->
 		return unless confirm('Are you sure you want to cancel? Unsaved changes will be lost.')
