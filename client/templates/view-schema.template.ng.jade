@@ -31,13 +31,13 @@
 						span Cancel
 	br/
 	.wrapper
-		.ibox
-			.ibox-title
-				h5.pull-left Canvas
-			.ibox-content
-				af-view-widget(
-					ng-repeat="widget in viewSchema.$rootWidgets"
-					view-schema="viewSchema"
-					widget="widget"
-				)
-				pre {{viewSchema | json}}
+		//- .ibox
+		//- 	.ibox-title
+		//- 		h5.pull-left Canvas
+		//- 	.ibox-content
+		af-canvas-view(
+			view-schema="viewSchema"
+			edit-mode="editMode"
+		)
+		hr/
+		pre {{viewSchema | json}}

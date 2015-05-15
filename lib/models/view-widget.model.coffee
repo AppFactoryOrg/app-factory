@@ -10,7 +10,7 @@
 
 
 	new: ->
-		'id':				null
+		'id':				Meteor.uuid()
 		'name':				null
 		'type':				null
 		'configuration':	{}

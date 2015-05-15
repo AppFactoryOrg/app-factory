@@ -1,0 +1,8 @@
+.canvas-view
+	.root-widgets
+	.no-widgets.text-muted.text-center(ng-hide="viewSchema.$rootWidgets.length")
+		span This view has no widgets.
+	.add-widget(ng-show="editMode")
+		button.btn.btn-xs.btn-success(ng-click="createRootWidget()")
+			i.fa.fa-plus
+			span Add Widget

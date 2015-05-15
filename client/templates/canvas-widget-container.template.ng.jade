@@ -1,0 +1,12 @@
+.canvas-widget.canvas-widget-container
+	h4
+		i.fa(ng-class="icon")
+		span {{widget.name}}
+	.remove-widget
+		button.btn.btn-xs.btn-default(ng-click="deleteWidget()" ng-show="editMode")
+			i.fa.fa-trash
+	.child-widgets
+	.add-child-widget(ng-show="editMode")
+		button.btn.btn-xs.btn-success(ng-click="createChildWidget()")
+			i.fa.fa-plus
+			span Add Widget

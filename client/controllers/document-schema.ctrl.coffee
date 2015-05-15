@@ -55,7 +55,6 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			]
 		)).result.then (parameters) ->
 			attribute = DocumentAttribute.new()
-			attribute['id'] = Utils.getNextId($scope.documentSchema, 'attributes')
 			attribute['name'] = parameters['name']
 			attribute['data_type'] = parameters['data_type']
 			attribute['value_type'] = parameters['value_type']

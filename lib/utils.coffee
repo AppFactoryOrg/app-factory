@@ -14,11 +14,3 @@
 			result['name'] = key
 			results.push(result)
 		return results
-
-	getNextId: (entity, attributeName) ->
-		allIds = _.pluck(entity[attributeName], 'id')
-		return 1 if _.isEmpty(allIds)
-		highestId = _.first(allIds.sort((a,b) -> a < b))
-		highestId++ 
-		return highestId
-

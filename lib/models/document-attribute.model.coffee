@@ -20,7 +20,7 @@
 		'Routine':			{value: 200,	icon: 'fa-gear'}
 
 	new: ->
-		'id':				null
+		'id':				Meteor.uuid()
 		'name':				null
 		'value_type':		null
 		'input_type':		null

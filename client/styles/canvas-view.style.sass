@@ -1,0 +1,14 @@
+@import "_mixins"
+
+.canvas-view
+
+	.root-widgets > * > .canvas-widget
+		background-color: white
+
+	.add-widget
+		+border-radius(3px)
+		+box-shadow(1px, 1px, 3px, rgba(black, 0.1))
+		width: 100%
+		padding: 15px
+		margin: 15px 0
+		border: 1px solid rgba(black, 0.05)

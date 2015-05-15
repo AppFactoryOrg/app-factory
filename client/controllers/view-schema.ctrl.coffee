@@ -14,10 +14,12 @@ angular.module('app-factory').controller('ViewSchemaCtrl', ['$scope', '$state', 
 		$scope.viewSchema = $scope.originalViewSchema
 
 	$scope.saveViewSchema = ->
-		viewSchema = angular.copy($scope.viewSchema)
+		viewSchema = ViewSchema.bakeWidgetHierarchy($scope.viewSchema)
 		$meteor.call('ViewSchema.update', viewSchema).then ->
 			$scope.editMode = false
-			$scope.originalViewSchema = viewSchema
+			ViewSchema.buildWidgetHierarchy(viewSchema)
+			$scope.viewSchema = viewSchema
+			$scope.originalViewSchema = $scope.viewSchema
 
 	$scope.deleteViewSchema = ->
 		return unless confirm('Are you sure you want to delete this viewSchema?')
