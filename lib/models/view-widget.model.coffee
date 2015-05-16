@@ -1,18 +1,54 @@
-@ViewWidget =
+class @ViewWidget
 
-	TYPE:
-		'Container':		{value: 100,	icon: 'fa-th-large'}
-		'Table':			{value: 150,	icon: 'fa-table'}
-		'List':				{value: 200,	icon: 'fa-th-list'}
-		'Content':			{value: 250,	icon: 'fa-paragraph'}
-		'View':				{value: 300,	icon: 'fa-list-alt'}
-		'Button':			{value: 350,	icon: 'fa-caret-square-o-right'}
+	@CONTAINER_LAYOUT =
+		'Vertical': 	{value: 100}
+		'Horizontal': 	{value: 200}
 
+	@TYPE =
+		'Container':
+			value: 100
+			component: 'container'
+			icon: 'fa-th-large'
+			configuration:
+				'layout': @CONTAINER_LAYOUT['Vertical'].value
 
-	new: ->
-		'id':				Meteor.uuid()
-		'name':				null
-		'type':				null
-		'configuration':	{}
-		'parent_id':		null
-		'child_ids':		[]
+		'Table':
+			value: 150
+			component: 'table'
+			icon: 'fa-table'
+			configuration: {}
+
+		'List':
+			value: 200
+			component: 'list'
+			icon: 'fa-th-list'
+			configuration: {}
+
+		'Content':
+			value: 250
+			component: 'content'
+			icon: 'fa-paragraph' 
+			configuration: {}
+
+		'View':
+			value: 300
+			component: 'view'
+			icon: 'fa-list-alt'
+			configuration: {}
+
+		'Button':
+			value: 350
+			component: 'button'
+			icon: 'fa-caret-square-o-right'
+			configuration: {}
+
+	constructor: (parameters) ->
+		type = _.findWhere(ViewWidget.TYPE, 'value': parameters['type'])
+		throw new Error('Unrecognized ViewWidget.TYPE specified') unless type?
+
+		@id =				Meteor.uuid()
+		@name =				parameters['name']
+		@type =				type['value']
+		@configuration =	_.clone(type['configuration'])
+		@parent_id =		null
+		@child_ids =		[]

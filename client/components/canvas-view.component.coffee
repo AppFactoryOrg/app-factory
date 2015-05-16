@@ -5,11 +5,9 @@ angular.module('app-factory').directive('afCanvasView', ['$meteor', '$compile', 
 		'viewSchema': 	'='
 		'editMode':		'='
 	link: ($scope, $element) ->
-		$scope.widgetTypes = Utils.mapToArray(ViewWidget.TYPE)
-
 		$scope.appendRootWidget = (widget, index) ->
 			index = $scope.viewSchema['$rootWidgets'].indexOf(widget) unless index?
-			name = _.findWhere($scope.widgetTypes, 'value': widget['type']).name.toLowerCase()
+			name = _.findWhere(ViewWidget.TYPE, 'value': widget['type']).component
 			childTemplate = "
 				<af-canvas-widget-#{name} 
 					data-widget-id='#{widget.id}'
@@ -37,14 +35,12 @@ angular.module('app-factory').directive('afCanvasView', ['$meteor', '$compile', 
 						name: 'type'
 						displayAs: 'Type'
 						type: 'select'
-						options: $scope.widgetTypes
+						options: Utils.mapToArray(ViewWidget.TYPE)
 						required: true
 					}
 				]
 			)).result.then (parameters) ->
-				widget = ViewWidget.new()
-				widget['name'] = parameters['name']
-				widget['type'] = parameters['type']
+				widget = new ViewWidget(parameters)
 				widget['$childWidgets'] = []
 				$scope.viewSchema['$rootWidgets'].push(widget)
 				$scope.appendRootWidget(widget)

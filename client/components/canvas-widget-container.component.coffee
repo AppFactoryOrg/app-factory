@@ -8,9 +8,11 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 		'editMode': 	'='
 	controller: 'CommonWidgetCtrl'
 	link: ($scope, $element) ->
+		$scope.containerLayouts = Utils.mapToArray(ViewWidget.CONTAINER_LAYOUT)
+
 		$scope.appendChildWidget = (widget, index) ->
 			index = $scope.widget['$childWidgets'].indexOf(widget) unless index?
-			name = _.findWhere($scope.widgetTypes, 'value': widget['type']).name.toLowerCase()
+			name = _.findWhere(ViewWidget.TYPE, 'value': widget['type']).component
 			childTemplate = "
 				<af-canvas-widget-#{name} 
 					data-widget-id='#{widget.id}'
@@ -39,14 +41,12 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 						name: 'type'
 						displayAs: 'Type'
 						type: 'select'
-						options: $scope.widgetTypes
+						options: Utils.mapToArray(ViewWidget.TYPE)
 						required: true
 					}
 				]
 			)).result.then (parameters) ->
-				widget = ViewWidget.new()
-				widget['name'] = parameters['name']
-				widget['type'] = parameters['type']
+				widget = new ViewWidget(parameters)
 				widget['$childWidgets'] = []
 				$scope.widget['$childWidgets'].push(widget)
 				$scope.appendChildWidget(widget)
@@ -54,6 +54,31 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 		$scope.initializeChildWidgets = ->
 			return if _.isEmpty($scope.widget['$childWidgets'])
 			$scope.widget['$childWidgets'].forEach (widget, index) -> $scope.appendChildWidget(widget, index)
+
+		$scope.configureWidget = ->
+			$modal.open(new GenericModal(
+				title: 'Configure Widget'
+				submitAction: 'Save'
+				attributes: [
+					{
+						name: 'name'
+						displayAs: 'Name'
+						required: true
+						autofocus: true
+						default: $scope.widget['name']
+					}
+					{
+						name: 'layout'
+						displayAs: 'Layout'
+						type: 'select'
+						options: Utils.mapToArray(ViewWidget.CONTAINER_LAYOUT)
+						required: true
+						default: $scope.widget['configuration']['layout']
+					}
+				]
+			)).result.then (parameters) ->
+				$scope.widget['name'] = parameters['name']
+				$scope.widget['configuration']['layout'] = parameters['layout']
 
 		# Initialize
 		$scope.initializeChildWidgets()

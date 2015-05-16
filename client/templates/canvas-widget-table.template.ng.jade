@@ -1,7 +1,8 @@
 .canvas-widget.canvas-widget-table
-	h4 
-		i.fa(ng-class="icon")
-		span {{widget.name}}
-	.remove-widget
+	.widget-summary
+		h4 
+			i.fa(ng-class="icon")
+			span {{widget.name}}
+	.widget-controls
 		button.btn.btn-xs.btn-default(ng-click="deleteWidget()" ng-show="editMode")
 			i.fa.fa-trash

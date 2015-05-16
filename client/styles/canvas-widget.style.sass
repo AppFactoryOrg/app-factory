@@ -6,18 +6,72 @@
 	+box-shadow(1px, 1px, 3px, rgba(black, 0.1))
 	background-color: rgba($navy, 0.06)
 	padding: 5px 10px 10px 10px
-	margin-bottom: 15px
 	border: 1px solid rgba(black, 0.15)
 	position: relative
 
-	.remove-widget
+	.widget-summary
+		padding-right: 50px
+
+	.widget-configuration
+		+border-radius(3px)
+		margin: 12px 0px 13px 0px
+		position: relative
+
+		> .fa-wrench
+			position: absolute
+			top: 0px
+			left: 5px
+			font-size: 17px
+			color: rgba(black, 0.2)
+		
+		> button
+			position: absolute
+			top: 0px
+			left: 0px
+
+		.setting
+			font-size: 12px
+			padding-bottom: 5px
+			margin-left: 30px
+
+			&:last-child
+				padding-bottom: 0px
+
+		.name
+			margin-right: 5px
+			color: rgba(black, 0.5)
+			font-weight: bold
+
+			&:after
+				content: ":"
+
+		.value
+			font-style: italic
+
+	.widget-controls
 		position: absolute
 		top: 5px
 		right: 5px
 
-	.add-child-widget
-		+border-radius(3px)
-		+box-shadow(1px, 1px, 3px, rgba(black, 0.1))
-		padding: 15px
-		margin: 15px 0
-		border: 1px solid rgba(black, 0.05)
+		> *
+			display: inline
+
+	.child-widgets
+		&.Vertical
+			+flex-container(column)
+
+			> * 
+				margin-bottom: 15px
+					
+				&:last-child
+					margin-bottom: 0px
+
+		&.Horizontal
+			+flex-container(row)
+
+			> * 
+				+flex-to-fill
+				margin-right: 10px
+					
+				&:last-child
+					margin-right: 0px
