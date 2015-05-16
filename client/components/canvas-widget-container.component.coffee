@@ -57,7 +57,7 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 
 		$scope.configureWidget = ->
 			$modal.open(new GenericModal(
-				title: 'Configure Widget'
+				title: 'Configure Container'
 				submitAction: 'Save'
 				attributes: [
 					{

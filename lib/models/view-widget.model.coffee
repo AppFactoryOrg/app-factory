@@ -4,6 +4,9 @@ class @ViewWidget
 		'Vertical': 	{value: 100}
 		'Horizontal': 	{value: 200}
 
+	@DATA_SOURCE_TYPE = 
+		'Document':		{value: 100, default: {type: 100, 'document_schema_id': null}}
+
 	@TYPE =
 		'Container':
 			value: 100
@@ -16,31 +19,36 @@ class @ViewWidget
 			value: 150
 			component: 'table'
 			icon: 'fa-table'
-			configuration: {}
+			configuration:
+				'data_source': null
 
 		'List':
 			value: 200
 			component: 'list'
 			icon: 'fa-th-list'
-			configuration: {}
+			configuration:
+				'data_source': null
 
 		'Content':
 			value: 250
 			component: 'content'
 			icon: 'fa-paragraph' 
-			configuration: {}
+			configuration:
+				'content_html': null
 
 		'View':
 			value: 300
 			component: 'view'
 			icon: 'fa-list-alt'
-			configuration: {}
+			configuration:
+				'view_schema_id': null
 
 		'Button':
 			value: 350
 			component: 'button'
 			icon: 'fa-caret-square-o-right'
-			configuration: {}
+			configuration:
+				'routine_id': null
 
 	constructor: (parameters) ->
 		type = _.findWhere(ViewWidget.TYPE, 'value': parameters['type'])
