@@ -4,13 +4,12 @@
 			i.fa(ng-class="icon")
 			span {{widget.name}}
 	.widget-configuration
-		i.fa.fa-wrench(ng-hide="editMode")
-		button.btn.btn-xs.btn-primary(ng-click="configureWidget()" ng-show="editMode")
-			i.fa.fa-wrench
 		.setting
 			span.name Layout
 			spab.value {{widget.configuration.layout | dictionary:containerLayouts}}
 	.widget-controls(ng-show="editMode")
+		button.btn.btn-xs.btn-primary(ng-click="configureWidget()")
+			i.fa.fa-wrench
 		button.btn.btn-xs.btn-success(ng-click="createChildWidget()")
 			i.fa.fa-plus
 		button.btn.btn-xs.btn-default(ng-click="deleteWidget()")
