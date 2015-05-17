@@ -5,7 +5,7 @@ class @ViewWidget
 		'Horizontal': 	{value: 200}
 
 	@DATA_SOURCE_TYPE = 
-		'Document':		{value: 100, default: {type: 100, 'document_schema_id': null}}
+		'Document':		{value: 100, properties: ['type', 'document_schema_id']}
 
 	@TYPE =
 		'Container':

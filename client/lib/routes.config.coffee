@@ -106,6 +106,11 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 		.state 'factory.layout',
 			url: '/layout'
 			templateUrl: 'client/templates/factory-layout.template.html'
+			controller: 'FactoryLayoutCtrl'
+
+		.state 'factory.theme',
+			url: '/theme'
+			templateUrl: 'client/templates/factory-theme.template.html'
 
 		.state 'factory.users',
 			url: '/users'

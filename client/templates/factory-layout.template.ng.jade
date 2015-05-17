@@ -1,5 +1,42 @@
 .factory-layout
 	.row.wrapper.border-bottom.white-bg.page-heading
-		.col-lg-12
-			h2 Layout
-			p Placeholder layout settings for the application, such as the navigation bar and styles.
+		.col-lg-12(ng-switch="editMode")
+			h2.pull-left Layout
+			.controls.pull-right(ng-switch-when="false")
+				button.btn.btn-xs.btn-primary(ng-click="startEditLayout()")
+					i.fa.fa-pencil
+					span Edit
+			.controls.pull-right(ng-switch-when="true")
+				button.btn.btn-xs.btn-primary(ng-click="saveLayout()")
+					i.fa.fa-save
+					span Save
+				button.btn.btn-xs.btn-default(ng-click="cancelEditLayout()")
+					i.fa.fa-close
+					span Cancel
+	br/
+	.row.wrapper
+		.col-lg-7
+			.ibox
+				.ibox-title
+					h5 Navigation
+				.ibox-content
+					.navigation-item(ng-repeat="navigationItem in layout.navigation_items")
+						.summary
+							i.fa.fa-node
+							span {{navigationItem.name}}
+						.controls(ng-show="editMode")
+							button.btn.btn-xs.btn-primary(ng-click="editNavigationItem(navigationItem)")
+								i.fa.fa-pencil
+							button.btn.btn-xs.btn-default(ng-click="deleteNavigationItem(navigationItem)")
+								i.fa.fa-trash
+
+					button.btn.btn-xs.btn-success(ng-click="addNavigationItem()" ng-show="editMode")
+						i.fa.fa-plus
+						span Add Navigation Item
+
+		.col-lg-5
+			.ibox
+				.ibox-title
+					h5 Options
+				.ibox-content
+

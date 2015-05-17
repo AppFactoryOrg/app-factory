@@ -7,6 +7,8 @@
 		'Finalized':	{value: 200}
 
 	new: ->
-		'version':					null
-		'status':					null
+		'version':					'1.0.0'
+		'status':					Blueprint.STATUS['Draft'].value
+		'layout':					{}
+		'theme':					{}
 		'application_id': 			null

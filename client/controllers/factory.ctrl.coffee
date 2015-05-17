@@ -1,11 +1,11 @@
-angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$state', '$meteor', '$modal', 'GenericModal', 'application', 'environment', 'blueprint', ($scope, $state, $meteor, $modal, GenericModal, application, environment, blueprint) ->
+angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope', '$state', '$meteor', '$modal', 'GenericModal', 'application', 'environment', 'blueprint', ($scope, $rootScope, $state, $meteor, $modal, GenericModal, application, environment, blueprint) ->
 		
 	$meteor.subscribe('DocumentSchema',  'blueprint_id': blueprint['_id'])
 	$meteor.subscribe('ViewSchema',  'blueprint_id': blueprint['_id'])
 	
-	$scope.application = application
-	$scope.environment = environment
-	$scope.blueprint = blueprint
+	$scope.application = $rootScope.application = application
+	$scope.environment = $rootScope.environment = environment
+	$scope.blueprint = $rootScope.blueprint = blueprint
 	$scope.documentSchemas = $meteor.collection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
 	$scope.viewSchemas = $meteor.collection -> ViewSchema.db.find('blueprint_id': $scope.blueprint['_id'])
 	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
