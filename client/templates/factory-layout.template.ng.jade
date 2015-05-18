@@ -24,8 +24,8 @@
 						.navigation-item(ng-repeat="navigationItem in layout.navigation_items" as-sortable-item)
 							.summary
 								i.fa.fa-dot-circle-o
-								span {{navigationItem.name}}
-							.type {{getNavigationItemDescription(navigationItem)}}
+								span(ng-bind="navigationItem.name")
+							.type(ng-bind="getNavigationItemDescription(navigationItem)")
 							.controls(ng-show="editMode")
 								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
 									i.fa.fa-arrows
@@ -37,4 +37,20 @@
 					button.btn.btn-xs.btn-success.add-navigation-item(ng-click="addNavigationItem()" ng-show="editMode")
 						i.fa.fa-plus
 						span Add Navigation Item
+
+		.col-lg-6
+			.ibox
+				.ibox-title
+					h5 Options
+				.ibox-content
+					.navigation-options
+						.navigation-option(ng-switch="editMode")
+							label Home View
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="layout.home_view_id"
+								ng-options="view._id as view.name for view in views"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								span(ng-bind="getHomeViewName()")
 
