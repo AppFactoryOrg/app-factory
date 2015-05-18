@@ -31,12 +31,17 @@
 
 				li(ui-sref-active="active")
 					a(ng-click="viewsExpanded=!viewsExpanded")
-						i.fa.fa-desktop
+						i.fa.fa-list-alt
 						span.nav-label Views
 						span.fa.pull-right(ng-class="{'fa-angle-down': !viewsExpanded, 'fa-angle-right': viewsExpanded}")
 					ul.nav.nav-second-level(collapse="!viewsExpanded")
+						li(ng-repeat="viewSchema in viewSchemas" ng-class="{'active': viewSchemaIsSelected(viewSchema)}")
+							a(ui-sref="factory.view({ view_schema_id: viewSchema['_id'] })")
+								i.fa.fa-list-alt
+								span {{viewSchema.name}}
+								span.fa.pull-right(ng-class="{'fa-caret-right': viewSchemaIsSelected(viewSchema)}")
 						li(ng-if="blueprintIsEditable()")
-							a
+							a(ng-click="createViewSchema()")
 								i.fa.fa-plus
 								span New
 
@@ -50,6 +55,16 @@
 							a
 								i.fa.fa-plus
 								span New
+
+				li(ui-sref-active="active")
+					a(ui-sref="factory.layout")
+						i.fa.fa-desktop
+						span.nav-label Layout
+
+				li(ui-sref-active="active")
+					a(ui-sref="factory.theme")
+						i.fa.fa-paint-brush
+						span.nav-label Theme
 
 				li(ui-sref-active="active")
 					a(ui-sref="factory.users")
@@ -93,7 +108,7 @@
 								span Log out
 								i.fa.fa-sign-out
 
-			div(ui-view="")
+			#main-content(ui-view="")
 
 			#footer.footer
 				strong

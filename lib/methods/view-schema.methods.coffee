@@ -1,5 +1,5 @@
 Meteor.methods
-	'DocumentSchema.create': (parameters) ->
+	'ViewSchema.create': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -9,30 +9,31 @@ Meteor.methods
 		throw new Error('Cannot find Blueprint') unless blueprint?
 		throw new Error('Blueprint is not in "Draft" status') unless blueprint.status is Blueprint.STATUS['Draft'].value
 
-		documentSchema = DocumentSchema.new()
-		documentSchema['name'] = parameters['name']
-		documentSchema['description'] = parameters['description']
-		documentSchema['blueprint_id'] = blueprint['_id']
-		documentSchema['_id'] = DocumentSchema.db.insert(documentSchema)
+		viewSchema = ViewSchema.new()
+		viewSchema['name'] = parameters['name']
+		viewSchema['description'] = parameters['description']
+		viewSchema['widgets'] = []
+		viewSchema['blueprint_id'] = blueprint['_id']
+		viewSchema['_id'] = ViewSchema.db.insert(viewSchema)
 
-		return documentSchema['_id']
+		return viewSchema['_id']
 
-	'DocumentSchema.update': (parameters) ->
+	'ViewSchema.update': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 
-		documentSchema = DocumentSchema.db.findOne(parameters['_id'])
-		throw new Error('Cannot find Document') unless documentSchema?
+		viewSchema = ViewSchema.db.findOne(parameters['_id'])
+		throw new Error('Cannot find ViewSchema') unless viewSchema?
 
-		updates = _.pick(parameters, DocumentSchema.MUTABLE_PROPERTIES)
-		DocumentSchema.db.update({'_id': documentSchema['_id']}, {$set: updates})
+		updates = _.pick(parameters, ViewSchema.MUTABLE_PROPERTIES)
+		ViewSchema.db.update({'_id': viewSchema['_id']}, {$set: updates})
 
-		return documentSchema['_id']
+		return viewSchema['_id']
 
-	'DocumentSchema.delete': (id) ->
+	'ViewSchema.delete': (id) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Id is required') if _.isEmpty(id) and _.isString(id)
 
-		DocumentSchema.db.remove(id)
+		ViewSchema.db.remove(id)
 
 		return

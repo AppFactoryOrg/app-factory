@@ -1,0 +1,17 @@
+.canvas-widget.canvas-widget-container
+	.widget-summary
+		h4
+			i.fa(ng-class="icon")
+			span {{widget.name}}
+	.widget-configuration
+		.setting
+			span.name Layout
+			spab.value {{widget.configuration.layout | dictionary:containerLayouts}}
+	.widget-controls(ng-show="editMode")
+		button.btn.btn-xs.btn-primary(ng-click="configureWidget()")
+			i.fa.fa-wrench
+		button.btn.btn-xs.btn-success(ng-click="createChildWidget()")
+			i.fa.fa-plus
+		button.btn.btn-xs.btn-default(ng-click="deleteWidget()")
+			i.fa.fa-trash
+	.child-widgets(ng-class="widget.configuration.layout | dictionary:containerLayouts")

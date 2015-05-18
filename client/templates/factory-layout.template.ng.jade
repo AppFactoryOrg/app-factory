@@ -1,0 +1,56 @@
+.factory-layout
+	.row.wrapper.border-bottom.white-bg.page-heading
+		.col-lg-12(ng-switch="editMode")
+			h2.pull-left Layout
+			.controls.pull-right(ng-switch-when="false")
+				button.btn.btn-xs.btn-primary(ng-click="startEditLayout()")
+					i.fa.fa-pencil
+					span Edit
+			.controls.pull-right(ng-switch-when="true")
+				button.btn.btn-xs.btn-primary(ng-click="saveLayout()")
+					i.fa.fa-save
+					span Save
+				button.btn.btn-xs.btn-default(ng-click="cancelEditLayout()")
+					i.fa.fa-close
+					span Cancel
+	br/
+	.row.wrapper
+		.col-lg-6
+			.ibox
+				.ibox-title
+					h5 Navigation
+				.ibox-content
+					.navigation-items#sort-bounds(as-sortable="sortableOptions" ng-model="layout.navigation_items")
+						.navigation-item(ng-repeat="navigationItem in layout.navigation_items" as-sortable-item)
+							.summary
+								i.fa.fa-dot-circle-o
+								span(ng-bind="navigationItem.name")
+							.type(ng-bind="getNavigationItemDescription(navigationItem)")
+							.controls(ng-show="editMode")
+								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
+									i.fa.fa-arrows
+								button.btn.btn-xs.btn-primary(ng-click="editNavigationitem(navigationItem)")
+									i.fa.fa-pencil
+								button.btn.btn-xs.btn-default(ng-click="deleteNavigationItem(navigationItem)")
+									i.fa.fa-trash
+					.text-muted(ng-hide="layout.navigation_items.length || editMode") No navigation items.
+					button.btn.btn-xs.btn-success.add-navigation-item(ng-click="addNavigationItem()" ng-show="editMode")
+						i.fa.fa-plus
+						span Add Navigation Item
+
+		.col-lg-6
+			.ibox
+				.ibox-title
+					h5 Options
+				.ibox-content
+					.navigation-options
+						.navigation-option(ng-switch="editMode")
+							label Home View
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="layout.home_view_id"
+								ng-options="view._id as view.name for view in views"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								span(ng-bind="getHomeViewName()")
+

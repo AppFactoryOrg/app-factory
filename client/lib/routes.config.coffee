@@ -87,6 +87,31 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 					return deferred.promise
 				]
 
+		.state 'factory.view',
+			url: '/view/:view_schema_id',
+			templateUrl: 'client/templates/view-schema.template.html'
+			controller: 'ViewSchemaCtrl',
+			resolve: 
+				'viewSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
+					deferred = $q.defer()
+					view_schema_id = $stateParams.view_schema_id
+					$meteor.subscribe('ViewSchema', {view_schema_id}).then ->
+						viewSchema = ViewSchema.db.findOne(view_schema_id)
+						ViewSchema.buildWidgetHierarchy(viewSchema)
+						deferred.resolve(viewSchema) if viewSchema?
+						deferred.reject('ViewSchema could not be found') unless viewSchema?
+					return deferred.promise
+				]
+
+		.state 'factory.layout',
+			url: '/layout'
+			templateUrl: 'client/templates/factory-layout.template.html'
+			controller: 'FactoryLayoutCtrl'
+
+		.state 'factory.theme',
+			url: '/theme'
+			templateUrl: 'client/templates/factory-theme.template.html'
+
 		.state 'factory.users',
 			url: '/users'
 			templateUrl: 'client/templates/factory-users.template.html'

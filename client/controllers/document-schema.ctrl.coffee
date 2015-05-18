@@ -9,7 +9,7 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.startEditDocumentSchema = ->
 		$scope.editMode = true
-		$scope.documentSchema = angular.copy($scope.originalDocumentSchema)
+		$scope.documentSchema = _.clone($scope.documentSchema)
 
 	$scope.cancelEditDocumentSchema = ->
 		return unless confirm('Are you sure you want to cancel? Unsaved changes will be lost.')
@@ -20,6 +20,7 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 		documentSchema = angular.copy($scope.documentSchema)
 		$meteor.call('DocumentSchema.update', documentSchema).then ->
 			$scope.editMode = false
+			$scope.documentSchema = documentSchema
 			$scope.originalDocumentSchema = documentSchema
 
 	$scope.deleteDocumentSchema = ->
@@ -55,7 +56,6 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			]
 		)).result.then (parameters) ->
 			attribute = DocumentAttribute.new()
-			attribute['id'] = DocumentAttribute.getNextId($scope.documentSchema)
 			attribute['name'] = parameters['name']
 			attribute['data_type'] = parameters['data_type']
 			attribute['value_type'] = parameters['value_type']

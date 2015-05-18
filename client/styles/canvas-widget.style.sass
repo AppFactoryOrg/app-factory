@@ -1,0 +1,64 @@
+@import "_mixins"
+@import "theme/_variables"
+
+.canvas-widget
+	+border-radius(3px)
+	+box-shadow(1px, 1px, 3px, rgba(black, 0.1))
+	background-color: rgba($navy, 0.06)
+	padding: 5px 10px 10px 10px
+	border: 1px solid rgba(black, 0.15)
+	position: relative
+
+	.widget-summary
+		padding-right: 50px
+
+	.widget-configuration
+		+border-radius(3px)
+		margin: 10px 0px 12px 5px
+		position: relative
+
+		.setting
+			font-size: 12px
+			padding-bottom: 5px
+
+			&:last-child
+				padding-bottom: 0px
+
+		.name
+			margin-right: 5px
+			color: rgba(black, 0.5)
+			font-weight: bold
+
+			&:after
+				content: ":"
+
+		.value
+			font-style: italic
+
+	.widget-controls
+		position: absolute
+		top: 5px
+		right: 5px
+
+		> *
+			display: inline
+
+	.child-widgets
+		&.Vertical
+			+flex-container(column)
+
+			> * 
+				margin-bottom: 15px
+					
+				&:last-child
+					margin-bottom: 0px
+
+		&.Horizontal
+			+flex-container(row)
+
+			> * 
+				+flex-to-fill
+				margin-right: 10px
+					
+				&:last-child
+					margin-right: 0px
