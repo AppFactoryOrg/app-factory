@@ -7,6 +7,7 @@
 		'Production':		200
 
 	new: ->
+		'id':				Meteor.uuid()
 		'name': 					null
 		'type':						null
 		'application_id': 			null
