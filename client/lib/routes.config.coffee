@@ -32,22 +32,13 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 		#####################################################################
 
 		.state 'factory',
-			url: '/factory/:application_id/:environment_id'
+			url: '/factory/:environment_id'
 			abstract: true
 			templateUrl: 'client/templates/factory.template.html'
 			controller: 'FactoryCtrl'
 			resolve:
 				'currentUser': ['$meteor', ($meteor) ->
 					return $meteor.requireUser()
-				]
-				'application': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
-					deferred = $q.defer()
-					application_id = $stateParams.application_id
-					$meteor.subscribe('Application', application_id).then ->
-						application = Application.db.findOne(application_id)
-						deferred.resolve(application) if application?
-						deferred.reject('Application could not be found') unless application?
-					return deferred.promise
 				]
 				'environment': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
 					deferred = $q.defer()
@@ -56,6 +47,15 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 						environment = Environment.db.findOne(environment_id)
 						deferred.resolve(environment) if environment?
 						deferred.reject('Environment could not be found') unless environment?
+					return deferred.promise
+				]
+				'application': ['$meteor', '$q', 'environment', ($meteor, $q, environment) -> 
+					deferred = $q.defer()
+					application_id = environment['application_id']
+					$meteor.subscribe('Application', application_id).then ->
+						application = Application.db.findOne(application_id)
+						deferred.resolve(application) if application?
+						deferred.reject('Application could not be found') unless application?
 					return deferred.promise
 				]
 				'blueprint': ['$meteor', '$q', 'environment', ($meteor, $q, environment) -> 
@@ -119,4 +119,45 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 		.state 'factory.settings',
 			url: '/settings'
 			templateUrl: 'client/templates/factory-settings.template.html'
+
+	#####################################################################
+	# APPLICATION
+	#####################################################################
+
+	.state 'application',
+		url: '/application/:environment_id'
+		abstract: true
+		templateUrl: 'client/templates/application.template.html'
+		controller: 'ApplicationCtrl'
+		resolve:
+			'currentUser': ['$meteor', ($meteor) ->
+				return $meteor.requireUser()
+			]
+			'environment': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
+				deferred = $q.defer()
+				environment_id = $stateParams.environment_id
+				$meteor.subscribe('Environment', {environment_id}).then ->
+					environment = Environment.db.findOne(environment_id)
+					deferred.resolve(environment) if environment?
+					deferred.reject('Environment could not be found') unless environment?
+				return deferred.promise
+			]
+			'application': ['$meteor', '$q', 'environment', ($meteor, $q, environment) -> 
+				deferred = $q.defer()
+				application_id = environment['application_id']
+				$meteor.subscribe('Application', application_id).then ->
+					application = Application.db.findOne(application_id)
+					deferred.resolve(application) if application?
+					deferred.reject('Application could not be found') unless application?
+				return deferred.promise
+			]
+			'blueprint': ['$meteor', '$q', 'environment', ($meteor, $q, environment) -> 
+				deferred = $q.defer()
+				blueprint_id = environment['blueprint_id']
+				$meteor.subscribe('Blueprint', {blueprint_id}).then ->
+					blueprint = Blueprint.db.findOne(blueprint_id)
+					deferred.resolve(blueprint) if blueprint?
+					deferred.reject('Blueprint could not be found') unless blueprint?
+				return deferred.promise
+			]
 ])

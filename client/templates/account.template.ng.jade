@@ -14,8 +14,8 @@
 				.name {{application.name}}
 
 				.controls.pull-right
-					button.btn.btn-xs.btn-info(
-						ui-sref="factory.dashboard({ application_id: application['_id'], environment_id: application['default_environment_id'] })"
+					button.btn.btn-xs.btn-primary(
+						ui-sref="factory.dashboard({ environment_id: application['default_environment_id'] })"
 					)
 						i.fa.fa-pencil
 						span Edit
