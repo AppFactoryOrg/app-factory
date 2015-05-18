@@ -39,7 +39,6 @@
 						ng-model="result.url"
 						ng-required="shouldUrlInput()"
 					)
-				pre {{result}}
 			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
 				div(ng-show="form.name.$error.required") Name is required.
 				div(ng-show="form.type.$error.required") Type is required.
