@@ -4,4 +4,5 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 	$scope.environment = $rootScope.environment = environment
 	$scope.blueprint = $rootScope.blueprint = blueprint
 
+	$('body').addClass('top-navigation')
 ])

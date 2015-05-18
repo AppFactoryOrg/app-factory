@@ -1,16 +1,18 @@
 .application
-	.navbar
-		ul.nav.navbar-nav
-			li.navbar-header
-				a.navbar-brand
-					span(ng-bind="application.name")
-	
-	.container
-		pre {{application | json}}
+	#wrapper
+	#page-wrapper.gray-bg
+		.row.border-bottom.white-bg
+			.navbar.navbar-static-top
+				ul.nav.navbar-nav
+					li.navbar-header
+						a(ng-bind="application.name")
+		
+		.wrapper.wrapper-content
+			.ibox
+				.ibox-content
+					pre {{application | json}}
 
-		footer
-			hr/
-			small
-				i.fa.fa-gear
-				span Powered by&nbsp;
-				a(href="http://app-factory.io" target="_blank") App Factory
+		.footer
+			i.fa.fa-gear
+			span Powered by&nbsp;
+			a(href="http://app-factory.io" target="_blank") App Factory
