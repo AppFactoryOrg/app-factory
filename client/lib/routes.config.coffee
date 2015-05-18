@@ -126,7 +126,6 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 
 	.state 'application',
 		url: '/application/:environment_id'
-		abstract: true
 		templateUrl: 'client/templates/application.template.html'
 		controller: 'ApplicationCtrl'
 		resolve:

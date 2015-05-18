@@ -1,0 +1,9 @@
+.application
+	.navbar.navbar-static-top
+		ul.nav.navbar-nav
+			li.navbar-header
+				a.navbar-brand
+					span(ng-bind="application.name")
+	
+	.container
+		pre {{application | json}}

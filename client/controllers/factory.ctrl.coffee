@@ -23,6 +23,9 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 	$scope.viewSchemaIsSelected = (viewSchema) ->
 		return $state.includes('factory.view', {'view_schema_id': viewSchema['_id']})
 
+	$scope.getApplicationUrl = ->
+		return $state.href('application', 'environment_id': $rootScope.environment['_id'])
+
 	$scope.logout = ->
 		$meteor.logout()
 		$state.go('login')
