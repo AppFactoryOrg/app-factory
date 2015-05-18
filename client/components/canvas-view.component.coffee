@@ -40,7 +40,7 @@ angular.module('app-factory').directive('afCanvasView', ['$meteor', '$compile', 
 					}
 				]
 			)).result.then (parameters) ->
-				widget = new ViewWidget(parameters)
+				widget = ViewWidget.new(parameters)
 				widget['$childWidgets'] = []
 				$scope.viewSchema['$rootWidgets'].push(widget)
 				$scope.appendRootWidget(widget)

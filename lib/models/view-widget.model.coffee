@@ -1,19 +1,12 @@
-class @ViewWidget
+@ViewWidget =
 
-	@CONTAINER_LAYOUT =
-		'Vertical': 	{value: 100}
-		'Horizontal': 	{value: 200}
-
-	@DATA_SOURCE_TYPE = 
-		'Document':		{value: 100, properties: ['type', 'document_schema_id']}
-
-	@TYPE =
+	TYPE:
 		'Container':
 			value: 100
 			component: 'container'
 			icon: 'fa-th-large'
 			configuration:
-				'layout': @CONTAINER_LAYOUT['Vertical'].value
+				'layout': null
 
 		'Table':
 			value: 150
@@ -50,13 +43,27 @@ class @ViewWidget
 			configuration:
 				'routine_id': null
 
-	constructor: (parameters) ->
+	CONTAINER_LAYOUT:
+		'Vertical': 	{value: 100}
+		'Horizontal': 	{value: 200}
+
+	DATA_SOURCE_TYPE:
+		'Document':		{value: 100, properties: ['type', 'document_schema_id']}
+
+	new: (parameters) ->
 		type = _.findWhere(ViewWidget.TYPE, 'value': parameters['type'])
 		throw new Error('Unrecognized ViewWidget.TYPE specified') unless type?
 
-		@id =				Meteor.uuid()
-		@name =				parameters['name']
-		@type =				type['value']
-		@configuration =	_.clone(type['configuration'])
-		@parent_id =		null
-		@child_ids =		[]
+		result =
+			'id':				Meteor.uuid()
+			'name':				parameters['name']
+			'type':				type['value']
+			'configuration':	_.clone(type['configuration'])
+			'parent_id':		null
+			'child_ids':		[]
+		
+		switch type
+			when ViewWidget.TYPE['Container']
+				result['configuration']['layout'] = ViewWidget.CONTAINER_LAYOUT['Vertical'].value
+
+		return result

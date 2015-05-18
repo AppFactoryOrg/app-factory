@@ -46,7 +46,7 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 					}
 				]
 			)).result.then (parameters) ->
-				widget = new ViewWidget(parameters)
+				widget = ViewWidget.new(parameters)
 				widget['$childWidgets'] = []
 				$scope.widget['$childWidgets'].push(widget)
 				$scope.appendChildWidget(widget)
