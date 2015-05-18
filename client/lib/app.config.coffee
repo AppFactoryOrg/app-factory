@@ -3,6 +3,7 @@ angular.module('app-factory', [
 	'ui.router'
 	'ui.bootstrap'
 	'toaster'
+	'ui.sortable'
 ])
 
 angular.module('app-factory').run(['$rootScope', '$state', ($rootScope, $state) ->

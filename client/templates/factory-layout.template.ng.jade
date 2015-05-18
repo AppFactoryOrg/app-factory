@@ -15,28 +15,26 @@
 					span Cancel
 	br/
 	.row.wrapper
-		.col-lg-7
+		.col-lg-6
 			.ibox
 				.ibox-title
 					h5 Navigation
 				.ibox-content
-					.navigation-item(ng-repeat="navigationItem in layout.navigation_items")
-						.summary
-							i.fa.fa-node
-							span {{navigationItem.name}}
-						.controls(ng-show="editMode")
-							button.btn.btn-xs.btn-primary(ng-click="editNavigationItem(navigationItem)")
-								i.fa.fa-pencil
-							button.btn.btn-xs.btn-default(ng-click="deleteNavigationItem(navigationItem)")
-								i.fa.fa-trash
-
-					button.btn.btn-xs.btn-success(ng-click="addNavigationItem()" ng-show="editMode")
+					.navigation-items#sort-bounds(as-sortable="sortableOptions" ng-model="layout.navigation_items")
+						.navigation-item(ng-repeat="navigationItem in layout.navigation_items" as-sortable-item)
+							.summary
+								i.fa.fa-dot-circle-o
+								span {{navigationItem.name}}
+							.type {{getNavigationItemDescription(navigationItem)}}
+							.controls(ng-show="editMode")
+								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
+									i.fa.fa-arrows
+								button.btn.btn-xs.btn-primary(ng-click="editNavigationitem(navigationItem)")
+									i.fa.fa-pencil
+								button.btn.btn-xs.btn-default(ng-click="deleteNavigationItem(navigationItem)")
+									i.fa.fa-trash
+					.text-muted(ng-hide="layout.navigation_items.length || editMode") No navigation items.
+					button.btn.btn-xs.btn-success.add-navigation-item(ng-click="addNavigationItem()" ng-show="editMode")
 						i.fa.fa-plus
 						span Add Navigation Item
-
-		.col-lg-5
-			.ibox
-				.ibox-title
-					h5 Options
-				.ibox-content
 

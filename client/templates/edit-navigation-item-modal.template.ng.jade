@@ -1,0 +1,54 @@
+.edit-navigation-item-model
+	form(novalidate name="form" ng-submit="submit()")
+		.modal-header
+			.modal-title(ng-show="isEdit") Edit Navigation Item
+			.modal-title(ng-hide="isEdit") Add Navigation Item
+
+		.modal-body
+			.row
+				.form-group.col-sm-12
+					label Name
+					input.form-control(
+						type="text"
+						name="name"
+						ng-model="result.name"
+						required
+						autofocus
+					)
+				.form-group.col-sm-12
+					label Type
+					select.form-control(
+						name="type"
+						ng-options="type.value as type.name for type in navigationItemTypes | orderBy:type.value"
+						ng-model="result.type"
+						required
+					)
+				.form-group.col-sm-12(ng-show="shouldShowViewSelection()")
+					label View
+					select.form-control(
+						name="viewId"
+						ng-options="view._id as view.name for view in views"
+						ng-model="result.view_id"
+						ng-required="shouldShowViewSelection()"
+					)
+				.form-group.col-sm-12(ng-show="shouldUrlInput()")
+					label URL
+					input.form-control(
+						type="url"
+						name="url"
+						ng-model="result.url"
+						ng-required="shouldUrlInput()"
+					)
+				pre {{result}}
+			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+				div(ng-show="form.name.$error.required") Name is required.
+				div(ng-show="form.type.$error.required") Type is required.
+				div(ng-show="form.url.$error.required") URL is required.
+				div(ng-show="form.url.$error.url") URL is not valid (remember to specify a protocol, such as http://).
+				div(ng-show="form.viewId.$error.required") View is required.
+		.modal-footer
+			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+			button.btn.btn-primary(type="submit") 
+				span(ng-hide="isEdit") Add
+				span(ng-show="isEdit") Save
+				i.fa.fa-chevron-right

@@ -25,8 +25,5 @@ angular.module('app-factory').controller 'ConfigureTableWidgetCtrl', ['$scope', 
 		else
 			$scope.showValidationErrors = false
 
-		dataSourceType = _.findWhere(ViewWidget.DATA_SOURCE_TYPE, 'value': $scope.result['data_source']['type'])
-		$scope.result['data_source'] = _.pick($scope.result['data_source'], dataSourceType['properties'])
-
 		$modalInstance.close($scope.result)
 ]

@@ -13,14 +13,18 @@
 			component: 'table'
 			icon: 'fa-table'
 			configuration:
-				'data_source': null
+				'data_source':
+					'type': null
+					'document_schema_id': null
 
 		'List':
 			value: 200
 			component: 'list'
 			icon: 'fa-th-list'
 			configuration:
-				'data_source': null
+				'data_source':
+					'type': null
+					'document_schema_id': null
 
 		'Content':
 			value: 250
@@ -48,7 +52,7 @@
 		'Horizontal': 	{value: 200}
 
 	DATA_SOURCE_TYPE:
-		'Document':		{value: 100, properties: ['type', 'document_schema_id']}
+		'Document':		{value: 100}
 
 	new: (parameters) ->
 		type = _.findWhere(ViewWidget.TYPE, 'value': parameters['type'])
