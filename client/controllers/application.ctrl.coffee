@@ -11,7 +11,6 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 		$meteor.logout()
 		$state.go('login')
 
-
 	# Initialize
 	$('body').removeClass()
 	$('body').addClass('top-navigation')

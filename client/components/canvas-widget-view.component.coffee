@@ -6,7 +6,7 @@ angular.module('app-factory').directive('afCanvasWidgetView', [() ->
 		'widget': 		'='
 		'parent':		'='
 		'editMode': 	'='
-	controller: 'CommonWidgetCtrl'
+	controller: 'CommonCanvasWidgetCtrl'
 	link: ($scope, $element) ->
 
 ])

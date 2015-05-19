@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('CommonWidgetCtrl', ['$scope', ($scope) ->
+angular.module('app-factory').controller('CommonCanvasWidgetCtrl', ['$scope', ($scope) ->
 
 	$scope.icon = _.findWhere(ViewWidget.TYPE, 'value': $scope.widget['type']).icon
 
