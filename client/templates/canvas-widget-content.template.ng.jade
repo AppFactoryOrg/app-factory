@@ -3,6 +3,11 @@
 		h4 
 			i.fa(ng-class="icon")
 			span {{widget.name}}
+	.widget-configuration
+		.setting
+			span.name Content
+			a(ng-click="previewContent()")
+				span (click here to preview)
 	.widget-controls(ng-show="editMode")
 		button.btn.btn-xs.btn-primary(ng-click="configureWidget()")
 			i.fa.fa-wrench

@@ -1,4 +1,4 @@
-angular.module('app-factory').directive('afCanvasWidgetContent', ['$modal', 'GenericModal', ($modal, GenericModal) ->
+angular.module('app-factory').directive('afCanvasWidgetContent', ['$modal', 'GenericModal', 'PreviewHtmlModal', ($modal, GenericModal, PreviewHtmlModal) ->
 	restrict: 'E'
 	templateUrl: 'client/templates/canvas-widget-content.template.html'
 	scope:
@@ -24,5 +24,9 @@ angular.module('app-factory').directive('afCanvasWidgetContent', ['$modal', 'Gen
 				]
 			}, 'lg')).result.then (parameters) ->
 				$scope.widget['configuration']['content_html'] = parameters['content_html']
+
+		$scope.previewContent = ->
+			content = $scope.widget['configuration']['content_html']
+			$modal.open(new PreviewHtmlModal(content, 'lg'))
 
 ])
