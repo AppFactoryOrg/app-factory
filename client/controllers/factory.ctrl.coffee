@@ -14,6 +14,7 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 	$scope.viewsExpanded = $state.includes('factory.view')
 	$scope.routinesExpanded = false
 
+	$('body').removeClass()
 	$('body').addClass('boxed-layout')
 
 	$scope.blueprintIsEditable = ->

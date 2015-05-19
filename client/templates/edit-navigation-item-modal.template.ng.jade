@@ -28,7 +28,7 @@
 					select.form-control(
 						name="viewId"
 						ng-options="view._id as view.name for view in views"
-						ng-model="result.view_id"
+						ng-model="result.view_schema_id"
 						ng-required="shouldShowViewSelection()"
 					)
 				.form-group.col-sm-12(ng-show="shouldUrlInput()")

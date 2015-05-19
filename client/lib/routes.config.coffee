@@ -159,4 +159,19 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 					deferred.reject('Blueprint could not be found') unless blueprint?
 				return deferred.promise
 			]
+
+	.state 'application.view',
+		url: '/view/:view_schema_id'
+		templateUrl: 'client/templates/application-view.template.html'
+		controller: 'ApplicationViewCtrl'
+		resolve:
+			'viewSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
+				deferred = $q.defer()
+				view_schema_id = $stateParams.view_schema_id
+				$meteor.subscribe('ViewSchema', {view_schema_id}).then ->
+					viewSchema = ViewSchema.db.findOne(view_schema_id)
+					deferred.resolve(viewSchema) if viewSchema?
+					deferred.reject('ViewSchema could not be found') unless viewSchema?
+				return deferred.promise
+			]
 ])

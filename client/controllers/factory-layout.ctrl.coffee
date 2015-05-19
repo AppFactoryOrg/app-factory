@@ -40,7 +40,7 @@ angular.module('app-factory').controller('FactoryLayoutCtrl', ['$scope', '$rootS
 	$scope.getNavigationItemDescription = (navigationItem) ->
 		switch navigationItem['type']
 			when NavigationItem.TYPE['View'].value
-				view = ViewSchema.db.findOne(navigationItem['view_id'])
+				view = ViewSchema.db.findOne(navigationItem['view_schema_id'])
 				name = "View - #{view.name}" if view?
 			when NavigationItem.TYPE['Link'].value
 				name = "Link - #{navigationItem['url']}"
@@ -48,7 +48,7 @@ angular.module('app-factory').controller('FactoryLayoutCtrl', ['$scope', '$rootS
 		return name
 
 	$scope.getHomeViewName = ->
-		view = ViewSchema.db.findOne($scope.layout['home_view_id'])
+		view = ViewSchema.db.findOne($scope.layout['home_view_schema_id'])
 		return "(none)" unless view?
 		return view?.name
 ])

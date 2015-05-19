@@ -48,7 +48,7 @@
 							label Home View
 							select.form-control(
 								ng-switch-when="true"
-								ng-model="layout.home_view_id"
+								ng-model="layout.home_view_schema_id"
 								ng-options="view._id as view.name for view in views"
 							)
 							div.form-control-static.text-muted(ng-switch-when="false")

@@ -4,5 +4,21 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 	$scope.environment = $rootScope.environment = environment
 	$scope.blueprint = $rootScope.blueprint = blueprint
 
+	$scope.NAVIGATION_VIEW_TYPE = NavigationItem.TYPE['View'].value
+	$scope.NAVIGATION_LINK_TYPE = NavigationItem.TYPE['Link'].value
+
+	$scope.logout = ->
+		$meteor.logout()
+		$state.go('login')
+
+
+	# Initialize
+	$('body').removeClass()
 	$('body').addClass('top-navigation')
+
+	if $state.current.name is 'application'
+		view_schema_id = blueprint['layout']['home_view_schema_id']
+		if view_schema_id?
+			$state.go("application.view", {view_schema_id})
+
 ])
