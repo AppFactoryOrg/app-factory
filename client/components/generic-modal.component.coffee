@@ -14,6 +14,7 @@ angular.module('app-factory').controller 'GenericModalCtrl', ($scope, $modalInst
 	_.each $scope.parameters.attributes, (attribute) ->
 		if attribute['type'] is 'select'
 			$scope.result[attribute.name] = attribute.options[0].value
+			attribute.optionsConfig = "option.value as option.name for option in attribute.options | orderBy:option.value" unless attribute.optionsConfig?
 		if attribute['default']?
 			$scope.result[attribute.name] = attribute['default']
 

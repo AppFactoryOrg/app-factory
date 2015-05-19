@@ -9,7 +9,7 @@
 					label {{attribute.displayAs}}
 					select.form-control(
 						ng-switch-when="select"
-						ng-options="option.value as option.name for option in attribute.options | orderBy:option.value"
+						ng-options="{{attribute.optionsConfig}}"
 						name="{{attribute.name}}"
 						ng-model="result[attribute.name]"
 						ng-required="attribute.required"
