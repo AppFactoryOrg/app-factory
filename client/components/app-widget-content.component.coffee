@@ -8,5 +8,5 @@ angular.module('app-factory').directive('afAppWidgetContent', [() ->
 		'parent':		'='
 	controller: 'CommonAppWidgetCtrl'
 	link: ($scope, $element) ->
-		
-])
+		$scope.contentHtml = $scope.widget['configuration']['content_html']
+])	

@@ -4,6 +4,7 @@ angular.module('app-factory', [
 	'ui.bootstrap'
 	'toaster'
 	'ui.sortable'
+	'textAngular'
 ])
 
 angular.module('app-factory').run(['$rootScope', '$state', ($rootScope, $state) ->

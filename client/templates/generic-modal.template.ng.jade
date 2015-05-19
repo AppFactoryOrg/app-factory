@@ -23,6 +23,14 @@
 						ng-required="attribute.required"
 						autofocus="{{attribute.autofocus}}"
 					)
+					text-angular(
+						ng-switch-when="html"
+						name="{{attribute.name}}"
+						ng-model="result[attribute.name]"
+						ng-required="attribute.required"
+						autofocus="{{attribute.autofocus}}"
+						ta-toolbar="{{taToolbar}}"
+					)
 					input.form-control(
 						ng-switch-default
 						type="text" 
