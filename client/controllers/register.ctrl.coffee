@@ -6,6 +6,9 @@ angular.module('app-factory').controller('RegisterCtrl', ['$scope', '$state', '$
 	$scope.confirmPassword = ''
 	$scope.showValidationErrors = false
 
+	$('body').removeClass()
+	$('body').addClass('boxed-layout')
+
 	$scope.submit = ->
 		if $scope.form.$invalid
 			$scope.showValidationErrors = true
