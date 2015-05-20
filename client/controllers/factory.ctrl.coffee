@@ -1,8 +1,5 @@
 angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope', '$state', '$meteor', '$modal', 'GenericModal', 'application', 'environment', 'blueprint', ($scope, $rootScope, $state, $meteor, $modal, GenericModal, application, environment, blueprint) ->
 		
-	$meteor.subscribe('DocumentSchema',  'blueprint_id': blueprint['_id'])
-	$meteor.subscribe('ViewSchema',  'blueprint_id': blueprint['_id'])
-	
 	$scope.application = $rootScope.application = application
 	$scope.environment = $rootScope.environment = environment
 	$scope.blueprint = $rootScope.blueprint = blueprint

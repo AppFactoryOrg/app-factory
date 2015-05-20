@@ -9,8 +9,7 @@ angular.module('app-factory').directive('afAppWidgetView', ['$meteor', ($meteor)
 	controller: 'CommonAppWidgetCtrl'
 	link: ($scope, $element) ->
 		view_schema_id = $scope.widget['configuration']['view_schema_id']
-		$meteor.subscribe('ViewSchema', {view_schema_id}).then ->
-			childViewSchema = ViewSchema.db.findOne(view_schema_id)
-			ViewSchema.buildWidgetHierarchy(childViewSchema)
-			$scope.childViewSchema = childViewSchema
+		childViewSchema = ViewSchema.db.findOne(view_schema_id)
+		ViewSchema.buildWidgetHierarchy(childViewSchema)
+		$scope.childViewSchema = childViewSchema
 ])

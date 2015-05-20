@@ -61,7 +61,11 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 				'blueprint': ['$meteor', '$q', 'environment', ($meteor, $q, environment) -> 
 					deferred = $q.defer()
 					blueprint_id = environment['blueprint_id']
-					$meteor.subscribe('Blueprint', {blueprint_id}).then ->
+					$q.all([
+						$meteor.subscribe('Blueprint', {blueprint_id})
+						$meteor.subscribe('DocumentSchema', {blueprint_id})
+						$meteor.subscribe('ViewSchema', {blueprint_id})
+					]).then ->
 						blueprint = Blueprint.db.findOne(blueprint_id)
 						deferred.resolve(blueprint) if blueprint?
 						deferred.reject('Blueprint could not be found') unless blueprint?
@@ -153,7 +157,11 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 			'blueprint': ['$meteor', '$q', 'environment', ($meteor, $q, environment) -> 
 				deferred = $q.defer()
 				blueprint_id = environment['blueprint_id']
-				$meteor.subscribe('Blueprint', {blueprint_id}).then ->
+				$q.all([
+					$meteor.subscribe('Blueprint', {blueprint_id})
+					$meteor.subscribe('DocumentSchema', {blueprint_id})
+					$meteor.subscribe('ViewSchema', {blueprint_id})
+				]).then ->
 					blueprint = Blueprint.db.findOne(blueprint_id)
 					deferred.resolve(blueprint) if blueprint?
 					deferred.reject('Blueprint could not be found') unless blueprint?
