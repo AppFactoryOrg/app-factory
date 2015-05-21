@@ -31,26 +31,29 @@
 						span Cancel
 	br/
 	.row.wrapper
-		.col-lg-4
+		.col-lg-5
 			.ibox
-				.ibox-title(ng-switch="editMode")
+				.ibox-title
 					h5.pull-left Attributes
-					div(ng-switch-when="true")
-						button.btn.btn-xs.btn-success.pull-right(ng-click="newAttribute()")
-							i.fa.fa-plus
-				.ibox-content
-					.attributes-list
-						.attribute-item(
-							ng-repeat="attribute in documentSchema.attributes" 
-							ng-click="selectAttribute(attribute)"
-							ng-class="{'selected': attribute===selectedAttribute}"
-						)
-							i.fa.data-type(ng-class="attribute.data_type | dictionary:attributeDataTypes:'icon'")
-							span(ng-bind="attribute.name")
-							i.fa.fa-angle-right.pull-right
-						.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
+				.ibox-content.factory-layout
+					.attribute-items#sort-bounds(as-sortable="sortableOptions" ng-model="documentSchema.attributes")
+						.attribute-item(ng-repeat="attribute in documentSchema.attributes" as-sortable-item)
+							.summary
+								i.fa.data-type(ng-class="attribute.data_type | dictionary:attributeDataTypes:'icon'")
+								span(ng-bind="attribute.name")
+							.controls(ng-show="editMode")
+								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
+									i.fa.fa-arrows
+								button.btn.btn-xs.btn-default(ng-click="deleteAttribute(attribute)")
+									i.fa.fa-trash
+								button.btn.btn-xs.btn-primary(ng-click="selectAttribute(attribute)")
+									i.fa.fa-pencil
+					.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
+					button.btn.btn-xs.btn-success.add-attribute(ng-click="newAttribute()" ng-show="editMode")
+						i.fa.fa-plus
+						span Add Attribute
 			
-		.col-lg-8
+		.col-lg-7
 			.ibox.edit-attribute(ng-if="selectedAttribute")
 				.ibox-title.clearfix(ng-switch="editMode")
 					div(ng-switch-when="false")
@@ -60,8 +63,6 @@
 							type="text"
 							ng-model="selectedAttribute.name"
 						)
-						button.btn.btn-xs.btn-default.pull-right(ng-click="deleteAttribute()")
-							i.fa.fa-trash
 				.ibox-content(ng-switch="editMode")
 					.row
 						.form-group.col-lg-6

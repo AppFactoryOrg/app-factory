@@ -29,10 +29,10 @@
 							.controls(ng-show="editMode")
 								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
 									i.fa.fa-arrows
-								button.btn.btn-xs.btn-primary(ng-click="editNavigationitem(navigationItem)")
-									i.fa.fa-pencil
 								button.btn.btn-xs.btn-default(ng-click="deleteNavigationItem(navigationItem)")
 									i.fa.fa-trash
+								button.btn.btn-xs.btn-primary(ng-click="editNavigationitem(navigationItem)")
+									i.fa.fa-pencil
 					.text-muted(ng-hide="layout.navigation_items.length || editMode") No navigation items.
 					button.btn.btn-xs.btn-success.add-navigation-item(ng-click="addNavigationItem()" ng-show="editMode")
 						i.fa.fa-plus

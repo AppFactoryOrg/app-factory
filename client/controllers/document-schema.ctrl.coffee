@@ -6,6 +6,9 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 	$scope.attributeValueTypes = Utils.mapToArray(DocumentAttribute.VALUE_TYPE)
 	$scope.selectedAttribute = null
 	$scope.editMode = false
+	$scope.sortableOptions =
+		containment: '#sort-bounds'
+		containerPositioning: 'relative'
 
 	$scope.startEditDocumentSchema = ->
 		$scope.editMode = true

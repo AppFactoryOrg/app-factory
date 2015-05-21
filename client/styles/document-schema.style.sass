@@ -1,31 +1,32 @@
+@import "_mixins"
+
 .document-schema
 	i.data-type
 		font-size: 11px
 
-	.attributes-list
-		margin: -3px -10px
-
-		.attribute-item
-			padding: 5px 10px
-			cursor: pointer
-
-			&:hover
-				background: lighten(black, 96%)
-
-			&.selected
-				background: lighten(black, 95%)
-
-				i.fa-angle-right
-					display: block
-
-			i.fa
-				width: 15px
-				text-align: center
-
-			i.fa-angle-right
-				display: none
-
 	.edit-attribute
-
 		input.title
 			width: 250px
+
+	.add-attribute
+		margin-top: 15px
+
+.attribute-items
+	position: relative
+
+	.attribute-item
+		+border-radius(3px)
+		+box-shadow(1px, 1px, 3px, rgba(black, 0.1))
+		padding: 10px
+		margin-bottom: 10px
+		border: 1px solid rgba(black, 0.15)
+		background-color: white
+		position: relative
+
+	.summary
+		font-weight: bold
+
+	.controls
+		position: absolute
+		top: 5px
+		right: 5px
