@@ -7,6 +7,8 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 	$scope.NAVIGATION_VIEW_TYPE = NavigationItem.TYPE['View'].value
 	$scope.NAVIGATION_LINK_TYPE = NavigationItem.TYPE['Link'].value
 
+	document.title = $scope.application.name
+
 	$scope.logout = ->
 		$meteor.logout()
 		$state.go('login')
