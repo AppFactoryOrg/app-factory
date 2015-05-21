@@ -17,8 +17,8 @@
 						th(width="75")
 				tbody
 					tr(ng-repeat="document in documents | filter:searchDocuments")
-						td(ng-repeat="attribute in documentSchema.attributes") 
-							span(ng-bind="document.formattedData[attribute._id]")
+						td(colspan="99") 
+							pre(ng-bind="document | json")
 						td
 							.btn-group.pull-right(dropdown)
 								button.btn.btn-xs.btn-default(ng-if="routines.length" dropdown-toggle)
