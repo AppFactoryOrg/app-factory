@@ -1,4 +1,4 @@
-angular.module('app-factory').directive('afAppWidgetTable', ['$modal', '$meteor', 'EditDocumentModal', ($modal, $meteor, EditDocumentModal) ->
+angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', 'EditDocumentModal', ($rootScope, $modal, $meteor, EditDocumentModal) ->
 	restrict: 'E'
 	templateUrl: 'client/templates/app-widget-table.template.html'
 	replace: true
@@ -23,12 +23,19 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$modal', '$meteor'
 
 		$scope.deleteDocument = (document) ->
 			return unless confirm('Are you sure you want to delete this record? This action cannot be undone.')
-				$meteor.call('Document.delete', document)
+			$meteor.call('Document.delete', document['_id'])
 
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
 		switch data_source['type']
 			when ViewWidget.DATA_SOURCE_TYPE['Document'].value
-				document_schema_id = data_source['document_schema_id']
-				$scope.documentSchema = DocumentSchema.db.findOne(document_schema_id)
+				$scope.documentSchema = DocumentSchema.db.findOne(data_source['document_schema_id'])
+			
+				documentParams = 
+					'environment_id': $rootScope.environment['_id']
+					'document_schema_id': $scope.documentSchema['_id']
+
+				$meteor.subscribe('Document', documentParams).then ->
+					$scope.documents = $meteor.collection -> Document.db.find(documentParams)
+
 ])

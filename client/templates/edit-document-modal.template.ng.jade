@@ -11,6 +11,7 @@
 			document-schema="documentSchema"
 			on-submit="submit()"
 		)
+		pre {{document | json}}
 
 	.modal-footer
 		button.btn.btn-default(ng-click="$dismiss()") Cancel

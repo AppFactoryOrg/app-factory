@@ -8,8 +8,8 @@ angular.module('app-factory').directive('afEditDocumentAttributes', ['$compile',
 	link: ($scope, $element) ->
 
 		$scope.initializeAttributes = ->
-			$scope.documentSchema['attributes'].forEach (attributes, index) ->
-				name = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': attributes['data_type']).component
+			$scope.documentSchema['attributes'].forEach (attribute, index) ->
+				name = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': attribute['data_type']).component
 				childTemplate = "
 					<af-attribute-input-#{name} 
 						attribute='documentSchema.attributes[#{index}]'

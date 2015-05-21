@@ -1,37 +1,34 @@
 .app-widget.app-widget-table
 	.ibox
 		.ibox-title
-			h5 {{widget.name}}
+			h5(ng-bind="::widget.name")
 		.ibox-content
 
 			.header.clearfix
 				input.search-documents.form-control(type="text" ng-model="searchDocuments" placeholder="Search...")
 				button.add-document.btn.btn-md.btn-success(ng-click="addDocument()")
 					i.fa.fa-plus
-					span Add {{documentSchema.name}}
+					span Add&nbsp;
+					span(ng-bind="::documentSchema.name")
 
 			table.table.table-hover.table-striped.table-condensed
 				thead
 					tr
-						th(ng-repeat="attribute in documentSchema.attributes") {{attribute.name}}
+						th(ng-repeat="attribute in documentSchema.attributes" ng-bind="::attribute.name")
 						th(width="75")
 				tbody
 					tr(ng-repeat="document in documents | filter:searchDocuments")
-						td(colspan="99") 
-							pre(ng-bind="document | json")
+						td(ng-repeat="attribute in documentSchema.attributes")
+							af-attribute-value(
+								attribute="attribute"
+								document="document"
+							)
 						td
 							.btn-group.pull-right(dropdown)
-								button.btn.btn-xs.btn-default(ng-if="routines.length" dropdown-toggle)
-									i.fa.fa-gear
 								button.btn.btn-xs.btn-default(ng-click="editDocument(document)")
 									i.fa.fa-pencil
 								button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)")
 									i.fa.fa-trash
-								ul.dropdown-menu
-									li(ng-repeat="routine in routines")
-										a(ng-click="executeRoutine(routine, document)")
-											i.fa.fa-angle-double-right
-											span {{routine.name}}
 
 					tr(ng-hide="documents.length")
 						td(colspan="99")
