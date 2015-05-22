@@ -46,7 +46,7 @@
 									i.fa.fa-arrows
 								button.btn.btn-xs.btn-default(ng-click="deleteAttribute(attribute)")
 									i.fa.fa-trash
-								button.btn.btn-xs.btn-primary(ng-click="selectAttribute(attribute)")
+								button.btn.btn-xs.btn-primary(ng-click="editAttribute(attribute)")
 									i.fa.fa-pencil
 					.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
 					button.btn.btn-xs.btn-success.add-attribute(ng-click="newAttribute()" ng-show="editMode")
@@ -54,44 +54,3 @@
 						span Add Attribute
 			
 		.col-lg-7
-			.ibox.edit-attribute(ng-if="selectedAttribute")
-				.ibox-title.clearfix(ng-switch="editMode")
-					div(ng-switch-when="false")
-						h5.pull-left(ng-bind="selectedAttribute.name")
-					div(ng-switch-when="true")
-						input.form-control.pull-left.title(
-							type="text"
-							ng-model="selectedAttribute.name"
-						)
-				.ibox-content(ng-switch="editMode")
-					.row
-						.form-group.col-lg-6
-							label Data Type
-							select.form-control(
-								ng-switch-when="true"
-								ng-model="selectedAttribute.data_type"
-								ng-options="type.value as type.name for type in attributeDataTypes"
-							)
-							div.form-control-static.text-muted(ng-switch-when="false")
-								i.fa.data-type(ng-class="selectedAttribute.data_type | dictionary:attributeDataTypes:'icon'")
-								span(ng-bind="selectedAttribute.data_type | dictionary:attributeDataTypes")
-						.form-group.col-lg-6
-							label Value Type
-							select.form-control(
-								ng-switch-when="true"
-								ng-model="selectedAttribute.value_type"
-								ng-options="type.value as type.name for type in attributeValueTypes"
-							)
-							div.form-control-static.text-muted(ng-switch-when="false")
-								i.fa.data-type(ng-class="selectedAttribute.value_type | dictionary:attributeValueTypes:'icon'")
-								span(ng-bind="selectedAttribute.value_type | dictionary:attributeValueTypes")
-						.form-group.col-lg-12(ng-show="attributeHasDefaultValue(selectedAttribute)")
-							label Default Value
-							input.form-control(
-								ng-switch-when="true"
-								type="text"
-								ng-model="selectedAttribute.default_value"
-							)
-							div.form-control-static.text-muted(ng-switch-when="false")
-								span(ng-bind="selectedAttribute.default_value")
-								span(ng-show="selectedAttribute.default_value===null") (none)

@@ -1,10 +1,8 @@
-angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$meteor', '$modal', 'documentSchema', 'GenericModal', ($scope, $state, $meteor, $modal, documentSchema, GenericModal) ->
+angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$meteor', '$modal', 'documentSchema', 'EditAttributeModal', ($scope, $state, $meteor, $modal, documentSchema, EditAttributeModal) ->
 
 	$scope.originalDocumentSchema = documentSchema
 	$scope.documentSchema = documentSchema
 	$scope.attributeDataTypes = Utils.mapToArray(DocumentAttribute.DATA_TYPE)
-	$scope.attributeValueTypes = Utils.mapToArray(DocumentAttribute.VALUE_TYPE)
-	$scope.selectedAttribute = null
 	$scope.editMode = false
 	$scope.sortableOptions =
 		containment: '#sort-bounds'
@@ -32,50 +30,20 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			$state.go('factory.dashboard')
 
 	$scope.newAttribute = ->
-		$modal.open(new GenericModal(
-			title: 'New Attribute'
-			submitAction: 'Create'
-			attributes: [
-				{
-					name: 'name'
-					displayAs: 'Name'
-					required: true
-					autofocus: true
-				}
-				{
-					name: 'data_type'
-					displayAs: 'Data Type'
-					type: 'select'
-					options: $scope.attributeDataTypes
-					required: true
-				}
-				{
-					name: 'value_type'
-					displayAs: 'Value Type'
-					type: 'select'
-					options: $scope.attributeValueTypes
-					required: true
-				}
-			]
-		)).result.then (parameters) ->
+		$modal.open(new EditAttributeModal()).result.then (parameters) ->
 			attribute = DocumentAttribute.new()
 			attribute['name'] = parameters['name']
 			attribute['data_type'] = parameters['data_type']
 			attribute['value_type'] = parameters['value_type']
 			$scope.documentSchema.attributes.push(attribute)
 
-	$scope.selectAttribute = (attribute) ->
-		$scope.selectedAttribute = attribute
+	$scope.editAttribute = (attribute) ->
+		$modal.open(new EditAttributeModal(attribute)).result.then (parameters) ->
+			_.assign(attribute, parameters)
 
-	$scope.deleteAttribute = ->
+	$scope.deleteAttribute = (attribute) ->
 		return unless confirm('Are you sure you want to delete this attribute? Application data may be lost.')
-		Utils.removeFromArray($scope.selectedAttribute, $scope.documentSchema.attributes)
-		$scope.selectedAttribute = null
-
-	$scope.attributeHasDefaultValue = (attribute) ->
-		return DocumentAttribute.hasDefaultValue(attribute)
-
-	$scope.attributeHasRoutineId = (attribute) ->
-		return DocumentAttribute.hasRoutineId(attribute)
+		Utils.removeFromArray(attribute, $scope.documentSchema.attributes)
+		$scope.selectedAttribute = null if $scope.selectedAttribute is attribute
 
 ])
