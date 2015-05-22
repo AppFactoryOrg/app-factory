@@ -1,0 +1,49 @@
+.edit-attribute-modal
+	.modal-header
+		h3.modal-title
+			span(ng-if="createMode") Create
+			span(ng-hide="createMode") Edit
+			span &nbsp;Attribute
+
+	.modal-body
+		form(
+			ng-submit="submit()"
+			name="form"
+			novalidate
+		)
+			.form-group
+				label Name
+				input.form-control(
+					type="text"
+					ng-model="attribute.name"
+					name="name"
+					required
+				)
+			.form-group
+				label Data Type
+				select.form-control(
+					ng-model="attribute.data_type"
+					ng-options="type.value as type.name for type in attributeDataTypes"
+					name="data_type"
+					required
+				)
+			.form-group
+				label Value Type
+				select.form-control(
+					ng-model="attribute.value_type"
+					ng-options="type.value as type.name for type in attributeValueTypes"
+					name="value_type"
+					required
+				)
+
+		.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+			div(ng-show="form.name.$error.required") Name is required.
+			div(ng-show="form.data_type.$error.required") Data Type is required.
+			div(ng-show="form.value_type.$error.required") Value Type is required.
+
+	.modal-footer
+		button.btn.btn-default(ng-click="$dismiss()") Cancel
+		button.btn.btn-primary(ng-click="submit()") 
+			span(ng-if="createMode") Create
+			span(ng-hide="createMode") Save
+			i.fa.fa-chevron-right
