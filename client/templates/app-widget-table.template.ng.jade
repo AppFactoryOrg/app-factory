@@ -33,3 +33,8 @@
 					tr(ng-hide="documents.length")
 						td(colspan="99")
 							.text-muted No Data Yet
+
+			button.btn.btn-default(ng-click="prevPage()")
+				i.fa.fa-chevron-left
+			button.btn.btn-default(ng-click="nextPage()")
+				i.fa.fa-chevron-right

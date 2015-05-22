@@ -12,7 +12,7 @@ Meteor.methods
 		throw new Error('Cannot find Environment for new Document') unless environment?
 
 		document = Document.new(parameters)
-		document['_id'] = Document.db.insert(document)
+		document['_id'] = Document.db.insert(document) 
 
 		return document['_id']
 
