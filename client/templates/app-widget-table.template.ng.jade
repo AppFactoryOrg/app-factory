@@ -11,30 +11,37 @@
 					span Add&nbsp;
 					span(ng-bind="::documentSchema.name")
 
-			table.table.table-hover.table-striped.table-condensed
-				thead
-					tr
-						th(ng-repeat="attribute in documentSchema.attributes" ng-bind="::attribute.name")
-						th(width="75")
-				tbody
-					tr(ng-repeat="document in documents | filter:searchDocuments")
-						td(ng-repeat="attribute in documentSchema.attributes")
-							af-attribute-value(
-								attribute="attribute"
-								document="document"
+			.table-wrapper
+				.table-scroll
+					table.table.table-hover.table-striped.table-condensed
+						thead
+							tr
+								th(ng-repeat="attribute in documentSchema.attributes")
+									.row-heading(ng-bind="::attribute.name")
+								th()
+									.row-heading
+						tbody
+							tr(
+								ng-repeat="document in documents | filter:searchDocuments"
+								ng-mouseenter="document.$showButtons=true"
+								ng-mouseleave="document.$showButtons=false"
 							)
-						td
-							.btn-group.pull-right(dropdown)
-								button.btn.btn-xs.btn-default(ng-click="editDocument(document)")
-									i.fa.fa-pencil
-								button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)")
-									i.fa.fa-trash
+								td(ng-repeat="attribute in documentSchema.attributes" width="{{100/documentSchema.attributes.length}}%")
+									af-attribute-value(
+										attribute="attribute"
+										document="document"
+									)
+								td.controls(width="75")
+									.btn-group.pull-right(ng-show="document.$showButtons")
+										button.btn.btn-xs.btn-default(ng-click="editDocument(document)")
+											i.fa.fa-pencil
+										button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)")
+											i.fa.fa-trash
 
-					tr(ng-hide="documents.length")
-						td(colspan="99")
-							.text-muted No Data Yet
+							tr(ng-hide="documents.length")
+								td(colspan="99")
+									.text-muted No Data Yet
 
-			button.btn.btn-default(ng-click="prevPage()")
-				i.fa.fa-chevron-left
-			button.btn.btn-default(ng-click="nextPage()")
-				i.fa.fa-chevron-right
+					button.btn.btn-link.btn-sm.text-center(ng-click="loadMore()")
+						span More Records
+						i.fa.fa-angle-down

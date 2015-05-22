@@ -9,8 +9,8 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 	controller: 'CommonAppWidgetCtrl'
 	link: ($scope, $element) ->
 
-		$scope.pageSize = 10
-		$scope.pageNumber = 1
+		$scope.limit = 20
+		$scope.sort = {'created_on': -1}
 
 		$scope.addDocument = ->
 			documentSchema = $scope.documentSchema
@@ -28,11 +28,8 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return unless confirm('Are you sure you want to delete this record? This action cannot be undone.')
 			$meteor.call('Document.delete', document['_id'])
 
-		$scope.nextPage = ->
-			$scope.pageNumber++
-		$scope.prevPage = ->
-			$scope.pageNumber--
-			$scope.pageNumber = 1 if $scope.pageNumber < 1
+		$scope.loadMore = ->
+			$scope.limit += 10
 
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
@@ -46,12 +43,9 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 				$meteor.autorun $scope, ->
 					paging = 
-						'page_number': $scope.getReactively('pageNumber')
-						'page_size': $scope.getReactively('pageSize')
+						'limit': $scope.getReactively('limit')
+						'sort': $scope.getReactively('sort')
 					$meteor.subscribe('Document', $scope.documentParams, paging).then ->
-						limit = paging['page_size']
-						skip = limit*(paging['page_number']-1)
-						sort = {'created_on': -1}
-						$scope.documents = $meteor.collection -> Document.db.find($scope.documentParams, {limit, skip, sort})
+						$scope.documents = $meteor.collection -> Document.db.find($scope.documentParams, paging)
 
 ])

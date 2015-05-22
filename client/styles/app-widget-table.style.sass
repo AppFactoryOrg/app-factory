@@ -9,3 +9,34 @@
 
 		button.add-document
 			float: right
+
+	.table-wrapper 
+		position: relative
+
+	.table-scroll 
+		height: 400px
+		overflow: auto  
+		margin-top: 40px
+		border-top: 2px solid #e7eaec
+
+	.table-wrapper 
+		table 
+			width: 100%
+
+			thead th
+				padding: 0
+				border: none
+
+				.row-heading
+					position: absolute   
+					top: -25px
+					z-index: 2
+					height: 30px
+					padding-left: 7px
+
+			tbody > tr:first-child > td
+				border-top: none
+
+			td.controls
+				padding: 5px
+				min-width: 75px
