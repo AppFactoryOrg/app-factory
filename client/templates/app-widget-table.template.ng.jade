@@ -33,7 +33,9 @@
 									)
 								td.controls(width="75")
 									.btn-group.pull-right(ng-show="document.$showButtons")
-										button.btn.btn-xs.btn-default(ng-click="editDocument(document)")
+										button.btn.btn-xs.btn-success(ng-click="viewDocument(document)")
+											i.fa.fa-search
+										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)")
 											i.fa.fa-pencil
 										button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)")
 											i.fa.fa-trash
@@ -42,6 +44,7 @@
 								td(colspan="99")
 									.text-muted No Data Yet
 
-					button.btn.btn-link.btn-sm.text-center(ng-click="loadMore()")
-						span More Records
-						i.fa.fa-angle-down
+					.load-more
+						a(ng-click="loadMore()")
+							span Load More Records
+							i.fa.fa-angle-down

@@ -1,4 +1,4 @@
-angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', 'EditDocumentModal', ($rootScope, $modal, $meteor, EditDocumentModal) ->
+angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', 'EditDocumentModal', 'ViewDocumentModal', ($rootScope, $modal, $meteor, EditDocumentModal, ViewDocumentModal) ->
 	restrict: 'E'
 	templateUrl: 'client/templates/app-widget-table.template.html'
 	replace: true
@@ -18,6 +18,10 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			modal.result.then (document) ->
 				$meteor.call('Document.create', document)
 
+		$scope.viewDocument = (document) ->
+			documentSchema = $scope.documentSchema
+			$modal.open(new ViewDocumentModal({document, documentSchema}))
+
 		$scope.editDocument = (document) ->
 			documentSchema = $scope.documentSchema
 			modal = $modal.open(new EditDocumentModal({document, documentSchema}))
@@ -29,7 +33,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			$meteor.call('Document.delete', document['_id'])
 
 		$scope.loadMore = ->
-			$scope.limit += 10
+			$scope.limit += 20
 
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
