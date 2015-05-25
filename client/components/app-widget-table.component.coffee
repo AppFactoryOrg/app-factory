@@ -35,6 +35,11 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.loadMore = ->
 			$scope.limit += 20
 
+		$scope.shouldShowMoreLink = ->
+			return false unless $scope.documents?
+			return false if $scope.documents.length < $scope.limit
+			return true
+
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
 		switch data_source['type']

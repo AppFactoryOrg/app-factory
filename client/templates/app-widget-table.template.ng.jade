@@ -42,9 +42,9 @@
 
 							tr(ng-hide="documents.length")
 								td(colspan="99")
-									.text-muted No Data Yet
+									.text-muted No Data
 
-					.load-more
+					.load-more(ng-show="shouldShowMoreLink()")
 						a(ng-click="loadMore()")
 							span Load More Records
 							i.fa.fa-angle-down
