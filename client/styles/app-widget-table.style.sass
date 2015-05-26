@@ -3,7 +3,7 @@
 .app-widget-table
 
 	.header
-		.controls
+		> .controls
 			position: relative
 			top: -3px
 			float: right
@@ -12,10 +12,12 @@
 				display: inline-block
 				margin-left: 10px
 
-			.sort-options
+			.sort-options,
+			.filter-options
+				margin-left: 5px
 				position: relative
 
-				i
+				> button > i
 					font-size: 14px
 					color: rgba(black, 0.3)
 

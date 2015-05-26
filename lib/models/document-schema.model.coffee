@@ -14,9 +14,15 @@
 		'attributes':		[]
 		'blueprint_id': 	null
 
-	getSortableAttributes: (documentSchema) ->
+	getSortOptions: (documentSchema) ->
+		options = []
+		options.push({attribute: {name:'Created On'}, value: 'created_on'})
+		for attribute in documentSchema['attributes']
+			options.push({attribute: attribute, value: "data.#{attribute['id']}"})
+		return options
+
+	getFilterableAttributes: (documentSchema) ->
 		attributes = []
-		attributes.push({name: 'Created On', value: 'created_on'})
-		for attribute in documentSchema.attributes
-			attributes.push({name: attribute['name'], value: "data.#{attribute['id']}"})
+		for attribute in documentSchema['attributes']
+			attributes.push(attribute)
 		return attributes

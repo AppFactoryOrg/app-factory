@@ -1,0 +1,9 @@
+.filter-panel(ng-show="isOpen")
+	.filters
+	.buttons
+		button.btn.btn-xs.btn-primary(ng-click="update()")
+			span Update
+		button.btn.btn-xs.btn-default(ng-click="close()")
+			span Cancel
+
+.filter-panel-backdrop(ng-show="isOpen" ng-click="close()")

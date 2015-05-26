@@ -11,6 +11,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.limit = 20
 		$scope.sort = {'created_on': -1}
+		$scope.filter = {}
 		$scope.loading = false
 
 		$scope.addDocument = ->
@@ -44,28 +45,39 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.toggleSortPanel = ->
 			$scope.$broadcast('TOGGLE_SORT_PANEL')
 
+		$scope.toggleFilterPanel = ->
+			$scope.$broadcast('TOGGLE_FILTER_PANEL')
+
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
 		switch data_source['type']
 			when ViewWidget.DATA_SOURCE_TYPE['Document'].value
 				$scope.documentSchema = DocumentSchema.db.findOne(data_source['document_schema_id'])
-				$scope.sortableAttributes = DocumentSchema.getSortableAttributes($scope.documentSchema)
-
-				$scope.documentParams = 
-					'environment_id': $rootScope.environment['_id']
-					'document_schema_id': $scope.documentSchema['_id']
+				$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
+				$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
 
 				$meteor.autorun $scope, ->
 					paging = 
 						'limit': $scope.getReactively('limit')
 						'sort': $scope.getReactively('sort')
+					filter = _.extend(
+						'environment_id': $rootScope.environment['_id']
+						'document_schema_id': $scope.documentSchema['_id']
+					, $scope.getReactively('filter'))
+
 					$scope.loading = true
-					$meteor.subscribe('Document', $scope.documentParams, paging).then ->
-						$scope.documents = $meteor.collection -> Document.db.find($scope.documentParams, paging)
+					$meteor.subscribe('Document', filter, paging).then ->
+						$scope.documents = $meteor.collection -> Document.db.find(filter, paging)
 						$scope.loading = false
+
 
 		$scope.$on('SORT_UPDATED', (event, sort) ->
 			$scope.sort = sort
+			event.stopPropagation()
+		)
+
+		$scope.$on('FILTER_UPDATED', (event, filter) ->
+			$scope.filter = filter
 			event.stopPropagation()
 		)
 ])

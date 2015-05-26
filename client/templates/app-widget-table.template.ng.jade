@@ -3,12 +3,19 @@
 		.ibox-title.header
 			h5(ng-bind="::widget.name")
 			.controls
-				.sort-options(ng-if="sortableAttributes.length")
+				.filter-options(ng-if="filterableAttributes.length	")
+					button.btn.btn-xs.btn-link(ng-click="toggleFilterPanel()" ng-disabled="loading")
+						i.fa.fa-filter
+					af-filter-panel(
+						filter="filter"
+						attributes="filterableAttributes"
+					)
+				.sort-options(ng-if="sortOptions.length")
 					button.btn.btn-xs.btn-link(ng-click="toggleSortPanel()" ng-disabled="loading")
 						i.fa.fa-sort-amount-asc
 					af-sort-panel(
 						sort="sort"
-						sortable-attributes="sortableAttributes"
+						options="sortOptions"
 					)
 				button.add-document.btn.btn-xs.btn-success(ng-click="addDocument()" ng-disabled="loading")
 					i.fa.fa-plus

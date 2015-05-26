@@ -1,0 +1,41 @@
+@import "_mixins"
+@import "_variables"
+
+.filter-panel
+	+border-radius(2px)
+	+box-shadow(2px, 2px, 0px, rgba(black, 0.05))
+	position: absolute
+	top: 25px
+	right: 0px
+	background-color: white
+	border: 1px solid rgba(black, 0.1)
+	width: 300px
+	z-index: $z-index-filter-panel
+	padding: 10px 12px
+
+	&:after
+		+rotate(45)
+		content: ""
+		position: absolute
+		top: -6px
+		right: 10px
+		background-color: white
+		border-top: 1px solid rgba(black, 0.1)
+		border-left: 1px solid rgba(black, 0.1)
+		height: 10px
+		width: 10px
+
+	.control-label
+		font-weight: bold
+		font-size: 12px
+
+	.buttons
+		margin-top: 15px
+
+.filter-panel-backdrop
+	position: fixed
+	top: 0
+	bottom: 0
+	left: 0
+	right: 0
+	z-index: $z-index-filter-panel - 1

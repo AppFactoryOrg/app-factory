@@ -3,7 +3,7 @@ angular.module('app-factory').directive('afSortPanel', [() ->
 	templateUrl: 'client/templates/sort-panel.template.html'
 	scope:
 		'sort':					'='
-		'sortableAttributes': 	'='
+		'options': 			'='
 	link: ($scope, $element) ->
 
 		$scope.isOpen = false

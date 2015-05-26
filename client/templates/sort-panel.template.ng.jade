@@ -3,7 +3,7 @@
 	.sort-entry.clearfix
 		select.form-control.input-sm.value(
 			ng-model="value"
-			ng-options="attribute.value as attribute.name for attribute in sortableAttributes"
+			ng-options="option.value as option.attribute.name for option in options"
 		)
 		select.form-control.input-sm.direction(
 			ng-model="direction"

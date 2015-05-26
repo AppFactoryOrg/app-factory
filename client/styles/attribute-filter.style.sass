@@ -1,0 +1,26 @@
+@import "_mixins"
+
+.attribute-filter
+	position: relative
+	margin-bottom: 10px
+	+opacity(0.6)
+
+	&.has-value
+		+opacity(1)
+
+	.controls 
+		padding-right: 25px
+
+		> *
+			display: inline-block
+			margin-right: 5px
+
+			&:last-child
+				margin-right: 0px
+
+	button.close
+		position: absolute
+		top: 28px
+		right: 3px
+		font-size: 15px
+
