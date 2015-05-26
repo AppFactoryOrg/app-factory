@@ -123,6 +123,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 		.state 'factory.settings',
 			url: '/settings'
 			templateUrl: 'client/templates/factory-settings.template.html'
+			controller: 'FactorySettingsCtrl'
 
 	#####################################################################
 	# APPLICATION

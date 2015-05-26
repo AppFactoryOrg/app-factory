@@ -28,3 +28,15 @@ Meteor.methods
 		)
 
 		return application['_id']
+
+	'Application.update': (parameters) ->
+		throw new Error('Unauthorized') unless Meteor.user()?
+		throw new Error('Parameters object is required') unless parameters?
+
+		application = Application.db.findOne(parameters['_id'])
+		throw new Error('Cannot find Application') unless application?
+
+		updates = _.pick(parameters, Application.MUTABLE_PROPERTIES)
+		Application.db.update({'_id': application['_id']}, {$set: updates})
+
+		return application['_id']
