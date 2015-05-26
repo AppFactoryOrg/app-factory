@@ -11,11 +11,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.limit = 20
 		$scope.sort = {'created_on': -1}
-		$scope.sortPanel =  
-			isOpen: false
-			value: 'created_on'
-			direction: -1
-		$scope.sortDirections = [{name: 'Asc', value: 1},{name: 'Desc', value: -1}]
+		$scope.loading = false
 
 		$scope.addDocument = ->
 			documentSchema = $scope.documentSchema
@@ -46,17 +42,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return true
 
 		$scope.toggleSortPanel = ->
-			$scope.sortPanel.isOpen = !$scope.sortPanel.isOpen
-			$scope.sortPanel.value = _.keys($scope.sort)[0]
-			$scope.sortPanel.direction = _.values($scope.sort)[0]
-
-		$scope.closeSortPanel = ->
-			$scope.sortPanel.isOpen = false
-
-		$scope.updateSort = ->
-			$scope.sort = {}
-			$scope.sort[$scope.sortPanel.value] = $scope.sortPanel.direction
-			$scope.closeSortPanel()
+			$scope.$broadcast('TOGGLE_SORT_PANEL')
 
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
@@ -66,14 +52,20 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 				$scope.sortableAttributes = DocumentSchema.getSortableAttributes($scope.documentSchema)
 
 				$scope.documentParams = 
-						'environment_id': $rootScope.environment['_id']
-						'document_schema_id': $scope.documentSchema['_id']
+					'environment_id': $rootScope.environment['_id']
+					'document_schema_id': $scope.documentSchema['_id']
 
 				$meteor.autorun $scope, ->
 					paging = 
 						'limit': $scope.getReactively('limit')
 						'sort': $scope.getReactively('sort')
+					$scope.loading = true
 					$meteor.subscribe('Document', $scope.documentParams, paging).then ->
 						$scope.documents = $meteor.collection -> Document.db.find($scope.documentParams, paging)
+						$scope.loading = false
 
+		$scope.$on('SORT_UPDATED', (event, sort) ->
+			$scope.sort = sort
+			event.stopPropagation()
+		)
 ])

@@ -3,7 +3,6 @@
 .app-widget-table
 
 	.header
-
 		.controls
 			position: relative
 			top: -3px
@@ -18,30 +17,10 @@
 
 				i
 					font-size: 14px
+					color: rgba(black, 0.3)
 
-			.sort-panel
-				+border-radius(2px)
-				+box-shadow(2px, 2px, 0px, rgba(black, 0.05))
-				position: absolute
-				top: 25px
-				right: 0px
-				background-color: white
-				border: 1px solid rgba(black, 0.1)
-				width: 230px
-				z-index: 100
-				padding: 15px
-
-				.sort-entry
-					.value
-						float: left
-						width: 67%
-
-					.direction
-						float: right
-						width: 30%
-
-				.buttons
-					margin-top: 5px
+	.content
+		position: relative
 
 	.table-wrapper 
 		position: relative
@@ -63,7 +42,6 @@
 				.row-heading
 					position: absolute   
 					top: -25px
-					z-index: 2
 					height: 30px
 					padding-left: 7px
 

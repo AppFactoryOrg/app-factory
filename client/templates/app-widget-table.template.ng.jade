@@ -3,29 +3,21 @@
 		.ibox-title.header
 			h5(ng-bind="::widget.name")
 			.controls
-				.sort-options
-					button.btn.btn-xs.btn-link(ng-click="toggleSortPanel()")
+				.sort-options(ng-if="sortableAttributes.length")
+					button.btn.btn-xs.btn-link(ng-click="toggleSortPanel()" ng-disabled="loading")
 						i.fa.fa-sort-amount-asc
-					.sort-panel(ng-show="sortPanel.isOpen")
-						.sort-entry.clearfix
-							select.form-control.input-sm.value(
-								ng-model="sortPanel.value"
-								ng-options="attribute.value as attribute.name for attribute in sortableAttributes"
-							)
-							select.form-control.input-sm.direction(
-								ng-model="sortPanel.direction"
-								ng-options="direction.value as direction.name for direction in sortDirections"
-							)
-						.buttons
-							button.btn.btn-xs.btn-default(ng-click="closeSortPanel()")
-								span Cancel
-							button.btn.btn-xs.btn-primary(ng-click="updateSort()")
-								span Update
-				button.add-document.btn.btn-xs.btn-success(ng-click="addDocument()")
+					af-sort-panel(
+						sort="sort"
+						sortable-attributes="sortableAttributes"
+					)
+				button.add-document.btn.btn-xs.btn-success(ng-click="addDocument()" ng-disabled="loading")
 					i.fa.fa-plus
 					span Add&nbsp;
 					span(ng-bind="::documentSchema.name")
-		.ibox-content
+		.ibox-content.content
+			.loading(ng-show="loading")
+				i.fa.fa-refresh.fa-spin
+				span Loading...
 			.table-wrapper
 				.table-scroll
 					table.table.table-hover.table-striped.table-condensed
