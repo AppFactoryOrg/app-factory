@@ -1,14 +1,47 @@
+@import "_mixins"
+
 .app-widget-table
 
 	.header
-		margin-bottom: 15px
 
-		input.search-documents
-			float: left
-			width: 250px
-
-		button.add-document
+		.controls
+			position: relative
+			top: -3px
 			float: right
+
+			> * 
+				display: inline-block
+				margin-left: 10px
+
+			.sort-options
+				position: relative
+
+				i
+					font-size: 14px
+
+			.sort-panel
+				+border-radius(2px)
+				+box-shadow(2px, 2px, 0px, rgba(black, 0.05))
+				position: absolute
+				top: 25px
+				right: 0px
+				background-color: white
+				border: 1px solid rgba(black, 0.1)
+				width: 230px
+				z-index: 100
+				padding: 15px
+
+				.sort-entry
+					.value
+						float: left
+						width: 67%
+
+					.direction
+						float: right
+						width: 30%
+
+				.buttons
+					margin-top: 5px
 
 	.table-wrapper 
 		position: relative
@@ -16,7 +49,7 @@
 	.table-scroll 
 		height: 400px
 		overflow: auto  
-		margin-top: 40px
+		margin-top: 30px
 		border-top: 2px solid #e7eaec
 
 	.table-wrapper 

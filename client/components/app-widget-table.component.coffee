@@ -11,6 +11,11 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.limit = 20
 		$scope.sort = {'created_on': -1}
+		$scope.sortPanel =  
+			isOpen: false
+			value: 'created_on'
+			direction: -1
+		$scope.sortDirections = [{name: 'Asc', value: 1},{name: 'Desc', value: -1}]
 
 		$scope.addDocument = ->
 			documentSchema = $scope.documentSchema
@@ -40,12 +45,26 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return false if $scope.documents.length < $scope.limit
 			return true
 
+		$scope.toggleSortPanel = ->
+			$scope.sortPanel.isOpen = !$scope.sortPanel.isOpen
+			$scope.sortPanel.value = _.keys($scope.sort)[0]
+			$scope.sortPanel.direction = _.values($scope.sort)[0]
+
+		$scope.closeSortPanel = ->
+			$scope.sortPanel.isOpen = false
+
+		$scope.updateSort = ->
+			$scope.sort = {}
+			$scope.sort[$scope.sortPanel.value] = $scope.sortPanel.direction
+			$scope.closeSortPanel()
+
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
 		switch data_source['type']
 			when ViewWidget.DATA_SOURCE_TYPE['Document'].value
 				$scope.documentSchema = DocumentSchema.db.findOne(data_source['document_schema_id'])
-			
+				$scope.sortableAttributes = DocumentSchema.getSortableAttributes($scope.documentSchema)
+
 				$scope.documentParams = 
 						'environment_id': $rootScope.environment['_id']
 						'document_schema_id': $scope.documentSchema['_id']
