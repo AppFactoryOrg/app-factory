@@ -1,0 +1,18 @@
+.sort-panel(ng-show="isOpen")
+	.title Sort By
+	.sort-entry.clearfix
+		select.form-control.input-sm.value(
+			ng-model="value"
+			ng-options="option.value as option.attribute.name for option in options"
+		)
+		select.form-control.input-sm.direction(
+			ng-model="direction"
+			ng-options="direction.value as direction.name for direction in sortDirections"
+		)
+	.buttons
+		button.btn.btn-xs.btn-primary(ng-click="update()")
+			span Update
+		button.btn.btn-xs.btn-default(ng-click="close()")
+			span Cancel
+
+.sort-panel-backdrop(ng-show="isOpen" ng-click="close()")

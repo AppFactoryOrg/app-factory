@@ -6,7 +6,7 @@ angular.module('app-factory').directive('afCanvasWidgetTable', ['$modal', 'Confi
 		'widget': 		'='
 		'parent':		'='
 		'editMode': 	'='
-	controller: 'CommonWidgetCtrl'
+	controller: 'CommonCanvasWidgetCtrl'
 	link: ($scope, $element) ->
 		$scope.configureWidget = ->
 			$modal.open(new ConfigureTableWidgetModal($scope.widget)).result.then (parameters) ->

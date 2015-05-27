@@ -13,7 +13,7 @@ angular.module('app-factory').directive('afCanvasView', ['$meteor', '$compile', 
 					data-widget-id='#{widget.id}'
 					view-schema='viewSchema' 
 					edit-mode='editMode'
-					widget='viewSchema.$rootWidgets[#{index}]'
+					widget='viewSchema.$rootWidgets[#{index}]'>
 				</af-canvas-widget-#{name}>
 			"
 			rootWidgetsEl = $('.root-widgets', $element)

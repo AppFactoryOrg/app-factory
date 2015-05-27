@@ -1,0 +1,63 @@
+@import "_mixins"
+
+.app-widget-table
+
+	.header
+		> .controls
+			position: relative
+			top: -3px
+			float: right
+
+			> * 
+				display: inline-block
+				margin-left: 10px
+
+			.sort-options,
+			.filter-options
+				margin-left: 5px
+				position: relative
+
+				> button > i
+					font-size: 14px
+					color: rgba(black, 0.3)
+
+	.content
+		position: relative
+
+	.table-wrapper 
+		position: relative
+
+	.table-scroll 
+		height: 400px
+		overflow: auto  
+		margin-top: 30px
+		border-top: 2px solid #e7eaec
+
+	.table-wrapper 
+		table 
+			width: 100%
+
+			thead th
+				padding: 0
+				border: none
+
+				.row-heading
+					position: absolute   
+					top: -25px
+					height: 30px
+					padding-left: 7px
+
+			tbody > tr:first-child > td
+				border-top: none
+
+			td.controls
+				padding: 5px
+				min-width: 75px
+
+	.load-more
+		width: 150px
+		margin: 2px auto
+		padding: 4px
+		text-align: center
+		background-color: rgba(black, 0.02)
+		border: 1px solid rgba(black, 0.04)

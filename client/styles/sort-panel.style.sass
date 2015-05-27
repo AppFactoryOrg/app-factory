@@ -1,0 +1,52 @@
+@import "_mixins"
+@import "_variables"
+
+.sort-panel
+	+border-radius(2px)
+	+box-shadow(2px, 2px, 0px, rgba(black, 0.05))
+	position: absolute
+	top: 25px
+	right: 0px
+	background-color: white
+	border: 1px solid rgba(black, 0.1)
+	width: 230px
+	z-index: $z-index-sort-panel
+	padding: 10px 12px
+
+	&:after
+		+rotate(45)
+		content: ""
+		position: absolute
+		top: -6px
+		right: 10px
+		background-color: white
+		border-top: 1px solid rgba(black, 0.1)
+		border-left: 1px solid rgba(black, 0.1)
+		height: 10px
+		width: 10px
+
+	.title
+		font-weight: bold
+		padding-bottom: 5px
+		color: rgba(black, 0.4)
+		font-size: 12px
+
+	.sort-entry
+		.value
+			float: left
+			width: 67%
+
+		.direction
+			float: right
+			width: 30%
+
+	.buttons
+		margin-top: 10px
+
+.sort-panel-backdrop
+	position: fixed
+	top: 0
+	bottom: 0
+	left: 0
+	right: 0
+	z-index: $z-index-sort-panel - 1

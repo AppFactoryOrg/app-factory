@@ -6,7 +6,7 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 		'widget': 		'='
 		'parent':		'='
 		'editMode': 	'='
-	controller: 'CommonWidgetCtrl'
+	controller: 'CommonCanvasWidgetCtrl'
 	link: ($scope, $element) ->
 		$scope.containerLayouts = Utils.mapToArray(ViewWidget.CONTAINER_LAYOUT)
 
@@ -19,7 +19,7 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 					view-schema='viewSchema' 
 					edit-mode='editMode'
 					widget='widget.$childWidgets[#{index}]'
-					parent='widget'
+					parent='widget'>
 				</af-canvas-widget-#{name}>
 			"
 			childWidgetsEl = $('.child-widgets', $element)

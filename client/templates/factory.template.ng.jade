@@ -80,7 +80,8 @@
 			div#top-nav.row.border-bottom
 				nav.navbar.navbar-static-top(role="navigation")
 					.navbar-header
-						i.fa.fa-globe
+						a(href="{{getApplicationUrl()}}" target="_blank")
+							i.fa.fa-globe
 						.app-name {{application.name}}
 						.app-label.label.label-primary(
 							tooltip="You are in the {{environment.name}} environment."

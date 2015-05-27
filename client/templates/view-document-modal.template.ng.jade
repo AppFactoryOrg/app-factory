@@ -1,0 +1,17 @@
+.view-document-modal
+	.modal-header
+		h3.modal-title
+			span(ng-bind="' ' + documentSchema.name")
+
+	.modal-body
+		af-view-document-attributes(
+			document="document"
+			document-schema="documentSchema"
+		)
+
+	.modal-footer
+		button.btn.btn-default.pull-left(ng-click="deleteDocument()") Delete
+		button.btn.btn-primary(ng-click="editDocument()") 
+			span Edit
+			i.fa.fa-pencil
+		button.btn.btn-default(ng-click="$dismiss()") Close

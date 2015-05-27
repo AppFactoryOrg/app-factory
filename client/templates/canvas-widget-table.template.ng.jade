@@ -6,8 +6,8 @@
 	.widget-configuration
 		.setting
 			span.name Data Source
-			spab.value {{getDataSourceName()}}
-			spab.value(ng-hide="getDataSourceName()") (none)
+			span.value {{getDataSourceName()}}
+			span.value(ng-hide="getDataSourceName()") (none)
 	.widget-controls(ng-show="editMode")
 		button.btn.btn-xs.btn-primary(ng-click="configureWidget()")
 			i.fa.fa-wrench

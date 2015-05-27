@@ -1,8 +1,5 @@
 angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope', '$state', '$meteor', '$modal', 'GenericModal', 'application', 'environment', 'blueprint', ($scope, $rootScope, $state, $meteor, $modal, GenericModal, application, environment, blueprint) ->
 		
-	$meteor.subscribe('DocumentSchema',  'blueprint_id': blueprint['_id'])
-	$meteor.subscribe('ViewSchema',  'blueprint_id': blueprint['_id'])
-	
 	$scope.application = $rootScope.application = application
 	$scope.environment = $rootScope.environment = environment
 	$scope.blueprint = $rootScope.blueprint = blueprint
@@ -14,6 +11,9 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 	$scope.viewsExpanded = $state.includes('factory.view')
 	$scope.routinesExpanded = false
 
+	$('body').removeClass()
+	$('body').addClass('boxed-layout')
+
 	$scope.blueprintIsEditable = ->
 		return $scope.blueprint.status is Blueprint.STATUS['Draft'].value
 
@@ -22,6 +22,9 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 
 	$scope.viewSchemaIsSelected = (viewSchema) ->
 		return $state.includes('factory.view', {'view_schema_id': viewSchema['_id']})
+
+	$scope.getApplicationUrl = ->
+		return $state.href('application', 'environment_id': $rootScope.environment['_id'])
 
 	$scope.logout = ->
 		$meteor.logout()

@@ -3,6 +3,9 @@ angular.module('app-factory').controller('AccountCtrl', ['$scope', '$meteor', '$
 	$meteor.subscribe('Application')
 	$scope.applications = $meteor.collection -> Application.db.find()
 
+	$('body').removeClass()
+	$('body').addClass('boxed-layout')
+
 	$scope.logout = ->
 		$meteor.logout()
 		$state.go('login')

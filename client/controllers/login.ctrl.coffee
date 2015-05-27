@@ -4,6 +4,9 @@ angular.module('app-factory').controller('LoginCtrl', ['$scope', '$state', '$met
 	$scope.password = ''
 	$scope.showValidationErrors = false
 
+	$('body').removeClass()
+	$('body').addClass('boxed-layout')
+
 	$scope.submit = ->
 		if $scope.form.$invalid
 			$scope.showValidationErrors = true

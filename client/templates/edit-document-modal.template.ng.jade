@@ -1,0 +1,20 @@
+.edit-document-modal
+	.modal-header
+		h3.modal-title
+			span(ng-if="createMode") Add
+			span(ng-hide="createMode") Edit
+			span(ng-bind="' ' + documentSchema.name")
+
+	.modal-body
+		af-edit-document-attributes(
+			document="document"
+			document-schema="documentSchema"
+			on-submit="submit()"
+		)
+
+	.modal-footer
+		button.btn.btn-default(ng-click="$dismiss()") Cancel
+		button.btn.btn-primary(ng-click="submit()") 
+			span(ng-if="createMode") Add
+			span(ng-hide="createMode") Save
+			i.fa.fa-chevron-right

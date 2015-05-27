@@ -1,5 +1,42 @@
 .factory-settings
 	.row.wrapper.border-bottom.white-bg.page-heading
-		.col-lg-12
-			h2 Settings
-			p Placeholder for application settings.
+		.col-lg-12(ng-switch="editMode")
+			.pull-left
+				h2 Settings
+				p Application-specific settings and options.
+			.controls.pull-right(ng-switch-when="false")
+				button.btn.btn-xs.btn-primary(ng-click="startEditSettings()")
+					i.fa.fa-pencil
+					span Edit
+			.controls.pull-right(ng-switch-when="true")
+				button.btn.btn-xs.btn-primary(ng-click="saveSettings()")
+					i.fa.fa-save
+					span Save
+				button.btn.btn-xs.btn-default(ng-click="cancelEditSettings()")
+					i.fa.fa-close
+					span Cancel
+	br/
+	
+	.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+		div(ng-show="form.applicationName.$error.required") Application Name is required.
+
+	.row.wrapper
+		.col-lg-6
+			.ibox
+				.ibox-title
+					h5 General
+				.ibox-content
+					form(novalidate name="form" ng-switch="editMode")
+						.form-group
+							label Application Name
+							input.form-control(
+								ng-switch-when="true"
+								type="text"
+								ng-model="application.name"
+								name="applicationName"
+								required
+							)
+							.form-control-static(
+								ng-switch-when="false"
+								ng-bind="application.name"
+							)
