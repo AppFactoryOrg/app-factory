@@ -10,17 +10,15 @@ angular.module('app-factory').controller 'EditNavigationItemCtrl', ['$scope', '$
 	$scope.showValidationErrors = false
 	$scope.isEdit = navigationItem?
 	$scope.navigationItemTypes = Utils.mapToArray(NavigationItem.TYPE)
-	$scope.views = $meteor.collection -> ViewSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
+	$scope.screens = $meteor.collection -> ScreenSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
 
 	if navigationItem?
 		$scope.result = _.clone(navigationItem)
 	else
-		$scope.result =
-			'name': null
-			'type': null
+		$scope.result = NavigationItem.new({})
 
-	$scope.shouldShowViewSelection = -> 
-		return true if $scope.result['type'] is NavigationItem.TYPE['View'].value
+	$scope.shouldShowScreenSelection = -> 
+		return true if $scope.result['type'] is NavigationItem.TYPE['Screen'].value
 		return false
 
 	$scope.shouldUrlInput = -> 

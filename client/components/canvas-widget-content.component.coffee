@@ -2,7 +2,7 @@ angular.module('app-factory').directive('afCanvasWidgetContent', ['$modal', 'Gen
 	restrict: 'E'
 	templateUrl: 'client/templates/canvas-widget-content.template.html'
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 		'editMode': 	'='

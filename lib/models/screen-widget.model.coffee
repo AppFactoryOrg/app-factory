@@ -1,4 +1,4 @@
-@ViewWidget =
+@ScreenWidget =
 
 	TYPE:
 		'Container':
@@ -33,12 +33,12 @@
 			configuration:
 				'content_html': null
 
-		'View':
+		'Screen':
 			value: 300
-			component: 'view'
+			component: 'screen'
 			icon: 'fa-list-alt'
 			configuration:
-				'view_schema_id': null
+				'screen_schema_id': null
 
 		'Button':
 			value: 350
@@ -55,8 +55,8 @@
 		'Document':		{value: 100}
 
 	new: (parameters) ->
-		type = _.findWhere(ViewWidget.TYPE, 'value': parameters['type'])
-		throw new Error('Unrecognized ViewWidget.TYPE specified') unless type?
+		type = _.findWhere(ScreenWidget.TYPE, 'value': parameters['type'])
+		throw new Error('Unrecognized ScreenWidget.TYPE specified') unless type?
 
 		result =
 			'id':				Meteor.uuid()
@@ -67,7 +67,7 @@
 			'child_ids':		[]
 		
 		switch type
-			when ViewWidget.TYPE['Container']
-				result['configuration']['layout'] = ViewWidget.CONTAINER_LAYOUT['Vertical'].value
+			when ScreenWidget.TYPE['Container']
+				result['configuration']['layout'] = ScreenWidget.CONTAINER_LAYOUT['Vertical'].value
 
 		return result

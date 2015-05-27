@@ -1,19 +1,19 @@
-angular.module('app-factory').directive('afCanvasView', ['$meteor', '$compile', '$modal', 'GenericModal', ($meteor, $compile, $modal, GenericModal) ->
+angular.module('app-factory').directive('afCanvasScreen', ['$meteor', '$compile', '$modal', 'GenericModal', ($meteor, $compile, $modal, GenericModal) ->
 	restrict: 'E'
-	templateUrl: 'client/templates/canvas-view.template.html'
+	templateUrl: 'client/templates/canvas-screen.template.html'
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'editMode':		'='
 	link: ($scope, $element) ->
 		$scope.appendRootWidget = (widget, index) ->
-			index = $scope.viewSchema['$rootWidgets'].indexOf(widget) unless index?
-			name = _.findWhere(ViewWidget.TYPE, 'value': widget['type']).component
+			index = $scope.screenSchema['$rootWidgets'].indexOf(widget) unless index?
+			name = _.findWhere(ScreenWidget.TYPE, 'value': widget['type']).component
 			childTemplate = "
 				<af-canvas-widget-#{name} 
 					data-widget-id='#{widget.id}'
-					view-schema='viewSchema' 
+					screen-schema='screenSchema' 
 					edit-mode='editMode'
-					widget='viewSchema.$rootWidgets[#{index}]'>
+					widget='screenSchema.$rootWidgets[#{index}]'>
 				</af-canvas-widget-#{name}>
 			"
 			rootWidgetsEl = $('.root-widgets', $element)
@@ -35,25 +35,25 @@ angular.module('app-factory').directive('afCanvasView', ['$meteor', '$compile', 
 						name: 'type'
 						displayAs: 'Type'
 						type: 'select'
-						options: Utils.mapToArray(ViewWidget.TYPE)
+						options: Utils.mapToArray(ScreenWidget.TYPE)
 						required: true
 					}
 				]
 			)).result.then (parameters) ->
-				widget = ViewWidget.new(parameters)
+				widget = ScreenWidget.new(parameters)
 				widget['$childWidgets'] = []
-				$scope.viewSchema['$rootWidgets'].push(widget)
+				$scope.screenSchema['$rootWidgets'].push(widget)
 				$scope.appendRootWidget(widget)
 
 		$scope.initializeRootWidgets = ->
 			rootWidgetsEl = $('.root-widgets', $element)
 			rootWidgetsEl.empty()
-			$scope.viewSchema['$rootWidgets'].forEach (widget, index) -> $scope.appendRootWidget(widget, index)
+			$scope.screenSchema['$rootWidgets'].forEach (widget, index) -> $scope.appendRootWidget(widget, index)
 
 		# Initialize
 		$scope.initializeRootWidgets()
 		
-		$scope.$watch('viewSchema', (oldSchema, newSchema) ->
+		$scope.$watch('screenSchema', (oldSchema, newSchema) ->
 			return unless oldSchema isnt newSchema
 			$scope.initializeRootWidgets()
 		)

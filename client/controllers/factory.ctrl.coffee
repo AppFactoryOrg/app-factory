@@ -4,11 +4,11 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 	$scope.environment = $rootScope.environment = environment
 	$scope.blueprint = $rootScope.blueprint = blueprint
 	$scope.documentSchemas = $meteor.collection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
-	$scope.viewSchemas = $meteor.collection -> ViewSchema.db.find('blueprint_id': $scope.blueprint['_id'])
+	$scope.screenSchemas = $meteor.collection -> ScreenSchema.db.find('blueprint_id': $scope.blueprint['_id'])
 	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
 
 	$scope.documentsExpanded = $state.includes('factory.document')
-	$scope.viewsExpanded = $state.includes('factory.view')
+	$scope.screensExpanded = $state.includes('factory.screen')
 	$scope.routinesExpanded = false
 
 	$('body').removeClass()
@@ -20,8 +20,8 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 	$scope.documentSchemaIsSelected = (documentSchema) ->
 		return $state.includes('factory.document', {'document_schema_id': documentSchema['_id']})
 
-	$scope.viewSchemaIsSelected = (viewSchema) ->
-		return $state.includes('factory.view', {'view_schema_id': viewSchema['_id']})
+	$scope.screenSchemaIsSelected = (screenSchema) ->
+		return $state.includes('factory.screen', {'screen_schema_id': screenSchema['_id']})
 
 	$scope.getApplicationUrl = ->
 		return $state.href('application', 'environment_id': $rootScope.environment['_id'])
@@ -43,9 +43,9 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 			$meteor.call('DocumentSchema.create', parameters).then (document_schema_id) ->
 				$state.go('factory.document', {document_schema_id})
 
-	$scope.createViewSchema = ->
+	$scope.createScreenSchema = ->
 		$modal.open(new GenericModal(
-			title: 'New View'
+			title: 'New Screen'
 			submitAction: 'Create'
 			attributes: [
 				{name: 'name', displayAs: 'Name', required: true, autofocus: true}
@@ -53,7 +53,7 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 			]
 		)).result.then (parameters) ->
 			parameters['blueprint_id'] = $scope.environment['blueprint_id']
-			$meteor.call('ViewSchema.create', parameters).then (view_schema_id) ->
-				$state.go('factory.view', {view_schema_id})
+			$meteor.call('ScreenSchema.create', parameters).then (screen_schema_id) ->
+				$state.go('factory.screen', {screen_schema_id})
 
 ])

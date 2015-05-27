@@ -1,13 +1,13 @@
-.canvas-widget.canvas-widget-view
+.canvas-widget.canvas-widget-screen
 	.widget-summary
 		h4
 			i.fa(ng-class="icon")
 			span {{widget.name}}
 	.widget-configuration
 		.setting
-			span.name View
-			span.value {{getViewName()}}
-			span.value(ng-hide="getViewName()") (none)
+			span.name Screen
+			span.value {{getScreenName()}}
+			span.value(ng-hide="getScreenName()") (none)
 	.widget-controls(ng-show="editMode")
 		button.btn.btn-xs.btn-primary(ng-click="configureWidget()")
 			i.fa.fa-wrench

@@ -4,7 +4,7 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 	$scope.environment = $rootScope.environment = environment
 	$scope.blueprint = $rootScope.blueprint = blueprint
 
-	$scope.NAVIGATION_VIEW_TYPE = NavigationItem.TYPE['View'].value
+	$scope.NAVIGATION_SCREEN_TYPE = NavigationItem.TYPE['Screen'].value
 	$scope.NAVIGATION_LINK_TYPE = NavigationItem.TYPE['Link'].value
 
 	document.title = $scope.application.name
@@ -18,8 +18,8 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 	$('body').addClass('top-navigation')
 
 	if $state.current.name is 'application'
-		view_schema_id = blueprint['layout']['home_view_schema_id']
-		if view_schema_id?
-			$state.go("application.view", {view_schema_id})
+		screen_schema_id = blueprint['layout']['home_screen_schema_id']
+		if screen_schema_id?
+			$state.go("application.screen", {screen_schema_id})
 
 ])

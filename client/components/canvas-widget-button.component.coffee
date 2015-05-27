@@ -2,7 +2,7 @@ angular.module('app-factory').directive('afCanvasWidgetButton', [() ->
 	restrict: 'E'
 	templateUrl: 'client/templates/canvas-widget-button.template.html'
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 		'editMode': 	'='

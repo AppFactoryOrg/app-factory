@@ -3,21 +3,21 @@ angular.module('app-factory').directive('afAppWidgetContainer', ['$compile', ($c
 	templateUrl: 'client/templates/app-widget-container.template.html'
 	replace: true
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 	controller: 'CommonAppWidgetCtrl'
 	link: ($scope, $element) ->
-		$scope.containerLayouts = Utils.mapToArray(ViewWidget.CONTAINER_LAYOUT)
+		$scope.containerLayouts = Utils.mapToArray(ScreenWidget.CONTAINER_LAYOUT)
 
 		$scope.initializeChildWidgets = ->
 			return if _.isEmpty($scope.widget['$childWidgets'])
 			$scope.widget['$childWidgets'].forEach (widget, index) ->
 				index = $scope.widget['$childWidgets'].indexOf(widget) unless index?
-				name = _.findWhere(ViewWidget.TYPE, 'value': widget['type']).component
+				name = _.findWhere(ScreenWidget.TYPE, 'value': widget['type']).component
 				childTemplate = "
 					<af-app-widget-#{name} 
-						view-schema='viewSchema' 
+						screen-schema='screenSchema' 
 						widget='widget.$childWidgets[#{index}]'
 						parent='widget'>
 					</af-app-widget-#{name}>

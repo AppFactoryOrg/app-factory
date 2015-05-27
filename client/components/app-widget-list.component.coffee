@@ -3,7 +3,7 @@ angular.module('app-factory').directive('afAppWidgetList', ['$modal', '$meteor',
 	templateUrl: 'client/templates/app-widget-list.template.html'
 	replace: true
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 	controller: 'CommonAppWidgetCtrl'

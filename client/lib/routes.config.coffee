@@ -64,7 +64,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 					$q.all([
 						$meteor.subscribe('Blueprint', {blueprint_id})
 						$meteor.subscribe('DocumentSchema', {blueprint_id})
-						$meteor.subscribe('ViewSchema', {blueprint_id})
+						$meteor.subscribe('ScreenSchema', {blueprint_id})
 					]).then ->
 						blueprint = Blueprint.db.findOne(blueprint_id)
 						deferred.resolve(blueprint) if blueprint?
@@ -91,19 +91,19 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 					return deferred.promise
 				]
 
-		.state 'factory.view',
-			url: '/view/:view_schema_id',
-			templateUrl: 'client/templates/view-schema.template.html'
-			controller: 'ViewSchemaCtrl',
+		.state 'factory.screen',
+			url: '/screen/:screen_schema_id',
+			templateUrl: 'client/templates/screen-schema.template.html'
+			controller: 'ScreenSchemaCtrl',
 			resolve: 
-				'viewSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
+				'screenSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
 					deferred = $q.defer()
-					view_schema_id = $stateParams.view_schema_id
-					$meteor.subscribe('ViewSchema', {view_schema_id}).then ->
-						viewSchema = ViewSchema.db.findOne(view_schema_id)
-						ViewSchema.buildWidgetHierarchy(viewSchema)
-						deferred.resolve(viewSchema) if viewSchema?
-						deferred.reject('ViewSchema could not be found') unless viewSchema?
+					screen_schema_id = $stateParams.screen_schema_id
+					$meteor.subscribe('ScreenSchema', {screen_schema_id}).then ->
+						screenSchema = ScreenSchema.db.findOne(screen_schema_id)
+						ScreenSchema.buildWidgetHierarchy(screenSchema)
+						deferred.resolve(screenSchema) if screenSchema?
+						deferred.reject('ScreenSchema could not be found') unless screenSchema?
 					return deferred.promise
 				]
 
@@ -161,7 +161,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 				$q.all([
 					$meteor.subscribe('Blueprint', {blueprint_id})
 					$meteor.subscribe('DocumentSchema', {blueprint_id})
-					$meteor.subscribe('ViewSchema', {blueprint_id})
+					$meteor.subscribe('ScreenSchema', {blueprint_id})
 				]).then ->
 					blueprint = Blueprint.db.findOne(blueprint_id)
 					deferred.resolve(blueprint) if blueprint?
@@ -169,19 +169,19 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 				return deferred.promise
 			]
 
-	.state 'application.view',
-		url: '/view/:view_schema_id'
-		templateUrl: 'client/templates/application-view.template.html'
-		controller: 'ApplicationViewCtrl'
+	.state 'application.screen',
+		url: '/screen/:screen_schema_id'
+		templateUrl: 'client/templates/application-screen.template.html'
+		controller: 'ApplicationScreenCtrl'
 		resolve:
-			'viewSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
+			'screenSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
 				deferred = $q.defer()
-				view_schema_id = $stateParams.view_schema_id
-				$meteor.subscribe('ViewSchema', {view_schema_id}).then ->
-					viewSchema = ViewSchema.db.findOne(view_schema_id)
-					ViewSchema.buildWidgetHierarchy(viewSchema)
-					deferred.resolve(viewSchema) if viewSchema?
-					deferred.reject('ViewSchema could not be found') unless viewSchema?
+				screen_schema_id = $stateParams.screen_schema_id
+				$meteor.subscribe('ScreenSchema', {screen_schema_id}).then ->
+					screenSchema = ScreenSchema.db.findOne(screen_schema_id)
+					ScreenSchema.buildWidgetHierarchy(screenSchema)
+					deferred.resolve(screenSchema) if screenSchema?
+					deferred.reject('ScreenSchema could not be found') unless screenSchema?
 				return deferred.promise
 			]
 ])

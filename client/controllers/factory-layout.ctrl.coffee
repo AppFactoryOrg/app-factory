@@ -3,7 +3,7 @@ angular.module('app-factory').controller('FactoryLayoutCtrl', ['$scope', '$rootS
 	$scope.originalLayout = $rootScope.blueprint['layout']
 	$scope.layout = $rootScope.blueprint['layout']
 	$scope.navigationItemTypes = Utils.mapToArray(NavigationItem.TYPE)
-	$scope.views = $meteor.collection -> ViewSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
+	$scope.screens = $meteor.collection -> ScreenSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
 	$scope.editMode = false
 	$scope.sortableOptions =
 		containment: '#sort-bounds'
@@ -39,16 +39,16 @@ angular.module('app-factory').controller('FactoryLayoutCtrl', ['$scope', '$rootS
 
 	$scope.getNavigationItemDescription = (navigationItem) ->
 		switch navigationItem['type']
-			when NavigationItem.TYPE['View'].value
-				view = ViewSchema.db.findOne(navigationItem['view_schema_id'])
-				name = "View - #{view.name}" if view?
+			when NavigationItem.TYPE['Screen'].value
+				screen = ScreenSchema.db.findOne(navigationItem['screen_schema_id'])
+				name = "Screen - #{screen.name}" if screen?
 			when NavigationItem.TYPE['Link'].value
 				name = "Link - #{navigationItem['url']}"
 
 		return name
 
-	$scope.getHomeViewName = ->
-		view = ViewSchema.db.findOne($scope.layout['home_view_schema_id'])
-		return "(none)" unless view?
-		return view?.name
+	$scope.getHomeScreenName = ->
+		screen = ScreenSchema.db.findOne($scope.layout['home_screen_schema_id'])
+		return "(none)" unless screen?
+		return screen?.name
 ])

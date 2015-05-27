@@ -1,5 +1,5 @@
 Meteor.methods
-	'ViewSchema.create': (parameters) ->
+	'ScreenSchema.create': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -9,31 +9,31 @@ Meteor.methods
 		throw new Error('Cannot find Blueprint') unless blueprint?
 		throw new Error('Blueprint is not in "Draft" status') unless blueprint.status is Blueprint.STATUS['Draft'].value
 
-		viewSchema = ViewSchema.new()
-		viewSchema['name'] = parameters['name']
-		viewSchema['description'] = parameters['description']
-		viewSchema['widgets'] = []
-		viewSchema['blueprint_id'] = blueprint['_id']
-		viewSchema['_id'] = ViewSchema.db.insert(viewSchema)
+		screenSchema = ScreenSchema.new()
+		screenSchema['name'] = parameters['name']
+		screenSchema['description'] = parameters['description']
+		screenSchema['widgets'] = []
+		screenSchema['blueprint_id'] = blueprint['_id']
+		screenSchema['_id'] = ScreenSchema.db.insert(screenSchema)
 
-		return viewSchema['_id']
+		return screenSchema['_id']
 
-	'ViewSchema.update': (parameters) ->
+	'ScreenSchema.update': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 
-		viewSchema = ViewSchema.db.findOne(parameters['_id'])
-		throw new Error('Cannot find ViewSchema') unless viewSchema?
+		screenSchema = ScreenSchema.db.findOne(parameters['_id'])
+		throw new Error('Cannot find ScreenSchema') unless screenSchema?
 
-		updates = _.pick(parameters, ViewSchema.MUTABLE_PROPERTIES)
-		ViewSchema.db.update({'_id': viewSchema['_id']}, {$set: updates})
+		updates = _.pick(parameters, ScreenSchema.MUTABLE_PROPERTIES)
+		ScreenSchema.db.update({'_id': screenSchema['_id']}, {$set: updates})
 
-		return viewSchema['_id']
+		return screenSchema['_id']
 
-	'ViewSchema.delete': (id) ->
+	'ScreenSchema.delete': (id) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Id is required') if _.isEmpty(id) and _.isString(id)
 
-		ViewSchema.db.remove(id)
+		ScreenSchema.db.remove(id)
 
 		return

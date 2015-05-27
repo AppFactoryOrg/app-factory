@@ -10,8 +10,8 @@
 								span(ng-bind="application.name")
 						li(ng-repeat="navigationItem in blueprint.layout.navigation_items" ui-sref-active="active")
 							a(
-								ng-if="navigationItem.type===NAVIGATION_VIEW_TYPE"
-								ui-sref="application.view({'view_schema_id':navigationItem.view_schema_id})"
+								ng-if="navigationItem.type===NAVIGATION_SCREEN_TYPE"
+								ui-sref="application.screen({'screen_schema_id':navigationItem.screen_schema_id})"
 							)
 								span(ng-bind="navigationItem.name")
 							a(

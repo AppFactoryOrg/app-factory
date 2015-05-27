@@ -2,21 +2,21 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 	restrict: 'E'
 	templateUrl: 'client/templates/canvas-widget-container.template.html'
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 		'editMode': 	'='
 	controller: 'CommonCanvasWidgetCtrl'
 	link: ($scope, $element) ->
-		$scope.containerLayouts = Utils.mapToArray(ViewWidget.CONTAINER_LAYOUT)
+		$scope.containerLayouts = Utils.mapToArray(ScreenWidget.CONTAINER_LAYOUT)
 
 		$scope.appendChildWidget = (widget, index) ->
 			index = $scope.widget['$childWidgets'].indexOf(widget) unless index?
-			name = _.findWhere(ViewWidget.TYPE, 'value': widget['type']).component
+			name = _.findWhere(ScreenWidget.TYPE, 'value': widget['type']).component
 			childTemplate = "
 				<af-canvas-widget-#{name} 
 					data-widget-id='#{widget.id}'
-					view-schema='viewSchema' 
+					screen-schema='screenSchema' 
 					edit-mode='editMode'
 					widget='widget.$childWidgets[#{index}]'
 					parent='widget'>
@@ -41,12 +41,12 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 						name: 'type'
 						displayAs: 'Type'
 						type: 'select'
-						options: Utils.mapToArray(ViewWidget.TYPE)
+						options: Utils.mapToArray(ScreenWidget.TYPE)
 						required: true
 					}
 				]
 			)).result.then (parameters) ->
-				widget = ViewWidget.new(parameters)
+				widget = ScreenWidget.new(parameters)
 				widget['$childWidgets'] = []
 				$scope.widget['$childWidgets'].push(widget)
 				$scope.appendChildWidget(widget)
@@ -71,7 +71,7 @@ angular.module('app-factory').directive('afCanvasWidgetContainer', ['$compile', 
 						name: 'layout'
 						displayAs: 'Layout'
 						type: 'select'
-						options: Utils.mapToArray(ViewWidget.CONTAINER_LAYOUT)
+						options: Utils.mapToArray(ScreenWidget.CONTAINER_LAYOUT)
 						required: true
 						default: $scope.widget['configuration']['layout']
 					}

@@ -30,18 +30,18 @@
 								span New
 
 				li(ui-sref-active="active")
-					a(ng-click="viewsExpanded=!viewsExpanded")
+					a(ng-click="screensExpanded=!screensExpanded")
 						i.fa.fa-list-alt
-						span.nav-label Views
-						span.fa.pull-right(ng-class="{'fa-angle-down': !viewsExpanded, 'fa-angle-right': viewsExpanded}")
-					ul.nav.nav-second-level(collapse="!viewsExpanded")
-						li(ng-repeat="viewSchema in viewSchemas" ng-class="{'active': viewSchemaIsSelected(viewSchema)}")
-							a(ui-sref="factory.view({ view_schema_id: viewSchema['_id'] })")
+						span.nav-label Screens
+						span.fa.pull-right(ng-class="{'fa-angle-down': !screensExpanded, 'fa-angle-right': screensExpanded}")
+					ul.nav.nav-second-level(collapse="!screensExpanded")
+						li(ng-repeat="screenSchema in screenSchemas" ng-class="{'active': screenSchemaIsSelected(screenSchema)}")
+							a(ui-sref="factory.screen({ screen_schema_id: screenSchema['_id'] })")
 								i.fa.fa-list-alt
-								span {{viewSchema.name}}
-								span.fa.pull-right(ng-class="{'fa-caret-right': viewSchemaIsSelected(viewSchema)}")
+								span {{screenSchema.name}}
+								span.fa.pull-right(ng-class="{'fa-caret-right': screenSchemaIsSelected(screenSchema)}")
 						li(ng-if="blueprintIsEditable()")
-							a(ng-click="createViewSchema()")
+							a(ng-click="createScreenSchema()")
 								i.fa.fa-plus
 								span New
 

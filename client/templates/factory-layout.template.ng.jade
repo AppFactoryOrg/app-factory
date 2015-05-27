@@ -45,12 +45,12 @@
 				.ibox-content
 					.navigation-options
 						.navigation-option(ng-switch="editMode")
-							label Home View
+							label Home Screen
 							select.form-control(
 								ng-switch-when="true"
-								ng-model="layout.home_view_schema_id"
-								ng-options="view._id as view.name for view in views"
+								ng-model="layout.home_screen_schema_id"
+								ng-options="screen._id as screen.name for screen in screens"
 							)
 							div.form-control-static.text-muted(ng-switch-when="false")
-								span(ng-bind="getHomeViewName()")
+								span(ng-bind="getHomeScreenName()")
 

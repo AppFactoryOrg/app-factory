@@ -1,37 +1,37 @@
-.viewSchema-schema
+.screen-schema
 	.row.wrapper.border-bottom.white-bg.page-heading
 		.col-lg-12(ng-switch="editMode")
 			div(ng-switch-when="false")
 				.metadata.pull-left
-					h2(ng-bind="viewSchema.name")
-					p.text-muted(ng-bind="viewSchema.description")
+					h2(ng-bind="screenSchema.name")
+					p.text-muted(ng-bind="screenSchema.description")
 				.controls.pull-right
-					button.btn.btn-xs.btn-primary(ng-click="startEditViewSchema()")
+					button.btn.btn-xs.btn-primary(ng-click="startEditScreenSchema()")
 						i.fa.fa-pencil
 						span Edit
-					button.btn.btn-xs.btn-default(ng-click="deleteViewSchema()")
+					button.btn.btn-xs.btn-default(ng-click="deleteScreenSchema()")
 						i.fa.fa-trash
 			div(ng-switch-when="true")
 				.edit.metadata.pull-left
 					input.form-control.title(
 						type="text"
-						ng-model="viewSchema.name"
+						ng-model="screenSchema.name"
 					)
 					textarea.form-control.description(
 						rows="2"
 						cols="50"
-						ng-model="viewSchema.description"
+						ng-model="screenSchema.description"
 					)
 				.controls.pull-right
-					button.btn.btn-xs.btn-primary(ng-click="saveViewSchema()")
+					button.btn.btn-xs.btn-primary(ng-click="saveScreenSchema()")
 						i.fa.fa-save
 						span Save
-					button.btn.btn-xs.btn-default(ng-click="cancelEditViewSchema()")
+					button.btn.btn-xs.btn-default(ng-click="cancelEditScreenSchema()")
 						i.fa.fa-close
 						span Cancel
 	br/
 	.wrapper
-		af-canvas-view(
-			view-schema="viewSchema"
+		af-canvas-screen(
+			screen-schema="screenSchema"
 			edit-mode="editMode"
 		)

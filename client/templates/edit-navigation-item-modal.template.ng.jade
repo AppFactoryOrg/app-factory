@@ -23,13 +23,13 @@
 						ng-model="result.type"
 						required
 					)
-				.form-group.col-sm-12(ng-show="shouldShowViewSelection()")
-					label View
+				.form-group.col-sm-12(ng-show="shouldShowScreenSelection()")
+					label Screen
 					select.form-control(
-						name="viewId"
-						ng-options="view._id as view.name for view in views"
-						ng-model="result.view_schema_id"
-						ng-required="shouldShowViewSelection()"
+						name="screenId"
+						ng-options="screen._id as screen.name for screen in screens"
+						ng-model="result.screen_schema_id"
+						ng-required="shouldShowScreenSelection()"
 					)
 				.form-group.col-sm-12(ng-show="shouldUrlInput()")
 					label URL
@@ -44,7 +44,7 @@
 				div(ng-show="form.type.$error.required") Type is required.
 				div(ng-show="form.url.$error.required") URL is required.
 				div(ng-show="form.url.$error.url") URL is not valid (remember to specify a protocol, such as http://).
-				div(ng-show="form.viewId.$error.required") View is required.
+				div(ng-show="form.screenId.$error.required") Screen is required.
 		.modal-footer
 			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
 			button.btn.btn-primary(type="submit") 

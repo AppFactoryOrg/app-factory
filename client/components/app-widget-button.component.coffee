@@ -3,7 +3,7 @@ angular.module('app-factory').directive('afAppWidgetButton', [() ->
 	templateUrl: 'client/templates/app-widget-button.template.html'
 	replace: true
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 	controller: 'CommonAppWidgetCtrl'

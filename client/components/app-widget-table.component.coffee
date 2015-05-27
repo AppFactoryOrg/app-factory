@@ -3,7 +3,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 	templateUrl: 'client/templates/app-widget-table.template.html'
 	replace: true
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 	controller: 'CommonAppWidgetCtrl'
@@ -51,7 +51,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
 		switch data_source['type']
-			when ViewWidget.DATA_SOURCE_TYPE['Document'].value
+			when ScreenWidget.DATA_SOURCE_TYPE['Document'].value
 				$scope.documentSchema = DocumentSchema.db.findOne(data_source['document_schema_id'])
 				$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 				$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)

@@ -2,7 +2,7 @@ angular.module('app-factory').directive('afCanvasWidgetTable', ['$modal', 'Confi
 	restrict: 'E'
 	templateUrl: 'client/templates/canvas-widget-table.template.html'
 	scope:
-		'viewSchema': 	'='
+		'screenSchema': 	'='
 		'widget': 		'='
 		'parent':		'='
 		'editMode': 	'='
@@ -16,7 +16,7 @@ angular.module('app-factory').directive('afCanvasWidgetTable', ['$modal', 'Confi
 		$scope.getDataSourceName = ->
 			dataSource = $scope.widget['configuration']['data_source']
 			switch dataSource?['type']
-				when ViewWidget.DATA_SOURCE_TYPE['Document'].value 
+				when ScreenWidget.DATA_SOURCE_TYPE['Document'].value 
 					documentSchema = DocumentSchema.db.findOne(dataSource['document_schema_id'])
 					name = "Document - #{documentSchema?.name}"
 
