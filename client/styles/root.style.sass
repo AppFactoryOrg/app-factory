@@ -18,7 +18,7 @@ span + i
 .modal-open
 	overflow: inherit
 
-.loading
+.loading-overlay
 	position: absolute
 	top: 0
 	bottom: 0
@@ -28,3 +28,14 @@ span + i
 	background-color: rgba(white, 0.8)
 	padding-top: 15%
 	z-index: $z-index-loading
+
+.error-overlay
+	position: absolute
+	top: 0
+	bottom: 0
+	left: 0
+	right: 0
+	text-align: center
+	background-color: rgba(white, 0.8)
+	padding-top: 15%
+	z-index: $z-index-error

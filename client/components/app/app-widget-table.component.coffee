@@ -1,18 +1,31 @@
-angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', 'EditDocumentModal', 'ViewDocumentModal', ($rootScope, $modal, $meteor, EditDocumentModal, ViewDocumentModal) ->
+angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', '$timeout', 'EditDocumentModal', 'ViewDocumentModal', ($rootScope, $modal, $meteor, $timeout, EditDocumentModal, ViewDocumentModal) ->
 	restrict: 'E'
 	templateUrl: 'client/components/app/app-widget-table.template.html'
 	replace: true
 	scope:
 		'screenSchema': 	'='
-		'widget': 		'='
-		'parent':		'='
+		'widget': 			'='
+		'parent':			'='
 	controller: 'CommonAppWidgetCtrl'
 	link: ($scope, $element) ->
 
-		$scope.limit = 20
+		INITIAL_LIMIT = 20
+		LOADING_TIMEOUT = 3000
+
+		$scope.limit = INITIAL_LIMIT
 		$scope.sort = {'created_on': -1}
 		$scope.filter = {}
+
+		$scope.lastLimit = null
+		$scope.lastSort = null
+		$scope.lastFilter = null
+
 		$scope.loading = false
+		$scope.error = false
+		$scope.loadingStartedAt = null
+		$scope.shouldShowLoadingTimeout = false
+
+		$scope.documents = []
 
 		$scope.addDocument = ->
 			documentSchema = $scope.documentSchema
@@ -35,18 +48,34 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			$meteor.call('Document.delete', document['_id'])
 
 		$scope.loadMore = ->
-			$scope.limit += 20
+			$scope.limit += 20 unless $scope.limit >= Config['MAX_TABLE_RECORDS']
 
 		$scope.shouldShowMoreLink = ->
+			return false if $scope.loading
 			return false unless $scope.documents?
 			return false if $scope.documents.length < $scope.limit
+			return false if $scope.documents.length >= Config['MAX_TABLE_RECORDS']
 			return true
+
+		$scope.shouldShowTooMuchDataWarning = ->
+			return false if $scope.loading
+			return true if $scope.documents.length >= Config['MAX_TABLE_RECORDS']
+			return false
 
 		$scope.toggleSortPanel = ->
 			$scope.$broadcast('TOGGLE_SORT_PANEL')
 
 		$scope.toggleFilterPanel = ->
 			$scope.$broadcast('TOGGLE_FILTER_PANEL')
+
+		$scope.retry = ->
+			switch data_source['type']
+				when ScreenWidget.DATA_SOURCE_TYPE['Document'].value
+					$scope.loading = false
+					if $scope.limit is INITIAL_LIMIT
+						$scope.limit = INITIAL_LIMIT+1
+					else
+						$scope.limit = INITIAL_LIMIT
 
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']
@@ -56,31 +85,51 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 				$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 				$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
 
-				$meteor.autorun $scope, ->
-					paging = 
-						'limit': $scope.getReactively('limit')
-						'sort': $scope.getReactively('sort')
-					filter = _.extend(
+				$meteor.autorun($scope, ->
+					limit = $scope.getReactively('limit')
+					sort = $scope.getReactively('sort')
+					filter = $scope.getReactively('filter')
+
+					paging = {limit, sort}
+					_.assign(filter, {
 						'environment_id': $rootScope.environment['_id']
 						'document_schema_id': $scope.documentSchema['_id']
-					, $scope.getReactively('filter'))
+					})
 
-					try
+					unless _.isEqual(limit, $scope.lastLimit) and _.isEqual(sort, $scope.lastSort) and _.isEqual(filter, $scope.lastFilter)
+						startedAt = Date.now()
 						$scope.loading = true
-						$meteor.subscribe('Document', filter, paging).then ->
+						$scope.loadingStartedAt = startedAt
+						$scope.shouldShowLoadingTimeout = false
+						$timeout(->
+							if $scope.loading is true and $scope.loadingStartedAt is startedAt
+								$scope.shouldShowLoadingTimeout = true
+						, LOADING_TIMEOUT)
+
+					$meteor.subscribe('Document', filter, paging)
+						.then ->
 							$scope.documents = $meteor.collection -> Document.db.find(filter, paging)
+						.catch ->
+							$scope.error = true
+						.finally ->
 							$scope.loading = false
-					catch error
-						console.error(error)
-						$scope.loading = false
+
+					$scope.lastLimit = limit
+					$scope.lastSort = sort
+					$scope.lastFilter = filter
+				)
 
 		$scope.$on('SORT_UPDATED', (event, sort) ->
 			$scope.sort = sort
+			$scope.limit = INITIAL_LIMIT
+			$('.table-scroll', $element).scrollTop(0)
 			event.stopPropagation()
 		)
 
 		$scope.$on('FILTER_UPDATED', (event, filter) ->
 			$scope.filter = filter
+			$scope.limit = INITIAL_LIMIT
+			$('.table-scroll', $element).scrollTop(0)
 			event.stopPropagation()
 		)
 ])

@@ -22,9 +22,18 @@
 					span Add&nbsp;
 					span(ng-bind="::documentSchema.name")
 		.ibox-content.content
-			.loading(ng-show="loading")
-				i.fa.fa-refresh.fa-spin
-				span Loading...
+			.loading-overlay(ng-show="loading")
+				.message
+					i.fa.fa-refresh.fa-spin
+					span Loading...
+				.action(ng-show="shouldShowLoadingTimeout")
+					a(ng-click="retry()") Taking too long? Try again
+			.error-overlay(ng-show="error")
+				.message
+					i.fa.fa-exclamation-triangle 
+					span An error has occured
+				.action
+					a(ng-click="retry()") Try again
 			.table-wrapper
 				.table-scroll
 					table.table.table-hover.table-striped.table-condensed
@@ -62,3 +71,7 @@
 						a(ng-click="loadMore()")
 							span Load More Records
 							i.fa.fa-angle-down
+
+					.too-much-data(ng-show="shouldShowTooMuchDataWarning()")
+						i.fa.fa-filter
+						span Too many results. Please refine your filter parameters.
