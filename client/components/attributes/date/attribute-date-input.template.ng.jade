@@ -1,0 +1,11 @@
+.form-group
+	label.control-label.col-lg-4(ng-bind="::attribute.name")
+	.col-lg-8
+		.input-group
+			.input-group-addon
+				i.fa.fa-font
+			input.form-control(
+				type="date" 
+				ng-model="value"
+				ng-change="valueUpdated()"
+			)

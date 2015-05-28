@@ -18,6 +18,7 @@ angular.module('app-factory').controller('EditDocumentCtrl', ['$scope', '$rootSc
 		$scope.document =
 			'document_schema_id': documentSchema['_id']
 			'environment_id': $rootScope.environment['_id']
+			'data': {}
 
 	$scope.submit = ->
 		$modalInstance.close($scope.document)
