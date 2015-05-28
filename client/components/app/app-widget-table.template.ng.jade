@@ -17,7 +17,7 @@
 						sort="sort"
 						options="sortOptions"
 					)
-				button.add-document.btn.btn-xs.btn-success(ng-click="addDocument()" ng-disabled="loading")
+				button.add-document.btn.btn-xs.btn-primary(ng-click="addDocument()" ng-disabled="loading")
 					i.fa.fa-plus
 					span Add&nbsp;
 					span(ng-bind="::documentSchema.name")
@@ -45,9 +45,9 @@
 										attribute="attribute"
 										document="document"
 									)
-								td.controls(width="75")
-									.btn-group.pull-right(ng-show="document.$showButtons")
-										button.btn.btn-xs.btn-success(ng-click="viewDocument(document)")
+								td.controls(width="100")
+									.pull-right(ng-show="document.$showButtons")
+										button.btn.btn-xs.btn-primary(ng-click="viewDocument(document)")
 											i.fa.fa-search
 										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)")
 											i.fa.fa-pencil
