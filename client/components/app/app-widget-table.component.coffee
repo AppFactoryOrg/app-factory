@@ -65,11 +65,14 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 						'document_schema_id': $scope.documentSchema['_id']
 					, $scope.getReactively('filter'))
 
-					$scope.loading = true
-					$meteor.subscribe('Document', filter, paging).then ->
-						$scope.documents = $meteor.collection -> Document.db.find(filter, paging)
+					try
+						$scope.loading = true
+						$meteor.subscribe('Document', filter, paging).then ->
+							$scope.documents = $meteor.collection -> Document.db.find(filter, paging)
+							$scope.loading = false
+					catch error
+						console.error(error)
 						$scope.loading = false
-
 
 		$scope.$on('SORT_UPDATED', (event, sort) ->
 			$scope.sort = sort

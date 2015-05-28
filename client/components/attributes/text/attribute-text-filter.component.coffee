@@ -21,23 +21,18 @@ angular.module('app-factory').directive('afAttributeTextFilter', [() ->
 		$scope.clear = ->
 			$scope.value = null
 			$scope.operator = null
-			$scope.updateFilterValue()
+			delete $scope.filterValue[key]
 
 		$scope.updateFilterValue = ->
 			value = $scope.value
 			operator = $scope.operator
 
-			if operator is null and value isnt null
+			if not operator? and value?
 				$scope.operator = operator = 'is'
 
-			if value is null
-				delete $scope.filterValue[key]
-				$scope.value = value = null
-			else
-				value = switch operator
-					when 'is' then "#{value}"
-					when 'contains' then {'$regex': "#{value}", '$options': 'i'}
-				$scope.filterValue[key] = value
+			$scope.filterValue[key] = switch operator
+				when 'is' then "#{value}"
+				when 'contains' then {'$regex': "#{value}", '$options': 'i'}
 
 		$scope.$watch('filterValue', ->
 			if $scope.filterValue is null or not $scope.filterValue.hasOwnProperty(key)

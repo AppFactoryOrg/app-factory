@@ -1,11 +1,14 @@
-.form-group
+.form-group.attribute-date-input
 	label.control-label.col-lg-4(ng-bind="::attribute.name")
 	.col-lg-8
 		.input-group
-			.input-group-addon
-				i.fa.fa-font
 			input.form-control(
-				type="date" 
+				type="text" 
 				ng-model="value"
 				ng-change="valueUpdated()"
+				datepicker-popup="{{calendarFormat}}"
+				is-open="calendarIsOpen" 
 			)
+			.input-group-btn
+				button.btn.btn-default(ng-click="openCalendar($event)" type="button")
+					i.fa.fa-calendar

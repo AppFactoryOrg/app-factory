@@ -9,49 +9,87 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 
 		key = "data.#{$scope.attribute['id']}"
 
-		$scope.operatorOptions = ['is', 'contains']
+		$scope.operatorOptions = ['on', 'before', 'after', 'between']
 		$scope.operator = null
-		$scope.value = null
+		$scope.value1 = null
+		$scope.value2 = null
+
+		$scope.calendarFormat = 'shortDate'
+		$scope.calendar1IsOpen = false
+		$scope.calendar2IsOpen = false
+
+		$scope.openCalendar1 = (event) ->
+			event.preventDefault()
+			event.stopPropagation()
+			$scope.calendar1IsOpen = true
+			$scope.calendar2IsOpen = false
+
+		$scope.openCalendar2 = (event) ->
+			event.preventDefault()
+			event.stopPropagation()
+			$scope.calendar1IsOpen = false
+			$scope.calendar2IsOpen = true
 
 		$scope.hasValue = ->
-			return true if $scope.value isnt null
+			return true if $scope.calendar1IsOpen
+			return true if $scope.calendar2IsOpen
+			return true if $scope.value1 isnt null
+			return true if $scope.value2 isnt null
 			return true if $scope.operator isnt null
 			return false
 
+		$scope.shouldShowValue2 = ->
+			return true if $scope.operator is 'between'
+			return false
+
 		$scope.clear = ->
-			$scope.value = null
+			$scope.value1 = null
+			$scope.value2 = null
 			$scope.operator = null
-			$scope.updateFilterValue()
+			$scope.calendar1IsOpen = false
+			$scope.calendar2IsOpen = false
+			delete $scope.filterValue[key]
 
 		$scope.updateFilterValue = ->
-			value = $scope.value
+			value1 = try Date.parse($scope.value1).valueOf() if $scope.value1?
+			value2 = try Date.parse($scope.value2).valueOf() if $scope.value2?
 			operator = $scope.operator
 
-			if operator is null and value isnt null
-				$scope.operator = operator = 'is'
+			if not operator? and value1?
+				$scope.operator = operator = 'on'
 
-			if value is null
-				delete $scope.filterValue[key]
-				$scope.value = value = null
-			else
-				value = switch operator
-					when 'is' then "#{value}"
-					when 'contains' then {'$regex': "#{value}", '$options': 'i'}
-				$scope.filterValue[key] = value
+			if not $scope.shouldShowValue2() and value2?
+				$scope.value2 = value2 = null
+			
+			$scope.filterValue[key] = switch operator
+				when 'on' then value1
+				when 'before' then {'$lt': value1}
+				when 'after' then {'$gt': value1}
+				when 'between' then {'$gt': value1, '$lt': value2}
 
 		$scope.$watch('filterValue', ->
-			if $scope.filterValue is null or not $scope.filterValue.hasOwnProperty(key)
+			if not $scope.filterValue? or not $scope.filterValue.hasOwnProperty(key)
 				$scope.operator = null
-				$scope.value = null
+				$scope.value1 = null
+				$scope.value2 = null
 				return
 
 			value = $scope.filterValue[key]
 			if _.isObject(value)
-				if value['$regex']?
-					$scope.operator = 'contains'
-					$scope.value = value['$regex']
+				lessThan = value['$lt']
+				greaterThan = value['$gt']
+				if lessThan? and greaterThan?
+					$scope.operator = 'between'
+					$scope.value1 = greaterThan
+					$scope.value2 = lessThan
+				else if lessThan?
+					$scope.operator = 'before'
+					$scope.value1 = lessThan
+				else if greaterThan?
+					$scope.operator = 'after'
+					$scope.value1 = greaterThan
 			else
 				$scope.value = value
-				$scope.operator = 'is'
+				$scope.operator = 'on'
 		)
 ])

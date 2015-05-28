@@ -7,6 +7,11 @@ angular.module('app-factory', [
 	'textAngular'
 ])
 
+angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->
+	datepickerConfig.appendToBody = true
+	datepickerConfig.showWeeks = false
+])
+
 angular.module('app-factory').run(['$rootScope', '$state', ($rootScope, $state) ->
 	$rootScope.$on '$stateChangeError', (event, toState, toParams, fromState, fromParams, error) ->
 		if error is 'AUTH_REQUIRED'

@@ -1,10 +1,34 @@
 .attribute-filter.attribute-date-filter(ng-class="{'has-value': hasValue()}")
 	label.control-label(ng-bind="::attribute.name")
-	.controls
-		input.form-control.input-sm.value(
-			type="text" 
-			ng-model="value"
+	.controls(ng-class="{'with-value-2': shouldShowValue2()}")
+		select.form-control.input-sm.operator(
+			ng-options="operatorOption for operatorOption in operatorOptions"
+			ng-model="operator"
 			ng-change="updateFilterValue()"
 		)
+		.value1
+			.input-group.input-group-sm
+				input.form-control(
+					type="text" 
+					ng-model="value1"
+					ng-change="updateFilterValue()"
+					datepicker-popup="{{calendarFormat}}"
+					is-open="calendar1IsOpen" 
+				)
+				.input-group-btn
+					button.btn.btn-default(ng-click="openCalendar1($event)" type="button")
+						i.fa.fa-calendar
+		.value2(ng-show="shouldShowValue2()")
+			.input-group.input-group-sm
+				input.form-control(
+					type="text" 
+					ng-model="value2"
+					ng-change="updateFilterValue()"
+					datepicker-popup="{{calendarFormat}}"
+					is-open="calendar2IsOpen" 
+				)
+				.input-group-btn
+					button.btn.btn-default(ng-click="openCalendar2($event)" type="button")
+						i.fa.fa-calendar
 	button.btn.btn-xs.btn-link.close(type="button" ng-click="clear()" ng-show="hasValue()")
 		i.fa.fa-close
