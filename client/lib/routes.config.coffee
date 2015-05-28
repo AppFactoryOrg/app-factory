@@ -11,17 +11,17 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 		.state 'login',
 			url: '/login'
 			controller: 'LoginCtrl'
-			templateUrl: 'client/templates/login.template.html'
+			templateUrl: 'client/views/login.template.html'
 
 		.state 'register',
 			url: '/register'
 			controller: 'RegisterCtrl'
-			templateUrl: 'client/templates/register.template.html'
+			templateUrl: 'client/views/register.template.html'
 
 		.state 'account',
 			url: '/account'
 			controller: 'AccountCtrl'
-			templateUrl: 'client/templates/account.template.html'
+			templateUrl: 'client/views/account.template.html'
 			resolve:
 				'currentUser': ['$meteor', ($meteor) ->
 					return $meteor.requireUser()
@@ -34,7 +34,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 		.state 'factory',
 			url: '/factory/:environment_id'
 			abstract: true
-			templateUrl: 'client/templates/factory.template.html'
+			templateUrl: 'client/views/factory.template.html'
 			controller: 'FactoryCtrl'
 			resolve:
 				'currentUser': ['$meteor', ($meteor) ->
@@ -74,11 +74,11 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 
 		.state 'factory.dashboard',
 			url: '/dashboard'
-			templateUrl: 'client/templates/factory-dashboard.template.html'
+			templateUrl: 'client/views/factory-dashboard.template.html'
 
 		.state 'factory.document',
 			url: '/document/:document_schema_id',
-			templateUrl: 'client/templates/document-schema.template.html'
+			templateUrl: 'client/views/document-schema.template.html'
 			controller: 'DocumentSchemaCtrl',
 			resolve: 
 				'documentSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
@@ -93,7 +93,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 
 		.state 'factory.screen',
 			url: '/screen/:screen_schema_id',
-			templateUrl: 'client/templates/screen-schema.template.html'
+			templateUrl: 'client/views/screen-schema.template.html'
 			controller: 'ScreenSchemaCtrl',
 			resolve: 
 				'screenSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
@@ -109,20 +109,20 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 
 		.state 'factory.layout',
 			url: '/layout'
-			templateUrl: 'client/templates/factory-layout.template.html'
+			templateUrl: 'client/views/factory-layout.template.html'
 			controller: 'FactoryLayoutCtrl'
 
 		.state 'factory.theme',
 			url: '/theme'
-			templateUrl: 'client/templates/factory-theme.template.html'
+			templateUrl: 'client/views/factory-theme.template.html'
 
 		.state 'factory.users',
 			url: '/users'
-			templateUrl: 'client/templates/factory-users.template.html'
+			templateUrl: 'client/views/factory-users.template.html'
 
 		.state 'factory.settings',
 			url: '/settings'
-			templateUrl: 'client/templates/factory-settings.template.html'
+			templateUrl: 'client/views/factory-settings.template.html'
 			controller: 'FactorySettingsCtrl'
 
 	#####################################################################
@@ -131,7 +131,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 
 	.state 'application',
 		url: '/application/:environment_id'
-		templateUrl: 'client/templates/application.template.html'
+		templateUrl: 'client/views/application.template.html'
 		controller: 'ApplicationCtrl'
 		resolve:
 			'currentUser': ['$meteor', ($meteor) ->
@@ -171,7 +171,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 
 	.state 'application.screen',
 		url: '/screen/:screen_schema_id'
-		templateUrl: 'client/templates/application-screen.template.html'
+		templateUrl: 'client/views/application-screen.template.html'
 		controller: 'ApplicationScreenCtrl'
 		resolve:
 			'screenSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) -> 
