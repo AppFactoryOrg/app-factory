@@ -1,0 +1,22 @@
+.attribute-filter.attribute-number-filter(ng-class="{'has-value': hasValue()}")
+	label.control-label(ng-bind="::attribute.name")
+	.controls
+		select.form-control.input-sm.operator(
+			ng-options="operatorOption for operatorOption in operatorOptions"
+			ng-model="operator"
+			ng-change="updateFilterValue()"
+		)
+			option
+		input.form-control.input-sm.value1(
+			type="number" 
+			ng-model="value1"
+			ng-change="updateFilterValue()"
+		)
+		input.form-control.input-sm.value2(
+			ng-show="shouldShowValue2()"
+			type="number" 
+			ng-model="value2"
+			ng-change="updateFilterValue()"
+		)
+	button.btn.btn-xs.btn-link.close(type="button" ng-click="clear()" ng-show="hasValue()")
+		i.fa.fa-close

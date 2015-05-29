@@ -31,10 +31,7 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.newAttribute = ->
 		$modal.open(new EditAttributeModal()).result.then (parameters) ->
-			attribute = DocumentAttribute.new()
-			attribute['name'] = parameters['name']
-			attribute['data_type'] = parameters['data_type']
-			attribute['value_type'] = parameters['value_type']
+			attribute = DocumentAttribute.new(parameters)
 			$scope.documentSchema.attributes.push(attribute)
 
 	$scope.editAttribute = (attribute) ->
