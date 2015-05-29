@@ -51,8 +51,8 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 			delete $scope.filterValue[key]
 
 		$scope.updateFilterValue = ->
-			value1 = try Date.parse($scope.value1).valueOf() if $scope.value1?
-			value2 = try Date.parse($scope.value2).valueOf() if $scope.value2?
+			value1 = if $scope.value1? then try Date.parse($scope.value1).valueOf() else null
+			value2 = if $scope.value2? then try Date.parse($scope.value2).valueOf() else null
 			operator = $scope.operator
 
 			if not operator? and value1?
@@ -78,14 +78,14 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 			if _.isObject(value)
 				lessThan = value['$lt']
 				greaterThan = value['$gt']
-				if lessThan? and greaterThan?
+				if lessThan isnt undefined and greaterThan isnt undefined
 					$scope.operator = 'between'
 					$scope.value1 = greaterThan
 					$scope.value2 = lessThan
-				else if lessThan?
+				else if lessThan isnt undefined
 					$scope.operator = 'before'
 					$scope.value1 = lessThan
-				else if greaterThan?
+				else if greaterThan isnt undefined
 					$scope.operator = 'after'
 					$scope.value1 = greaterThan
 			else

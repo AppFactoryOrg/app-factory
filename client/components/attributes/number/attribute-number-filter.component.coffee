@@ -58,14 +58,14 @@ angular.module('app-factory').directive('afAttributeNumberFilter', [() ->
 			if _.isObject(value)
 				greaterThan = value['$gt']
 				lessThan = value['$lt']
-				if greaterThan? and lessThan?
+				if greaterThan isnt undefined and lessThan isnt undefined
 					$scope.operator = 'between'
 					$scope.value1 = greaterThan
 					$scope.value2 = lessThan
-				else if greaterThan?
+				else if greaterThan isnt undefined
 					$scope.operator = 'greater than'
 					$scope.value1 = greaterThan
-				else if lessThan?
+				else if lessThan isnt undefined
 					$scope.operator = 'less than'
 					$scope.value1 = lessThan
 			else
