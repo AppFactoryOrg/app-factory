@@ -7,6 +7,5 @@ angular.module('app-factory').directive('afAttributeNumberValue', [() ->
 		'document': 	'='
 	link: ($scope) ->
 		value = $scope.document['data'][$scope.attribute['id']]
-		# TODO: formatting
 		$scope.value = value
 ])
