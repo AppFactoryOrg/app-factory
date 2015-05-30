@@ -32,6 +32,8 @@
 			value: 250
 			component: 'option'
 			icon: 'fa-list-ol'
+			configuration:
+				'options': []
 
 		'Document':			
 			value: 300
