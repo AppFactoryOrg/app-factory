@@ -18,6 +18,7 @@
 						input.form-control(
 							type="text"
 							ng-model="attribute.name"
+							af-enter="submit()"
 							name="name"
 							required
 						)
@@ -27,6 +28,7 @@
 							ng-model="attribute.data_type"
 							ng-options="type.value as type.name for type in attributeDataTypes"
 							ng-change="updateConfiguration()"
+							af-enter="submit()"
 							name="data_type"
 							required
 						)
@@ -35,6 +37,7 @@
 						select.form-control(
 							ng-model="attribute.value_type"
 							ng-options="type.value as type.name for type in attributeValueTypes"
+							af-enter="submit()"
 							name="value_type"
 							required
 						)
@@ -49,8 +52,8 @@
 			div(ng-show="form.value_type.$error.required") Value Type is required.
 
 	.modal-footer
-		button.btn.btn-default(ng-click="$dismiss()") Cancel
-		button.btn.btn-primary(ng-click="submit()") 
+		button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+		button.btn.btn-primary(type="button" ng-click="submit()") 
 			span(ng-if="createMode") Add
 			span(ng-hide="createMode") Save
 			i.fa.fa-chevron-right

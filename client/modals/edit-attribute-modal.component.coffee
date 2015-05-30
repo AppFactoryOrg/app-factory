@@ -23,7 +23,8 @@ angular.module('app-factory').controller('EditAttributeModalCtrl', ['$scope', '$
 
 	$scope.shouldShowConfiguration = ->
 		type = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': $scope.attribute['data_type'])
-		return type['configuration']?
+		return true if type?['configuration']?
+		return false
 
 	$scope.submit = ->
 		if $scope.form.$invalid

@@ -17,6 +17,7 @@
 			input.form-control.input-sm.option-name(
 				type="text"
 				ng-model="newOption.name"
+				af-enter="addOption()"
 			)
 			button.btn.btn-xs.btn-success.add-option-btn(type="button" ng-click="addOption()")
 				i.fa.fa-plus
