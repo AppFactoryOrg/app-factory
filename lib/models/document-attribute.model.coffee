@@ -52,16 +52,7 @@
 			value: 500
 			component: 'address'
 			icon: 'fa-home'
-
-		'Phone Number':		
-			value: 550
-			component: 'phonenumber'
-			icon: 'fa-phone'
-
-		'Email':			
-			value: 600
-			component: 'email'
-			icon: 'fa-at'
+			
 
 	VALUE_TYPE:
 		'Input':			{value: 100,	icon: 'fa-edit'}
