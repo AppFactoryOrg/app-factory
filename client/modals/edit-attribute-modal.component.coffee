@@ -14,13 +14,16 @@ angular.module('app-factory').controller('EditAttributeModalCtrl', ['$scope', '$
 	$scope.attributeValueTypes = Utils.mapToArray(DocumentAttribute.VALUE_TYPE)
 	$scope.isEdit = attribute?
 
-	if attribute?
-		$scope.attribute = _.clone(attribute)
-	else
-		$scope.attribute =
-			'name': null
-			'data_type': null
-			'value_type': null
+	$scope.updateConfiguration = ->
+		type = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': $scope.attribute['data_type'])
+		if type?['configuration']?
+			$scope.attribute['configuration'] = _.clone(type['configuration'])
+		else
+			delete $scope.attribute['configuration']
+
+	$scope.shouldShowConfiguration = ->
+		type = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': $scope.attribute['data_type'])
+		return type['configuration']?
 
 	$scope.submit = ->
 		if $scope.form.$invalid
@@ -31,4 +34,12 @@ angular.module('app-factory').controller('EditAttributeModalCtrl', ['$scope', '$
 
 		$modalInstance.close($scope.attribute)
 
+	# Initialize
+	if attribute?
+		$scope.attribute = _.clone(attribute)
+	else
+		$scope.attribute =
+			'name': null
+			'data_type': null
+			'value_type': null
 ])

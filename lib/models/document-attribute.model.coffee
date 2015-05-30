@@ -66,7 +66,6 @@
 		'Routine':			{value: 200,	icon: 'fa-gear'}
 
 	new: (parameters) ->
-		debugger
 		type = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': parameters['data_type'])
 		throw new Error('Unrecognized DocumentAttribute.DATA_TYPE specified') unless type?
 

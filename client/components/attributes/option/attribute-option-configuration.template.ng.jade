@@ -1,0 +1,37 @@
+.attribute-option-configuration
+	.form-group
+		label Options
+		.attribute-configuration-options#attribute-sort-bounds(as-sortable="sortableOptions" ng-model="attribute.configuration.options")
+			.option.clearfix(ng-repeat="option in attribute.configuration.options" ng-if="option.active" as-sortable-item)
+				.input-group.input-group-sm
+					input.form-control.input-sm.option-name(
+						type="text"
+						ng-model="option.name"
+					)
+					.input-group-btn
+						button.btn.btn-xs.btn-default.sorting-handle(type="button" as-sortable-item-handle)
+							i.fa.fa-arrows
+				button.btn.btn-xs.btn-default.remove-option-btn(type="button" ng-click="removeOption(option)")
+					i.fa.fa-trash
+		.attribute-configuration-add-option.clearfix
+			input.form-control.input-sm.option-name(
+				type="text"
+				ng-model="newOption.name"
+			)
+			button.btn.btn-xs.btn-success.add-option-btn(type="button" ng-click="addOption()")
+				i.fa.fa-plus
+		
+		a(ng-click="toggleArchivedOptions()" ng-show="hasArchivedOptions()")
+			span(ng-hide="shouldShowArchivedOptions") Show Archived Options
+			span(ng-show="shouldShowArchivedOptions") Hide Archived Options
+		
+		.archived(ng-show="shouldShowArchivedOptions")
+			label Archived Options
+			.attribute-configuration-options
+				.option.clearfix(ng-repeat="option in attribute.configuration.options" ng-if="!option.active")
+					input.form-control.input-sm.option-name(
+						type="text"
+						ng-model="option.name"
+					)
+					button.btn.btn-xs.btn-default.remove-option-btn(type="button" ng-click="unarchiveOption(option)")
+						i.fa.fa-plus

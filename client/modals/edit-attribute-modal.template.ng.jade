@@ -11,30 +11,37 @@
 			name="form"
 			novalidate
 		)
-			.form-group
-				label Name
-				input.form-control(
-					type="text"
-					ng-model="attribute.name"
-					name="name"
-					required
-				)
-			.form-group
-				label Data Type
-				select.form-control(
-					ng-model="attribute.data_type"
-					ng-options="type.value as type.name for type in attributeDataTypes"
-					name="data_type"
-					required
-				)
-			.form-group
-				label Value Type
-				select.form-control(
-					ng-model="attribute.value_type"
-					ng-options="type.value as type.name for type in attributeValueTypes"
-					name="value_type"
-					required
-				)
+			tabset
+				tab(heading="General")
+					.form-group
+						label Name
+						input.form-control(
+							type="text"
+							ng-model="attribute.name"
+							name="name"
+							required
+						)
+					.form-group
+						label Data Type
+						select.form-control(
+							ng-model="attribute.data_type"
+							ng-options="type.value as type.name for type in attributeDataTypes"
+							ng-change="updateConfiguration()"
+							name="data_type"
+							required
+						)
+					.form-group
+						label Value Type
+						select.form-control(
+							ng-model="attribute.value_type"
+							ng-options="type.value as type.name for type in attributeValueTypes"
+							name="value_type"
+							required
+						)
+				tab(heading="Configuration" ng-show="shouldShowConfiguration()")
+					af-attribute-configuration(
+						attribute="attribute"
+					)
 
 		.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
 			div(ng-show="form.name.$error.required") Name is required.

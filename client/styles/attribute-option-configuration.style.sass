@@ -1,0 +1,35 @@
+@import "_mixins"
+
+.attribute-option-configuration
+
+.attribute-configuration-options,
+.attribute-configuration-add-option
+	width: 250px
+	position: relative
+
+	.option
+		margin-bottom: 3px
+
+		> .option-name,
+		> .input-group
+			float: left
+			width: 220px
+
+	.remove-option-btn,
+	.add-option-btn
+		float: right
+		position: relative
+		top: 4px
+		width: 24px
+		margin-left: 4px
+
+.attribute-configuration-add-option
+	margin-top: 10px
+	margin-bottom: 15px
+
+	input
+		color: lighten(grey, 15%)
+
+	.option-name
+		float: left
+		width: 220px
