@@ -28,6 +28,11 @@
 			component: 'duration'
 			icon: 'fa-clock'
 
+		'Option':			
+			value: 250
+			component: 'option'
+			icon: 'fa-list-ol'
+
 		'Document':			
 			value: 300
 			component: 'document'
