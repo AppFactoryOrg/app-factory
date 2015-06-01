@@ -1,0 +1,15 @@
+.attribute-filter.attribute-option-filter(ng-class="{'has-value': hasValue()}")
+	label.control-label(ng-bind="::attribute.name")
+	.controls
+		select.form-control.input-sm.operator(
+			ng-options="operatorOption for operatorOption in operatorOptions"
+			ng-model="operator"
+			ng-change="updateFilterValue()"
+		)
+		select.form-control.input-sm.value(
+			ng-options="option.id as option.name for option in options"
+			ng-model="value"
+			ng-change="updateFilterValue()"
+		)
+	button.btn.btn-xs.btn-link.close(type="button" ng-click="clear()" ng-show="hasValue()")
+		i.fa.fa-close

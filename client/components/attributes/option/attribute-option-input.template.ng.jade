@@ -1,0 +1,7 @@
+.form-group
+	label.control-label.col-lg-4(ng-bind="::attribute.name")
+	.col-lg-8
+		select.form-control(
+			ng-options="option.id as option.name for option in options"
+			ng-model="document.data[attribute['id']]"
+		)
