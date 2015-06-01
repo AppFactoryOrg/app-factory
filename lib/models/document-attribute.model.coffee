@@ -27,6 +27,9 @@
 			value: 300
 			component: 'document'
 			icon: 'fa-file-o'
+			configuration:
+				'document_schema_id': null
+				'identifying_attributes': []
 
 	VALUE_TYPE:
 		'Input':			{value: 100,	icon: 'fa-edit'}

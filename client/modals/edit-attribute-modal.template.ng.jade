@@ -28,6 +28,7 @@
 							ng-model="attribute.data_type"
 							ng-options="type.value as type.name for type in attributeDataTypes"
 							ng-change="updateConfiguration()"
+							ng-disabled="isEdit"
 							af-enter="submit()"
 							name="data_type"
 							required
@@ -37,6 +38,7 @@
 						select.form-control(
 							ng-model="attribute.value_type"
 							ng-options="type.value as type.name for type in attributeValueTypes"
+							ng-disabled="isEdit"
 							af-enter="submit()"
 							name="value_type"
 							required
