@@ -27,6 +27,44 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.documents = []
 
+		$scope.shouldShowEditButtons = ->
+			return true if $scope.widget['configuration']['show_edit_buttons']
+			return false
+
+		$scope.shouldShowSelectButton = ->
+			return true if $scope.widget['configuration']['show_select_button']
+			return false
+
+		$scope.shouldShowMoreLink = ->
+			return false if $scope.loading
+			return false unless $scope.documents?
+			return false if $scope.documents.length < $scope.limit
+			return false if $scope.documents.length >= Config['MAX_TABLE_RECORDS']
+			return true
+
+		$scope.shouldShowTooMuchDataWarning = ->
+			return false if $scope.loading
+			return true if $scope.documents.length >= Config['MAX_TABLE_RECORDS']
+			return false
+
+		$scope.toggleSortPanel = ->
+			$scope.$broadcast('TOGGLE_SORT_PANEL')
+
+		$scope.toggleFilterPanel = ->
+			$scope.$broadcast('TOGGLE_FILTER_PANEL')
+
+		$scope.loadMore = ->
+			$scope.limit += 20 unless $scope.limit >= Config['MAX_TABLE_RECORDS']
+
+		$scope.retry = ->
+			switch data_source['type']
+				when ScreenWidget.DATA_SOURCE_TYPE['Document'].value
+					$scope.loading = false
+					if $scope.limit is INITIAL_LIMIT
+						$scope.limit = INITIAL_LIMIT+1
+					else
+						$scope.limit = INITIAL_LIMIT
+
 		$scope.addDocument = ->
 			documentSchema = $scope.documentSchema
 			modal = $modal.open(new EditDocumentModal({documentSchema}))
@@ -47,35 +85,8 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return unless confirm('Are you sure you want to delete this record? This action cannot be undone.')
 			$meteor.call('Document.delete', document['_id'])
 
-		$scope.loadMore = ->
-			$scope.limit += 20 unless $scope.limit >= Config['MAX_TABLE_RECORDS']
-
-		$scope.shouldShowMoreLink = ->
-			return false if $scope.loading
-			return false unless $scope.documents?
-			return false if $scope.documents.length < $scope.limit
-			return false if $scope.documents.length >= Config['MAX_TABLE_RECORDS']
-			return true
-
-		$scope.shouldShowTooMuchDataWarning = ->
-			return false if $scope.loading
-			return true if $scope.documents.length >= Config['MAX_TABLE_RECORDS']
-			return false
-
-		$scope.toggleSortPanel = ->
-			$scope.$broadcast('TOGGLE_SORT_PANEL')
-
-		$scope.toggleFilterPanel = ->
-			$scope.$broadcast('TOGGLE_FILTER_PANEL')
-
-		$scope.retry = ->
-			switch data_source['type']
-				when ScreenWidget.DATA_SOURCE_TYPE['Document'].value
-					$scope.loading = false
-					if $scope.limit is INITIAL_LIMIT
-						$scope.limit = INITIAL_LIMIT+1
-					else
-						$scope.limit = INITIAL_LIMIT
+		$scope.selectDocument = (document) ->
+			$scope.$emit('DOCUMENT_SELECTED', document)
 
 		# Initialize
 		data_source = $scope.widget['configuration']['data_source']

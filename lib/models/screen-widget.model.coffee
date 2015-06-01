@@ -13,6 +13,8 @@
 			component: 'table'
 			icon: 'fa-table'
 			configuration:
+				'show_edit_buttons': true
+				'show_select_button': false
 				'data_source':
 					'type': null
 					'document_schema_id': null

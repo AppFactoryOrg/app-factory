@@ -1,7 +1,7 @@
-.preview-html-modal
-	.modal-header
-		.modal-title Preview
+.select-document-modal
 	.modal-body
-		div(ng-bind-html="html")
+		af-app-widget-table(
+			widget="widget"
+		)
 	.modal-footer
 		button.btn.btn-default(type="button" ng-click="$dismiss()") Close

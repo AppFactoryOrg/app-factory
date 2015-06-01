@@ -1,0 +1,7 @@
+.attribute-document-configuration
+	.form-group
+		label Document Type
+		select.form-control(
+			ng-options="documentSchema._id as documentSchema.name for documentSchema in documentSchemas"
+			ng-model="attribute.configuration.document_schema_id"
+		)

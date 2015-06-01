@@ -56,13 +56,14 @@
 									)
 								td.controls(width="100")
 									.pull-right(ng-show="document.$showButtons")
-										button.btn.btn-xs.btn-primary(ng-click="viewDocument(document)")
+										button.btn.btn-xs.btn-default(ng-click="viewDocument(document)")
 											i.fa.fa-search
-										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)")
+										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)" ng-show="shouldShowEditButtons()")
 											i.fa.fa-pencil
-										button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)")
+										button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)" ng-show="shouldShowEditButtons()")
 											i.fa.fa-trash
-
+										button.btn.btn-xs.btn-primary(ng-click="selectDocument(document)" ng-show="shouldShowSelectButton()")
+											i.fa.fa-chevron-right
 							tr(ng-hide="documents.length")
 								td(colspan="99")
 									.text-muted No Data
