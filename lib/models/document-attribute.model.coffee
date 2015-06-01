@@ -6,60 +6,27 @@
 			component: 'text'
 			icon: 'fa-font'
 
-		'Content':
-			value: 125
-			component: 'content'
-			icon: 'fa-paragraph'
-
 		'Number':
 			value: 150
 			component: 'number'
 			icon: 'fa-calculator'
-			configuration: 
-				'format': null
 
-		'Date':				
+		'Date':
 			value: 200
 			component: 'date'
 			icon: 'fa-calendar'
 
-		'Duration':			
-			value: 225
-			component: 'duration'
-			icon: 'fa-clock'
-
-		'Option':			
+		'Option':
 			value: 250
 			component: 'option'
 			icon: 'fa-list-ol'
 			configuration:
 				'options': []
 
-		'Document':			
+		'Document':
 			value: 300
 			component: 'document'
 			icon: 'fa-file-o'
-
-		'User':				
-			value: 350
-			component: 'user'
-			icon: 'fa-user'
-
-		'Image':			
-			value: 400
-			component: 'image'
-			icon: 'fa-image'
-
-		'Coordinates':		
-			value: 450
-			component: 'coordinates'
-			icon: 'fa-map'
-
-		'Address':			
-			value: 500
-			component: 'address'
-			icon: 'fa-home'
-			
 
 	VALUE_TYPE:
 		'Input':			{value: 100,	icon: 'fa-edit'}
