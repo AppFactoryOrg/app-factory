@@ -1,4 +1,4 @@
-angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 'SelectDocumentModal', ($modal, SelectDocumentModal) ->
+angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 'SelectDocumentModal', 'DocumentUtils', ($modal, SelectDocumentModal, DocumentUtils) ->
 	restrict: 'E'
 	templateUrl: 'client/components/attributes/document/attribute-document-filter.template.html'
 	replace: true
@@ -23,28 +23,15 @@ angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 
 				$scope.updateFilterValue()
 				$scope.loadDocument()
 
-		$scope.fillDocument = (document) ->
-			documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
-			attributeId = documentSchema['attributes'][0]['id']
-			$scope.documentDisplayName = document['data'][attributeId]
-
 		$scope.loadDocument = ->
 			documentId = $scope.value
-			unless documentId?
-				$scope.documentDisplayName = ''
-				return
-
-			document = Document.db.findOne(documentId)
-			if document?
-				$scope.fillDocument(document)
-			else
-				console.warn('Document not found for Attribute, fetching...')
-				$meteor.subscribe('Document', documentId).then ->
-					document = Document.db.findOne(documentId)
-					if document?
-						$scope.fillDocument(document)
-					else
-						console.warn('Document not found for Attribute, even after fetching.')
+			DocumentUtils.getById(documentId)
+				.then (document) ->
+					documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
+					attributeId = documentSchema['attributes'][0]['id']
+					$scope.documentDisplayName = document['data'][attributeId]
+				.catch ->
+					$scope.documentDisplayName = null
 
 		$scope.hasValue = ->
 			return true if $scope.value isnt null
