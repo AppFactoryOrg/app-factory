@@ -2,7 +2,7 @@
 	label.control-label.col-lg-4(ng-bind="::attribute.name")
 	.col-lg-8
 		.input-group
-			.form-control-static(ng-bind="getDocumentDisplayName()")
+			.form-control-static(ng-bind="documentDisplayName")
 			.input-group-btn
 				button.btn.btn-default(ng-click="lookupDocument()" type="button")
 					i.fa.fa-search
