@@ -25,11 +25,9 @@ angular.module('app-factory').directive('afAttributeDocumentInput', ['$modal', '
 
 		$scope.loadDocument = ->
 			documentId = $scope.document['data'][$scope.attribute['id']]
-			DocumentUtils.getById(documentId)
-				.then (document) ->
-					documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
-					attributeId = documentSchema['attributes'][0]['id']
-					$scope.documentDisplayName = document['data'][attributeId]
+			DocumentUtils.getPrimaryAttributeValue(documentId)
+				.then (value) ->
+					$scope.documentDisplayName = value
 				.catch ->
 					$scope.documentDisplayName = null
 

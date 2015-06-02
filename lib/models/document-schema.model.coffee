@@ -6,13 +6,15 @@
 		'name'
 		'description'
 		'attributes'
+		'primary_attribute_id'
 	]
 
 	new: ->
-		'name': 			null
-		'description':		null
-		'attributes':		[]
-		'blueprint_id': 	null
+		'name': 					null
+		'description':				null
+		'attributes':				[]
+		'primary_attribute_id': 	null
+		'blueprint_id': 			null
 
 	getSortOptions: (documentSchema) ->
 		options = []

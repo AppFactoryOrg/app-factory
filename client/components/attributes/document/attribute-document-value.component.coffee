@@ -8,11 +8,9 @@ angular.module('app-factory').directive('afAttributeDocumentValue', ['DocumentUt
 	link: ($scope) ->
 		
 		documentId = $scope.document['data'][$scope.attribute['id']]
-		DocumentUtils.getById(documentId)
-			.then (document) ->
-				documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
-				attributeId = documentSchema['attributes'][0]['id']
-				$scope.value = document['data'][attributeId]
+		DocumentUtils.getPrimaryAttributeValue(documentId)
+			.then (value) ->
+				$scope.value = value
 			.catch ->
 				$scope.value = null
 ])

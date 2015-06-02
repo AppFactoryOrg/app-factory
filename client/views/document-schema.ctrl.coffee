@@ -43,4 +43,7 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 		Utils.removeFromArray(attribute, $scope.documentSchema.attributes)
 		$scope.selectedAttribute = null if $scope.selectedAttribute is attribute
 
+	$scope.getPrimaryAttributeName = ->
+		attribute = _.find($scope.documentSchema['attributes'], {'id': $scope.documentSchema['primary_attribute_id']})
+		return attribute?.name
 ])

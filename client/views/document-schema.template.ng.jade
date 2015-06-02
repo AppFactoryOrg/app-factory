@@ -54,3 +54,18 @@
 						span Add Attribute
 			
 		.col-lg-7
+			.ibox
+				.ibox-title
+					h5 Options
+				.ibox-content
+					.document-schema-options
+						.document-schema-option(ng-switch="editMode")
+							label Primary Attribute
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="documentSchema.primary_attribute_id"
+								ng-options="attribute.id as attribute.name for attribute in documentSchema.attributes"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								span(ng-bind="getPrimaryAttributeName()")
+								span(ng-hide="getPrimaryAttributeName()") (none)

@@ -25,13 +25,11 @@ angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 
 
 		$scope.loadDocument = ->
 			documentId = $scope.value
-			DocumentUtils.getById(documentId)
-				.then (document) ->
-					documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
-					attributeId = documentSchema['attributes'][0]['id']
-					$scope.documentDisplayName = document['data'][attributeId]
+			DocumentUtils.getPrimaryAttributeValue(documentId)
+				.then (value) ->
+					$scope.documentDisplayName = value
 				.catch ->
-					$scope.documentDisplayName = null
+					$scope.documentDisplayName = ''
 
 		$scope.hasValue = ->
 			return true if $scope.value isnt null
