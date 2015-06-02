@@ -30,6 +30,13 @@
 			configuration:
 				'document_schema_id': null
 
+		'Collection':
+			value: 400
+			component: 'collection'
+			icon: 'fa-files-o'
+			configuration:
+				'document_schema_id': null
+
 	VALUE_TYPE:
 		'Input':			{value: 100,	icon: 'fa-edit'}
 		'Routine':			{value: 200,	icon: 'fa-gear'}
