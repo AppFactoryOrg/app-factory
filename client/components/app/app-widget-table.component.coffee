@@ -117,11 +117,12 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 								$scope.shouldShowLoadingTimeout = true
 						, LOADING_TIMEOUT)
 
-					$meteor.subscribe('Document', filter, paging)
+					$meteor.subscribe('Documents', filter, paging)
 						.then ->
 							$scope.documents = $meteor.collection -> Document.db.find(filter, paging)
-						.catch ->
+						.catch (error) ->
 							$scope.error = true
+							console.error(error)
 						.finally ->
 							$scope.loading = false
 
