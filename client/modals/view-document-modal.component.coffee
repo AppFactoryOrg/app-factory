@@ -1,14 +1,16 @@
 angular.module('app-factory').factory 'ViewDocumentModal', ->
-	return ({document, documentSchema}) ->
+	return ({document, documentSchema, options}) ->
 		templateUrl: 'client/modals/view-document-modal.template.html'
-		controller: 'ViewDocumentCtrl'
+		controller: 'ViewDocumentModalCtrl'
 		resolve:
 			'document': -> document
 			'documentSchema': -> documentSchema
+			'options': -> options
 
-angular.module('app-factory').controller('ViewDocumentCtrl', ['$scope', '$meteor', '$modal', '$modalInstance', 'document', 'documentSchema', 'EditDocumentModal', ($scope, $meteor, $modal, $modalInstance, document, documentSchema, EditDocumentModal) ->
+angular.module('app-factory').controller('ViewDocumentModalCtrl', ['$scope', '$meteor', '$modal', '$modalInstance', 'document', 'documentSchema', 'options', 'EditDocumentModal', ($scope, $meteor, $modal, $modalInstance, document, documentSchema, options, EditDocumentModal) ->
 	$scope.documentSchema = documentSchema
 	$scope.document = document
+	$scope.options = options
 	
 	$scope.editDocument = ->
 		documentSchema = $scope.documentSchema

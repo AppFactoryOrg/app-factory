@@ -10,10 +10,10 @@
 		)
 
 	.modal-footer
-		button.btn.btn-default.pull-left(ng-click="deleteDocument()") 
+		button.btn.btn-default.pull-left(ng-click="deleteDocument()" ng-hide="options.deleteDisabled") 
 			span Delete
 			i.fa.fa-trash
 		button.btn.btn-default(ng-click="$dismiss()") Close
-		button.btn.btn-primary(ng-click="editDocument()") 
+		button.btn.btn-primary(ng-click="editDocument()" ng-hide="options.editDisabled") 
 			span Edit
 			i.fa.fa-pencil

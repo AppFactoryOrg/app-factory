@@ -6,20 +6,22 @@ angular.module('app-factory').factory('DocumentUtils', ['$meteor', '$q', ($meteo
 
 		document = Document.db.findOne(documentId)
 		if document?
-			resolve(document)
+			documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
+			resolve({document, documentSchema})
 		else
 			console.warn('Document not found for Attribute, fetching...')
 			$meteor.subscribe('Document', documentId).then ->
 				document = Document.db.findOne(documentId)
 				if document?
-					resolve(document)
+					documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
+					resolve({document, documentSchema})
 				else
 					console.warn('Document not found for Attribute, even after fetching.')
 					reject()
 
 	getPrimaryAttributeValue: (documentId) -> $q (resolve, reject) =>
 		@getById(documentId)
-			.then (document) ->
+			.then ({document}) ->
 				documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])
 				attribute = _.find(documentSchema['attributes'], {'id': documentSchema['primary_attribute_id']})
 				reject() unless attribute?
