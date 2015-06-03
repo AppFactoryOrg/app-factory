@@ -1,7 +1,7 @@
 angular.module('app-factory').controller('AccountCtrl', ['$scope', '$meteor', '$state', '$modal', 'GenericModal', ($scope, $meteor, $state, $modal, GenericModal) ->
 
-	$meteor.subscribe('Application')
-	$scope.applications = $meteor.collection -> Application.db.find()
+	$scope.$meteorSubscribe('Application')
+	$scope.applications = $scope.$meteorCollection -> Application.db.find()
 
 	$('body').removeClass()
 	$('body').addClass('boxed-layout')

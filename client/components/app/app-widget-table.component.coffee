@@ -129,9 +129,9 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 								$scope.shouldShowLoadingTimeout = true
 						, LOADING_TIMEOUT)
 
-					$meteor.subscribe('Documents', filter, paging)
+					$scope.$meteorSubscribe('Documents', filter, paging)
 						.then ->
-							$scope.documents = $meteor.collection -> Document.db.find(filter, paging)
+							$scope.documents = $scope.$meteorCollection -> Document.db.find(filter, paging)
 						.catch (error) ->
 							$scope.error = true
 							console.error(error)
@@ -161,7 +161,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 							$scope.shouldShowLoadingTimeout = true
 					, LOADING_TIMEOUT)
 
-					$meteor.subscribe('Documents', filter)
+					$scope.$meteorSubscribe('Documents', filter)
 						.then ->
 							allDocuments = Document.db.find(filter).fetch()
 							collectionDocuments = []

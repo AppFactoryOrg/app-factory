@@ -3,8 +3,8 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 	$scope.application = $rootScope.application = application
 	$scope.environment = $rootScope.environment = environment
 	$scope.blueprint = $rootScope.blueprint = blueprint
-	$scope.documentSchemas = $meteor.collection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
-	$scope.screenSchemas = $meteor.collection -> ScreenSchema.db.find('blueprint_id': $scope.blueprint['_id'])
+	$scope.documentSchemas = $scope.$meteorCollection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
+	$scope.screenSchemas = $scope.$meteorCollection -> ScreenSchema.db.find('blueprint_id': $scope.blueprint['_id'])
 	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
 
 	$scope.documentsExpanded = $state.includes('factory.document')

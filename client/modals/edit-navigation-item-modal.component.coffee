@@ -10,7 +10,7 @@ angular.module('app-factory').controller 'EditNavigationItemCtrl', ['$scope', '$
 	$scope.showValidationErrors = false
 	$scope.isEdit = navigationItem?
 	$scope.navigationItemTypes = Utils.mapToArray(NavigationItem.TYPE)
-	$scope.screens = $meteor.collection -> ScreenSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
+	$scope.screens = $scope.$meteorCollection -> ScreenSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
 
 	if navigationItem?
 		$scope.result = _.clone(navigationItem)

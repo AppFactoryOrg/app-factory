@@ -10,7 +10,7 @@ angular.module('app-factory').factory('DocumentUtils', ['$meteor', '$q', ($meteo
 			resolve({document, documentSchema})
 		else
 			console.warn('Document not found for Attribute, fetching...')
-			$meteor.subscribe('Document', documentId).then ->
+			$scope.$meteorSubscribe('Document', documentId).then ->
 				document = Document.db.findOne(documentId)
 				if document?
 					documentSchema = DocumentSchema.db.findOne(document['document_schema_id'])

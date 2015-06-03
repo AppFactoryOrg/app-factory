@@ -3,7 +3,7 @@ angular.module('app-factory').controller('FactoryLayoutCtrl', ['$scope', '$rootS
 	$scope.originalLayout = $rootScope.blueprint['layout']
 	$scope.layout = $rootScope.blueprint['layout']
 	$scope.navigationItemTypes = Utils.mapToArray(NavigationItem.TYPE)
-	$scope.screens = $meteor.collection -> ScreenSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
+	$scope.screens = $scope.$meteorCollection -> ScreenSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
 	$scope.editMode = false
 	$scope.sortableOptions =
 		containment: '#sort-bounds'

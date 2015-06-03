@@ -9,7 +9,7 @@ angular.module('app-factory').controller 'ConfigureTableWidgetCtrl', ['$scope', 
 
 	$scope.showValidationErrors = false
 	$scope.dataSourceTypes = Utils.mapToArray(ScreenWidget.DATA_SOURCE_TYPE)
-	$scope.documentSchemas = $meteor.collection -> DocumentSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
+	$scope.documentSchemas = $scope.$meteorCollection -> DocumentSchema.db.find('blueprint_id': $rootScope.blueprint['_id'])
 	$scope.result = 
 		'name': widget['name']
 		'data_source': _.clone(widget['configuration']['data_source'])
