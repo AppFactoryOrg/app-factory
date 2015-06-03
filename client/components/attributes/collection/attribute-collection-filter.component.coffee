@@ -9,7 +9,7 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 
 		key = "data.#{$scope.attribute['id']}"
 
-		$scope.operatorOptions = ['is']
+		$scope.operatorOptions = ['contains']
 		$scope.operator = null
 		$scope.value = null
 		$scope.documentDisplayName = ''
@@ -19,7 +19,7 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 			documentSchema = DocumentSchema.db.findOne(documentSchemaId)
 			$modal.open(new SelectDocumentModal(documentSchema)).result.then (document) ->
 				$scope.value = document['_id']
-				$scope.operator = 'is'
+				$scope.operator = 'contains'
 				$scope.updateFilterValue()
 				$scope.loadDocument()
 
@@ -47,7 +47,7 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 			operator = $scope.operator
 
 			if not operator? and value?
-				$scope.operator = operator = 'is'
+				$scope.operator = operator = 'contains'
 
 			$scope.filterValue[key] = value
 
@@ -59,7 +59,7 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 				return
 
 			$scope.value = $scope.filterValue[key]
-			$scope.operator = 'is'
+			$scope.operator = 'contains'
 			$scope.loadDocument()
 		)
 ])
