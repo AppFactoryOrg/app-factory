@@ -23,6 +23,7 @@ angular.module('app-factory').controller('ViewCollectionModalCtrl', ['$scope', '
 	$scope.widget['configuration']['show_create_button'] = false
 	$scope.widget['configuration']['show_edit_buttons'] = false
 	$scope.widget['configuration']['show_select_button'] = false
+	$scope.widget['configuration']['allow_reordering'] = options['edit'] is true
 
 	$scope.addItem =->
 		$modal.open(new SelectDocumentModal(documentSchema)).result.then (document) ->

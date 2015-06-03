@@ -18,6 +18,7 @@
 				'show_create_button': true
 				'show_edit_buttons': true
 				'show_select_button': false
+				'allow_reordering': false
 				'data_source':
 					'type': null
 					'document_schema_id': null

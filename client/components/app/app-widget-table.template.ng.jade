@@ -41,13 +41,14 @@
 							tr
 								th(ng-repeat="attribute in documentSchema.attributes")
 									.row-heading(ng-bind="::attribute.name")
-								th()
+								th
 									.row-heading
-						tbody
+						tbody#sort-bounds(as-sortable="sortableOptions" is-disabled="!shouldAllowReordering()" ng-model="documents")
 							tr(
 								ng-repeat="document in documents"
 								ng-mouseenter="document.$showButtons=true"
 								ng-mouseleave="document.$showButtons=false"
+								as-sortable-item
 							)
 								td(ng-repeat="attribute in documentSchema.attributes" width="{{100/documentSchema.attributes.length}}%")
 									af-attribute-value(
@@ -58,13 +59,16 @@
 									.pull-right(ng-show="document.$showButtons")
 										button.btn.btn-xs.btn-default(ng-click="viewDocument(document)")
 											i.fa.fa-search
+										button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle ng-show="shouldAllowReordering()")
+											i.fa.fa-arrows
 										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)" ng-show="shouldShowEditButtons()")
 											i.fa.fa-pencil
 										button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)" ng-show="shouldShowEditButtons()")
 											i.fa.fa-trash
 										button.btn.btn-xs.btn-primary(ng-click="selectDocument(document)" ng-show="shouldShowSelectButton()")
 											i.fa.fa-chevron-right
-							tr(ng-hide="documents.length")
+						tbody(ng-hide="documents.length")
+							tr
 								td(colspan="99")
 									.text-muted No Data
 

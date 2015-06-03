@@ -23,6 +23,9 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.loadingStartedAt = null
 		$scope.shouldShowLoadingTimeout = false
 
+		$scope.sortableOptions =
+			orderChanged: -> $scope.collectionWasReordered()
+
 		$scope.documents = []
 
 		$scope.shouldShowFilterOptions = ->
@@ -45,6 +48,10 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.shouldShowSelectButton = ->
 			return true if $scope.widget['configuration']['show_select_button']
+			return false
+
+		$scope.shouldAllowReordering = ->
+			return true if $scope.widget['configuration']['allow_reordering']
 			return false
 
 		$scope.shouldShowMoreLink = ->
@@ -99,6 +106,13 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 						$scope.limit = INITIAL_LIMIT+1
 					else
 						$scope.limit = INITIAL_LIMIT
+
+		$scope.collectionWasReordered = ->
+			console.warn 'refreshing collection'
+			_.remove($scope.collection)
+			newCollection = _.pluck($scope.documents, '_id')
+			newCollection.forEach (id) ->
+				$scope.collection.push(id)
 
 		# Initialize
 		dataSource = $scope.widget['configuration']['data_source']
