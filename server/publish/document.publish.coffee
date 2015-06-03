@@ -1,19 +1,19 @@
 Meteor.publish 'Document', (document_id) ->
 	return Document.db.find('_id': document_id)
 
-Meteor.publishComposite 'Documents', ({document_schema_id, environment_id}, paging) ->
-	documentSchema = DocumentSchema.db.findOne(document_schema_id)
+Meteor.publishComposite 'Documents', (filter, paging) ->
+	throw new Error('Filter parameter is required') unless filter?
+	throw new Error('Filter parameter requires environment_id attribute') unless filter['environment_id']?
+	throw new Error('Filter parameter requires document_schema_id attribute') unless filter['document_schema_id']?
+
+	documentSchema = DocumentSchema.db.findOne(filter['document_schema_id'])
 	childDocumentAttributesId = _.pluck(_.filter(documentSchema['attributes'], {'data_type': DocumentAttribute.DATA_TYPE['Document'].value}), 'id')
 
-	return {
+	return { 
 		find: ->
-			throw new Error('Document subscription requires paging parameter') unless paging?
-			throw new Error('Document subscription requires paging parameter with limit') unless _.isNumber(paging['limit'])
-			throw new Error('Document subscription requires paging parameter with sort') unless _.isObject(paging['sort'])
-			
+			paging = {'limit': Config['MAX_TABLE_RECORDS']} unless paging?
 			paging['limit'] = Config['MAX_TABLE_RECORDS'] if paging['limit'] > Config['MAX_TABLE_RECORDS']
-
-			return Document.db.find({'environment_id': environment_id, 'document_schema_id': document_schema_id}, paging)
+			return Document.db.find(filter, paging)
 
 		children: [
 			{

@@ -3,23 +3,23 @@
 		.ibox-title.header
 			h5(ng-bind="::widget.name")
 			.controls
-				.filter-options(ng-if="filterableAttributes.length	")
+				.filter-options(ng-show="shouldShowFilterOptions()")
 					button.btn.btn-xs.btn-link(ng-click="toggleFilterPanel()" ng-disabled="loading")
 						i.fa.fa-filter
 					af-filter-panel(
 						filter="filter"
 						attributes="filterableAttributes"
 					)
-				.sort-options(ng-if="sortOptions.length")
+				.sort-options(ng-show="shouldShowSortOptions()")
 					button.btn.btn-xs.btn-link(ng-click="toggleSortPanel()" ng-disabled="loading")
 						i.fa.fa-sort-amount-asc
 					af-sort-panel(
 						sort="sort"
 						options="sortOptions"
 					)
-				button.add-document.btn.btn-xs.btn-primary(ng-click="addDocument()" ng-disabled="loading")
+				button.add-document.btn.btn-xs.btn-primary(ng-click="addDocument()" ng-disabled="loading" ng-show="shouldShowCreateButton()")
 					i.fa.fa-plus
-					span Add&nbsp;
+					span Create&nbsp;
 					span(ng-bind="::documentSchema.name")
 		.ibox-content.content
 			.loading-overlay(ng-show="loading")

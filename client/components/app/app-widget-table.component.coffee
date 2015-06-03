@@ -3,9 +3,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 	templateUrl: 'client/components/app/app-widget-table.template.html'
 	replace: true
 	scope:
-		'screenSchema': 	'='
 		'widget': 			'='
-		'parent':			'='
 	controller: 'CommonAppWidgetCtrl'
 	link: ($scope, $element) ->
 
@@ -26,6 +24,20 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.shouldShowLoadingTimeout = false
 
 		$scope.documents = []
+
+		$scope.shouldShowFilterOptions = ->
+			return false if $scope.filterableAttributes?.length is 0
+			return true if $scope.widget['configuration']['show_filter_options']
+			return false
+
+		$scope.shouldShowSortOptions = ->
+			return false if $scope.sortOptions?.length is 0
+			return true if $scope.widget['configuration']['show_sort_options']
+			return false
+
+		$scope.shouldShowCreateButton = ->
+			return true if $scope.widget['configuration']['show_create_button']
+			return false
 
 		$scope.shouldShowEditButtons = ->
 			return true if $scope.widget['configuration']['show_edit_buttons']
@@ -53,18 +65,6 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.toggleFilterPanel = ->
 			$scope.$broadcast('TOGGLE_FILTER_PANEL')
 
-		$scope.loadMore = ->
-			$scope.limit += 20 unless $scope.limit >= Config['MAX_TABLE_RECORDS']
-
-		$scope.retry = ->
-			switch data_source['type']
-				when ScreenWidget.DATA_SOURCE_TYPE['Document'].value
-					$scope.loading = false
-					if $scope.limit is INITIAL_LIMIT
-						$scope.limit = INITIAL_LIMIT+1
-					else
-						$scope.limit = INITIAL_LIMIT
-
 		$scope.addDocument = ->
 			documentSchema = $scope.documentSchema
 			modal = $modal.open(new EditDocumentModal({documentSchema}))
@@ -88,14 +88,26 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.selectDocument = (document) ->
 			$scope.$emit('DOCUMENT_SELECTED', document)
 
-		# Initialize
-		data_source = $scope.widget['configuration']['data_source']
-		switch data_source['type']
-			when ScreenWidget.DATA_SOURCE_TYPE['Document'].value
-				$scope.documentSchema = DocumentSchema.db.findOne(data_source['document_schema_id'])
-				$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
-				$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
+		$scope.loadMore = ->
+			$scope.limit += 20 unless $scope.limit >= Config['MAX_TABLE_RECORDS']
 
+		$scope.retry = ->
+			switch $scope.widget['configuration']['data_source']['type']
+				when ScreenWidget.DATA_SOURCE_TYPE['Database'].value
+					$scope.loading = false
+					if $scope.limit is INITIAL_LIMIT
+						$scope.limit = INITIAL_LIMIT+1
+					else
+						$scope.limit = INITIAL_LIMIT
+
+		# Initialize
+		dataSource = $scope.widget['configuration']['data_source']
+		$scope.documentSchema = DocumentSchema.db.findOne(dataSource['document_schema_id'])
+		$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
+		$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
+		
+		switch dataSource['type']
+			when ScreenWidget.DATA_SOURCE_TYPE['Database'].value
 				$meteor.autorun($scope, ->
 					limit = $scope.getReactively('limit')
 					sort = $scope.getReactively('sort')
@@ -129,6 +141,40 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 					$scope.lastLimit = limit
 					$scope.lastSort = sort
 					$scope.lastFilter = filter
+				)
+
+			when ScreenWidget.DATA_SOURCE_TYPE['Fixed'].value
+				$scope.collection = dataSource['collection']
+				$meteor.autorun($scope, ->
+					collection = $scope.getReactively('collection', true)
+					filter = 
+						'_id': {'$in': collection}
+						'environment_id': $rootScope.environment['_id']
+						'document_schema_id': $scope.documentSchema['_id']
+
+					startedAt = Date.now()
+					$scope.loading = true
+					$scope.loadingStartedAt = startedAt
+					$scope.shouldShowLoadingTimeout = false
+					$timeout(->
+						if $scope.loading is true and $scope.loadingStartedAt is startedAt
+							$scope.shouldShowLoadingTimeout = true
+					, LOADING_TIMEOUT)
+
+					$meteor.subscribe('Documents', filter)
+						.then ->
+							allDocuments = Document.db.find(filter).fetch()
+							collectionDocuments = []
+							collection.forEach (id) -> 
+								document = _.find(allDocuments, {'_id': id})
+								document = angular.copy(document)
+								collectionDocuments.push(document)
+							$scope.documents = collectionDocuments
+						.catch (error) ->
+							$scope.error = true
+							console.error(error)
+						.finally ->
+							$scope.loading = false
 				)
 
 		$scope.$on('SORT_UPDATED', (event, sort) ->

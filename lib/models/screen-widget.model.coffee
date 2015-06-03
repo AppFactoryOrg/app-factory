@@ -13,20 +13,15 @@
 			component: 'table'
 			icon: 'fa-table'
 			configuration:
+				'show_filter_options': true
+				'show_sort_options': true
+				'show_create_button': true
 				'show_edit_buttons': true
 				'show_select_button': false
 				'data_source':
 					'type': null
 					'document_schema_id': null
-
-		'List':
-			value: 200
-			component: 'list'
-			icon: 'fa-th-list'
-			configuration:
-				'data_source':
-					'type': null
-					'document_schema_id': null
+					'collection': null
 
 		'Content':
 			value: 250
@@ -54,7 +49,8 @@
 		'Horizontal': 	{value: 200}
 
 	DATA_SOURCE_TYPE:
-		'Document':		{value: 100}
+		'Database':		{value: 100}
+		'Fixed':		{value: 200}
 
 	new: (parameters) ->
 		type = _.findWhere(ScreenWidget.TYPE, 'value': parameters['type'])

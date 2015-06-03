@@ -15,8 +15,7 @@ angular.module('app-factory').controller 'ConfigureTableWidgetCtrl', ['$scope', 
 		'data_source': _.clone(widget['configuration']['data_source'])
 
 	$scope.shouldShowDocumentType = -> 
-		return true if $scope.result['data_source']?['type'] is ScreenWidget.DATA_SOURCE_TYPE['Document'].value
-		return false
+		return true
 
 	$scope.submit = ->
 		if $scope.form.$invalid

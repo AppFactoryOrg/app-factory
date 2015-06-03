@@ -1,2 +1,2 @@
 @Config =
-	'MAX_TABLE_RECORDS': 60
+	'MAX_TABLE_RECORDS': 500

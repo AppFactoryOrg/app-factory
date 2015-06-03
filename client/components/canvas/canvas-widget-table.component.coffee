@@ -16,9 +16,12 @@ angular.module('app-factory').directive('afCanvasWidgetTable', ['$modal', 'Confi
 		$scope.getDataSourceName = ->
 			dataSource = $scope.widget['configuration']['data_source']
 			switch dataSource?['type']
-				when ScreenWidget.DATA_SOURCE_TYPE['Document'].value 
+				when ScreenWidget.DATA_SOURCE_TYPE['Database'].value 
 					documentSchema = DocumentSchema.db.findOne(dataSource['document_schema_id'])
-					name = "Document - #{documentSchema?.name}"
+					name = "Database - #{documentSchema?.name}"
+				when ScreenWidget.DATA_SOURCE_TYPE['Fixed'].value 
+					documentSchema = DocumentSchema.db.findOne(dataSource['document_schema_id'])
+					name = "Fixed - #{documentSchema?.name}"
 
 			return name
 ])
