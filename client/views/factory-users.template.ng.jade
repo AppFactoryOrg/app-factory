@@ -1,5 +1,27 @@
 .factory-users
 	.row.wrapper.border-bottom.white-bg.page-heading
 		.col-lg-12
-			h2 Users
-			p Placeholder for a list of users who have access to the application, and invite creation.
+			.pull-left
+				h2 Users
+				p Invite and manage users to collaborate on the application.
+			.controls.pull-right
+				button.btn.btn-xs.btn-primary(ng-click="newUser()")
+					i.fa.fa-plus
+					span Invite User
+	br/
+
+	.row.wrapper
+		.col-lg-12
+			.ibox
+				.ibox-content
+					table.table.table-hover.table-striped.table-condensed
+						thead
+							tr
+								th Name
+								th Email
+								th Role
+						tbody
+							tr(ng-repeat="user in users")
+								td(ng-bind="user.profile.name")
+								td(ng-bind="user.emails[0].address")
+								td.role-name(ng-bind="getRole(user)")

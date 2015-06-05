@@ -1,7 +1,9 @@
 .factory-layout
 	.row.wrapper.border-bottom.white-bg.page-heading
 		.col-lg-12(ng-switch="editMode")
-			h2.pull-left Layout
+			.pull-left
+				h2 Layout
+				p Configure layout options and navigation of the application.
 			.controls.pull-right(ng-switch-when="false")
 				button.btn.btn-xs.btn-primary(ng-click="startEditLayout()")
 					i.fa.fa-pencil

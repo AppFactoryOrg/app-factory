@@ -1,0 +1,36 @@
+.invite-user-modal
+	form(novalidate name="form" ng-submit="submit()")
+		.modal-header
+			.modal-title Create User
+		.modal-body
+			.form-group
+				label(for="name") Name
+				input.form-control(
+					type="name"
+					id="name"
+					name="name"
+					ng-model="user.name"
+					required
+					ng-trim="true"
+					autofocus
+				)
+			.form-group
+				label(for="email") Email
+				input.form-control(
+					type="email"
+					id="email"
+					name="email"
+					ng-model="user.email"
+					required
+					ng-trim="true"
+				)
+
+			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+				div(ng-show="form.name.$error.required") Name is required.
+				div(ng-show="form.email.$error.required") Email is required.
+				
+		.modal-footer
+			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+			button.btn.btn-primary(type="submit") 
+				span Invite
+				i.fa.fa-chevron-right
