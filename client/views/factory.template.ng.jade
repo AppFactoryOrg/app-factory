@@ -103,7 +103,9 @@
 							span.text-muted Welcome, {{currentUser.profile.name}}
 							.user-avatar
 								i.fa.fa-user
-
+						li
+							a(ui-sref="account")
+								span Account
 						li
 							a(ng-click="logout()")
 								span Log out

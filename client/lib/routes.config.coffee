@@ -18,6 +18,11 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 			controller: 'RegisterCtrl'
 			templateUrl: 'client/views/register.template.html'
 
+		.state 'enroll-account',
+			url: '/enroll-account/:token'
+			controller: 'EnrollAccountCtrl'
+			templateUrl: 'client/views/enroll-account.template.html'
+
 		.state 'account',
 			url: '/account'
 			controller: 'AccountCtrl'
@@ -49,9 +54,13 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 						deferred.reject('Environment could not be found') unless environment?
 					return deferred.promise
 				]
-				'application': ['$meteor', '$q', 'environment', ($meteor, $q, environment) -> 
+				'application': ['$meteor', '$rootScope', '$q', 'environment', ($meteor, $rootScope, $q, environment) -> 
 					deferred = $q.defer()
+					
+					user = $rootScope.currentUser
 					application_id = environment['application_id']
+					throw new Error("User is not authorized to edit that application") unless User.canEditApplication({user, application_id})
+
 					$meteor.subscribe('Application', application_id).then ->
 						application = Application.db.findOne(application_id)
 						deferred.resolve(application) if application?

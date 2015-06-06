@@ -27,6 +27,14 @@ Meteor.methods
 				'default_environment_id': environment['_id']
 		)
 
+		User.db.update(@userId,
+			$addToSet: 
+				'profile.application_roles':
+					'application_id': application['_id']
+					'role': 'owner'
+					'can_edit': true
+		)
+
 		return application['_id']
 
 	'Application.update': (parameters) ->

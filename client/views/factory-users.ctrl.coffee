@@ -1,7 +1,7 @@
 angular.module('app-factory').controller('FactoryUsersCtrl', ['$scope', '$modal', '$meteor', 'toaster', 'InviteUserModal', ($scope, $modal, $meteor, toaster, InviteUserModal) ->
 
 	$scope.$meteorSubscribe('Users', {'application_id': $scope.application['_id']}).then ->
-		$scope.users = $scope.$meteorCollection -> Meteor.users.find()
+		$scope.users = $scope.$meteorCollection -> Users.db.find()
 
 	$scope.newUser = ->
 		$modal.open(new InviteUserModal()).result.then (parameters) ->

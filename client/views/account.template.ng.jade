@@ -14,7 +14,14 @@
 				.name {{application.name}}
 
 				.controls.pull-right
+					a.btn.btn-xs.btn-success(
+						ui-sref="application({ environment_id: application['default_environment_id'] })"
+						target="_blank"
+					)
+						i.fa.fa-globe
+						span Open
 					button.btn.btn-xs.btn-primary(
+						ng-show="userCanEditApplication(application)"
 						ui-sref="factory.dashboard({ environment_id: application['default_environment_id'] })"
 					)
 						i.fa.fa-pencil
@@ -24,6 +31,6 @@
 
 			.clearfix
 				button.btn.btn-success.pull-right(type="button" ng-click="createApplication()") 
-					span New Application
 					i.fa.fa-plus
+					span Create Application
 

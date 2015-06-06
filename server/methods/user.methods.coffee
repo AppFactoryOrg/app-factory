@@ -3,17 +3,16 @@ Meteor.methods
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Email is required') if _.isEmpty(parameters['email'])
-		throw new Meteor.Error('validation', 'Password is required') if _.isEmpty(parameters['password'])
-		throw new Meteor.Error('validation', 'Passwords must match') unless parameters['password'] is parameters['confirmPassword']
 
 		user = 
 			'email': parameters['email']
-			'password': parameters['password']
 			'profile':
 				'name': parameters['name']
 				'application_roles': []
 
-		Accounts.createUser(user)
+		user['_id'] = Accounts.createUser(user)
+
+		Accounts.sendEnrollmentEmail(user['_id'])
 
 		return
 
@@ -27,22 +26,31 @@ Meteor.methods
 		application = Application.db.findOne(parameters['application_id'])
 		throw new Meteor.Error('data', 'Application could not be found') unless application?
 
-		user = Meteor.users.findOne({'emails.address': parameters['email']})
+		user = User.db.findOne({'emails.address': parameters['email']})
 
 		role = 
 			'application_id': parameters['application_id']
 			'role': 'user'
+			'can_edit': false
 
 		if user?
 			if _.some(user['profile']['application_roles'], {'application_id': parameters['application_id']})
 				throw new Meteor.Error('conflict', 'User already has access to the application')
 				
-			Meteor.users.update(user['_id'],
+			User.db.update(user['_id'],
 				$addToSet: 
 					'profile.application_roles': role
 			)
 		else
-			# TODO: send invite code
+			user = 
+				'email': parameters['email']
+				'profile':
+					'name': parameters['name']
+					'application_roles': [role]
+
+			user['_id'] = Accounts.createUser(user)
+			
+			Accounts.sendEnrollmentEmail(user['_id'])
 
 		return
 

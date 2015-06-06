@@ -6,4 +6,4 @@ Meteor.publish 'Users', ({application_id}) ->
 		'profile': 1
 		'emails': 1
 
-	return Meteor.users.find(filters, {fields})
+	return User.db.find(filters, {fields})

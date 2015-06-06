@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('AccountCtrl', ['$scope', '$meteor', '$state', '$modal', 'GenericModal', ($scope, $meteor, $state, $modal, GenericModal) ->
+angular.module('app-factory').controller('AccountCtrl', ['$scope', '$rootScope', '$meteor', '$state', '$modal', 'GenericModal', ($scope, $rootScope, $meteor, $state, $modal, GenericModal) ->
 
 	$scope.$meteorSubscribe('Application')
 	$scope.applications = $scope.$meteorCollection -> Application.db.find()
@@ -9,6 +9,11 @@ angular.module('app-factory').controller('AccountCtrl', ['$scope', '$meteor', '$
 	$scope.logout = ->
 		$meteor.logout()
 		$state.go('login')
+
+	$scope.userCanEditApplication = (application) ->
+		user = $rootScope.currentUser
+		application_id = application['_id']
+		return User.canEditApplication({user, application_id})
 
 	$scope.createApplication = ->
 		$modal.open(new GenericModal(
