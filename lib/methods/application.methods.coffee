@@ -31,7 +31,7 @@ Meteor.methods
 			$addToSet: 
 				'profile.application_roles':
 					'application_id': application['_id']
-					'role': 'owner'
+					'role': User.ROLE['Owner'].value
 					'can_edit': true
 		)
 
