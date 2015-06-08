@@ -20,8 +20,12 @@
 								th Name
 								th Email
 								th Role
+								th(width="50")
 						tbody
 							tr(ng-repeat="user in users")
 								td(ng-bind="user.profile.name")
 								td(ng-bind="user.emails[0].address")
 								td.role-name(ng-bind="getRole(user)")
+								td
+									button.btn.btn-xs.btn-default(ng-click="revokeUser(user)" ng-show="shouldShowRevoke(user)")
+										i.fa.fa-close
