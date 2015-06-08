@@ -23,6 +23,16 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 			controller: 'EnrollAccountCtrl'
 			templateUrl: 'client/views/enroll-account.template.html'
 
+		.state 'forgot-password',
+			url: '/forgot-password'
+			controller: 'ForgotPasswordCtrl'
+			templateUrl: 'client/views/forgot-password.template.html'
+
+		.state 'reset-password',
+			url: '/reset-password/:token'
+			controller: 'ResetPasswordCtrl'
+			templateUrl: 'client/views/reset-password.template.html'
+
 		.state 'account',
 			url: '/account'
 			controller: 'AccountCtrl'
