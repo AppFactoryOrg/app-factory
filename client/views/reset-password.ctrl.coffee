@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('EnrollAccountCtrl', ['$scope', '$stateParams', '$state', 'toaster', ($scope, $stateParams, $state, toaster) ->
+angular.module('app-factory').controller('ResetPasswordCtrl', ['$scope', '$stateParams', '$state', 'toaster', ($scope, $stateParams, $state, toaster) ->
 
 	$('body').removeClass()
 	$('body').addClass('boxed-layout')
@@ -24,7 +24,7 @@ angular.module('app-factory').controller('EnrollAccountCtrl', ['$scope', '$state
 					console.error(error)
 					toaster.pop(
 						type: 'error'
-						body: "Activation failed. #{error}"
+						body: "Request failed. #{error}"
 						showCloseButton: true
 					)
 				else
