@@ -20,7 +20,11 @@
 		options = []
 		options.push({attribute: {name:'Created On'}, value: 'created_on'})
 		for attribute in documentSchema['attributes']
-			options.push({attribute: attribute, value: "data.#{attribute['id']}"})
+			if attribute['data_type'] not in [
+				DocumentAttribute.DATA_TYPE['Document'].value
+				DocumentAttribute.DATA_TYPE['User'].value
+			]
+				options.push({attribute: attribute, value: "data.#{attribute['id']}"})
 		return options
 
 	getFilterableAttributes: (documentSchema) ->
