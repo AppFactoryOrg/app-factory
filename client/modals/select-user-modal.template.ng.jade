@@ -1,0 +1,22 @@
+.select-user-modal
+	.modal-header
+		.modal-title Select User
+	.modal-body
+		.user-search
+			input.form-control(type="text" placeholder="Search..." autofocus ng-model="search")
+		.user-list
+			.user(
+				ng-repeat="user in users | filter:search"
+				ng-click="selectUser(user)"
+				ng-mouseenter="user.$hovering=true"
+				ng-mouseleave="user.$hovering=false"
+			)
+				.user-avatar
+					i.fa.fa-user
+				.user-info
+					.user-name(ng-bind="user.profile.name")
+					.user-email(ng-bind="user.emails[0].address")
+				.user-select-caret(ng-show="user.$hovering")
+					i.fa.fa-angle-right
+	.modal-footer
+		button.btn.btn-default(type="button" ng-click="$dismiss()") Close

@@ -7,7 +7,8 @@ Meteor.publishComposite 'Documents', (filter, paging) ->
 	throw new Error('Filter parameter requires document_schema_id attribute') unless filter['document_schema_id']?
 
 	documentSchema = DocumentSchema.db.findOne(filter['document_schema_id'])
-	childDocumentAttributesId = _.pluck(_.filter(documentSchema['attributes'], {'data_type': DocumentAttribute.DATA_TYPE['Document'].value}), 'id')
+	childDocumentAttributeIds = _.pluck(_.filter(documentSchema['attributes'], {'data_type': DocumentAttribute.DATA_TYPE['Document'].value}), 'id')
+	childUserAttributeIds = _.pluck(_.filter(documentSchema['attributes'], {'data_type': DocumentAttribute.DATA_TYPE['User'].value}), 'id')
 
 	return { 
 		find: ->
@@ -18,9 +19,24 @@ Meteor.publishComposite 'Documents', (filter, paging) ->
 		children: [
 			{
 				find: (document) ->
-					childDocumentIds = _.values(_.pick(document['data'], childDocumentAttributesId))
+					childDocumentIds = _.values(_.pick(document['data'], childDocumentAttributeIds))
 					return if _.isEmpty(childDocumentIds)
 					return Document.db.find({'_id': {'$in': childDocumentIds}})
+			}
+			{
+				find: (document) ->
+					childUserIds = _.values(_.pick(document['data'], childUserAttributeIds))
+					return if _.isEmpty(childUserIds)
+
+					filters = 
+						'_id': {'$in': childUserIds}
+
+					fields = 
+						'_id': 1
+						'profile': 1
+						'emails': 1
+
+					return User.db.find(filters, {fields})
 			}
 		]
 	}

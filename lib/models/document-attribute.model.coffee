@@ -37,6 +37,11 @@
 			configuration:
 				'document_schema_id': null
 
+		'User':
+			value: 500
+			component: 'User'
+			icon: 'fa-user'
+
 	VALUE_TYPE:
 		'Input':			{value: 100,	icon: 'fa-edit'}
 		'Routine':			{value: 200,	icon: 'fa-gear'}

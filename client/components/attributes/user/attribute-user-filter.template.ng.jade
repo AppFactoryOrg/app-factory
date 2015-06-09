@@ -1,0 +1,16 @@
+.attribute-filter.attribute-user-filter(ng-class="{'has-value': hasValue()}")
+	label.control-label(ng-bind="::attribute.name")
+	.controls
+		select.form-control.input-sm.operator(
+			ng-options="operatorOption for operatorOption in operatorOptions"
+			ng-model="operator"
+			ng-change="updateFilterValue()"
+		)
+		.value
+			.input-group.input-group-sm
+				.form-control-static(ng-bind="userDisplayName")
+				.input-group-btn
+					button.btn.btn-default(ng-click="lookupUser()" type="button")
+						i.fa.fa-search
+	button.btn.btn-xs.btn-link.close(type="button" ng-click="clear()" ng-show="hasValue()")
+		i.fa.fa-close
