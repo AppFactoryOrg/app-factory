@@ -92,6 +92,24 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return unless confirm('Are you sure you want to delete this record? This action cannot be undone.')
 			$meteor.call('Document.delete', document['_id'])
 
+		$scope.executeAction = (action, document) ->
+			id = action['routine_id']
+			inputs = [
+				{
+					'name': 'document'
+					'value': document
+				}
+			]
+			$meteor.call('Routine.execute', {id, inputs})
+				.finally ->
+					$scope.isLoading = false
+				.catch (error) ->
+					toaster.pop(
+						type: 'error'
+						body: "#{error.reason}"
+						showCloseButton: true
+					)
+
 		$scope.selectDocument = (document) ->
 			$scope.$emit('DOCUMENT_SELECTED', document)
 

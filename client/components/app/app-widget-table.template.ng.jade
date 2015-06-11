@@ -55,18 +55,27 @@
 										attribute="attribute"
 										document="document"
 									)
-								td.controls(width="100")
+								td.controls(width="120")
 									.pull-right(ng-show="document.$showButtons")
+										span.dropdown(dropdown)
+											button.btn.btn-xs.btn-default(ng-if="documentSchema.actions.length" dropdown-toggle)
+												i.fa.fa-gear
+											ul.dropdown-menu
+												li(ng-repeat="action in documentSchema.actions")
+													a(ng-click="executeAction(action, document)")
+														i.fa.fa-angle-double-right
+														span(ng-bind="::action.name")
 										button.btn.btn-xs.btn-default(ng-click="viewDocument(document)")
 											i.fa.fa-search
 										button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle ng-show="shouldAllowReordering()")
 											i.fa.fa-arrows
-										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)" ng-show="shouldShowEditButtons()")
-											i.fa.fa-pencil
 										button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)" ng-show="shouldShowEditButtons()")
 											i.fa.fa-trash
 										button.btn.btn-xs.btn-primary(ng-click="selectDocument(document)" ng-show="shouldShowSelectButton()")
 											i.fa.fa-chevron-right
+										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)" ng-show="shouldShowEditButtons()")
+											i.fa.fa-pencil
+									
 						tbody(ng-hide="documents.length")
 							tr
 								td(colspan="99")
