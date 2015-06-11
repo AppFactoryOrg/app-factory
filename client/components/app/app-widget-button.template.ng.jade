@@ -1,4 +1,2 @@
 .app-widget.app-widget-button
-	button.btn.btn-md.btn-primary
-		span Button
-		i.fa.fa-chevron-right
+	button.btn.btn-md.btn-primary(ng-bind="::widget.name" ng-click="click()" type="button")

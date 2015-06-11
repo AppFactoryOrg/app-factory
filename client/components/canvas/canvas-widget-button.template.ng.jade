@@ -3,6 +3,8 @@
 		h4 
 			i.fa(ng-class="icon")
 			span {{widget.name}}
-	.widget-controls
-		button.btn.btn-xs.btn-default(ng-click="deleteWidget()" ng-show="editMode")
+	.widget-controls(ng-show="editMode")
+		button.btn.btn-xs.btn-primary(ng-click="configureWidget()")
+			i.fa.fa-wrench
+		button.btn.btn-xs.btn-default(ng-click="deleteWidget()")
 			i.fa.fa-trash

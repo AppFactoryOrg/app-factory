@@ -84,6 +84,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 						$meteor.subscribe('Blueprint', {blueprint_id})
 						$meteor.subscribe('DocumentSchema', {blueprint_id})
 						$meteor.subscribe('ScreenSchema', {blueprint_id})
+						$meteor.subscribe('Routines', {blueprint_id})
 					]).then ->
 						blueprint = Blueprint.db.findOne(blueprint_id)
 						deferred.resolve(blueprint) if blueprint?
@@ -125,6 +126,11 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 						deferred.reject('ScreenSchema could not be found') unless screenSchema?
 					return deferred.promise
 				]
+
+		.state 'factory.routines',
+			url: '/routines'
+			templateUrl: 'client/views/factory-routines.template.html'
+			controller: 'FactoryRoutinesCtrl'
 
 		.state 'factory.layout',
 			url: '/layout'
@@ -182,6 +188,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($
 					$meteor.subscribe('Blueprint', {blueprint_id})
 					$meteor.subscribe('DocumentSchema', {blueprint_id})
 					$meteor.subscribe('ScreenSchema', {blueprint_id})
+					$meteor.subscribe('Routines', {blueprint_id})
 				]).then ->
 					blueprint = Blueprint.db.findOne(blueprint_id)
 					deferred.resolve(blueprint) if blueprint?

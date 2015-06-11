@@ -5,11 +5,11 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 	$scope.blueprint = $rootScope.blueprint = blueprint
 	$scope.documentSchemas = $scope.$meteorCollection -> DocumentSchema.db.find('blueprint_id': $scope.blueprint['_id'])
 	$scope.screenSchemas = $scope.$meteorCollection -> ScreenSchema.db.find('blueprint_id': $scope.blueprint['_id'])
+	$scope.routines = $scope.$meteorCollection -> Routine.db.find('blueprint_id': $scope.blueprint['_id'])
 	$scope.blueprintStatuses = Utils.mapToArray(Blueprint.STATUS)
 
 	$scope.documentsExpanded = $state.includes('factory.document')
 	$scope.screensExpanded = $state.includes('factory.screen')
-	$scope.routinesExpanded = false
 
 	$('body').removeClass()
 	$('body').addClass('boxed-layout')
