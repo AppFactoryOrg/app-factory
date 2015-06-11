@@ -9,10 +9,15 @@ angular.module('app-factory').directive('afAppWidgetButton', ['$meteor', 'toaste
 	controller: 'CommonAppWidgetCtrl'
 	link: ($scope, $element) ->
 
+		$scope.isLoading = false
+
 		$scope.click = ->
 			id = $scope.widget['configuration']['routine_id']
 			return unless id?
+			$scope.isLoading = true
 			$meteor.call('Routine.execute', {id})
+				.finally ->
+					$scope.isLoading = false
 				.catch (error) ->
 					toaster.pop(
 						type: 'error'

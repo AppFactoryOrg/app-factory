@@ -1,2 +1,4 @@
 .app-widget.app-widget-button
-	button.btn.btn-md.btn-primary(ng-bind="::widget.name" ng-click="click()" type="button")
+	button.btn.btn-md.btn-primary(ng-class="{'loading': isLoading}" ng-disabled="isLoading")
+		span(ng-bind="::widget.name" ng-click="click()" type="button")
+		i.fa.fa-gear(ng-show="isLoading")
