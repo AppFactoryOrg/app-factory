@@ -7,23 +7,37 @@ angular.module('app-factory').factory 'EditAttributeModal', ->
 		resolve:
 			'attribute': -> attribute
 
-angular.module('app-factory').controller('EditAttributeModalCtrl', ['$scope', '$modalInstance', 'attribute', ($scope, $modalInstance, attribute) ->
+angular.module('app-factory').controller('EditAttributeModalCtrl', ['$scope', '$rootScope', '$modalInstance', 'attribute', ($scope, $rootScope, $modalInstance, attribute) ->
 
 	$scope.showValidationErrors = false
 	$scope.attributeDataTypes = Utils.mapToArray(DocumentAttribute.DATA_TYPE)
 	$scope.attributeValueTypes = Utils.mapToArray(DocumentAttribute.VALUE_TYPE)
 	$scope.isEdit = attribute?
 
-	$scope.updateConfiguration = ->
+	$scope.routines = $scope.$meteorCollection -> Routine.db.find('blueprint_id': $rootScope.blueprint['_id'], 'type': Routine.TYPE['Attribute'].value)
+
+	$scope.updateDataType = ->
 		type = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': $scope.attribute['data_type'])
 		if type?['configuration']?
 			$scope.attribute['configuration'] = _.clone(type['configuration'])
 		else
 			delete $scope.attribute['configuration']
 
+	$scope.updateValueType = ->
+		$scope.attribute['routine_id'] = null if $scope.attribute['value_type'] isnt DocumentAttribute.VALUE_TYPE['Routine'].value
+
 	$scope.shouldShowConfiguration = ->
 		type = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': $scope.attribute['data_type'])
 		return true if type?['configuration']?
+		return false
+
+	$scope.shouldShowRoutineSelection = ->
+		return true if $scope.attribute['value_type'] is DocumentAttribute.VALUE_TYPE['Routine'].value
+		return false
+
+	$scope.shouldShowConfigurationTab = ->
+		return true if $scope.shouldShowConfiguration()
+		return true if $scope.shouldShowRoutineSelection()
 		return false
 
 	$scope.submit = ->

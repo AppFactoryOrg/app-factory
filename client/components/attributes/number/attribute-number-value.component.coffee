@@ -5,7 +5,8 @@ angular.module('app-factory').directive('afAttributeNumberValue', [() ->
 	scope:
 		'attribute': 	'='
 		'document': 	'='
+	controller: 'CommonAttributeValueCtrl'
 	link: ($scope) ->
-		value = $scope.document['data'][$scope.attribute['id']]
-		$scope.value = value
+		$scope.getValue().then (value) ->
+			$scope.value = value
 ])

@@ -9,6 +9,7 @@ angular.module('app-factory').directive('afEditDocumentAttributes', ['$compile',
 
 		$scope.initializeAttributes = ->
 			$scope.documentSchema['attributes'].forEach (attribute, index) ->
+				return if attribute['value_type'] isnt DocumentAttribute.VALUE_TYPE['Input'].value
 				name = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': attribute['data_type']).component
 				childTemplate = "
 					<af-attribute-#{name}-input 

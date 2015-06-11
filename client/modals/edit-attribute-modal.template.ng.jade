@@ -27,7 +27,7 @@
 						select.form-control(
 							ng-model="attribute.data_type"
 							ng-options="type.value as type.name for type in attributeDataTypes"
-							ng-change="updateConfiguration()"
+							ng-change="updateDataType()"
 							ng-disabled="isEdit"
 							af-enter="submit()"
 							name="data_type"
@@ -38,20 +38,32 @@
 						select.form-control(
 							ng-model="attribute.value_type"
 							ng-options="type.value as type.name for type in attributeValueTypes"
+							ng-change="updateValueType()"
 							ng-disabled="isEdit"
 							af-enter="submit()"
 							name="value_type"
 							required
 						)
-				tab(heading="Configuration" ng-show="shouldShowConfiguration()")
+				tab(heading="Configuration" ng-show="shouldShowConfigurationTab()")
 					af-attribute-configuration(
 						attribute="attribute"
+						ng-show="shouldShowConfiguration()"
 					)
+					.form-group
+						label Routine
+						select.form-control(
+							name="routineId"
+							ng-required="shouldShowRoutineSelection()"
+							ng-show="shouldShowRoutineSelection()"
+							ng-options="routine._id as routine.name for routine in routines"
+							ng-model="attribute.routine_id"
+						)
 
 		.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
 			div(ng-show="form.name.$error.required") Name is required.
 			div(ng-show="form.data_type.$error.required") Data Type is required.
 			div(ng-show="form.value_type.$error.required") Value Type is required.
+			div(ng-show="form.routineId.$error.required") Routine is required.
 
 	.modal-footer
 		button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel

@@ -5,8 +5,9 @@ angular.module('app-factory').directive('afAttributeDateValue', ['$filter', ($fi
 	scope:
 		'attribute': 	'='
 		'document': 	'='
+	controller: 'CommonAttributeValueCtrl'
 	link: ($scope) ->
-		value = $scope.document['data'][$scope.attribute['id']]
-		value = $filter('date')(value, 'shortDate') if value?
-		$scope.value = value
+		$scope.getValue().then (value) ->
+			value = $filter('date')(value, 'shortDate') if value?
+			$scope.value = value
 ])
