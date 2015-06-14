@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('FactoryRoutinesCtrl', ['$scope', '$rootScope', '$modal', '$meteor', 'toaster', 'GenericModal', ($scope, $rootScope, $modal, $meteor, toaster, GenericModal) ->
+angular.module('app-factory').controller('FactoryRoutinesCtrl', ['$scope', '$rootScope', '$modal', '$meteor', 'toaster', 'GenericModal', 'EditRoutineModal', ($scope, $rootScope, $modal, $meteor, toaster, GenericModal, EditRoutineModal) ->
 
 	$scope.routineTypes = Utils.mapToArray(Routine.TYPE)
 
@@ -22,6 +22,7 @@ angular.module('app-factory').controller('FactoryRoutinesCtrl', ['$scope', '$roo
 					)
 
 	$scope.editRoutine = (routine) ->
+		$modal.open(new EditRoutineModal(routine))
 
 	$scope.deleteRoutine = (routine) ->
 		return unless confirm('Are you sure you want to delete this routine?')

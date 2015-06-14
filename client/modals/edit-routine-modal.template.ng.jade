@@ -1,0 +1,21 @@
+.modal-header.clearfix
+	.routine-header
+		i.fa.fa-gear
+		.routine-title(ng-bind="routine.name")
+		.routine-description(ng-bind="routine.description" tooltip="{{routine.description}}" tooltip-placement="bottom" tooltip-popup-delay="1000")
+		.routine-description(ng-hide="routine.description") (no description)
+	.routine-controls
+		button.btn.btn-sm.btn-primary(ng-click="save()" ng-disabled="!hasUnsavedChanges()" type="button") 
+			i.fa.fa-save
+			span Save
+		button.btn.btn-sm.btn-primary(ng-click="saveAndClose()" ng-disabled="!hasUnsavedChanges()" type="button") 
+			i.fa.fa-save
+			span Save & Close
+		button.btn.btn-sm.btn-default(ng-click="close()" type="button") 
+			i.fa.fa-close
+			span Close
+
+.modal-body
+	.toolbox-panel
+	.canvas-panel
+		.inner-canvas

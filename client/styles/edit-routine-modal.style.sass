@@ -1,0 +1,66 @@
+@import "_mixins"
+
+.edit-routine-modal
+
+	.modal-dialog
+		position: fixed
+		top: 20px
+		bottom: 20px
+		left: 20px
+		right: 20px
+		width: inherit
+		margin: 0
+
+	.modal-content
+		width: 100%
+		height: 100%
+
+	.modal-body
+		+flex-container
+		width: 100%
+		height: 100%
+		padding: 0px 0px 70px 0px
+
+	.routine-header
+		float: left
+
+		i.fa
+			position: absolute
+			top: 17px
+			left: 12px
+			font-size: 18px
+
+	.routine-title
+		font-size: 16px
+		font-weight: bold
+		margin-left: 17px
+
+	.routine-description
+		font-size: 12px
+		font-style: italic
+		margin-left: 17px
+
+	.routine-title,
+	.routine-description
+		width: 400px
+		white-space: nowrap
+		overflow: hidden
+		text-overflow: ellipsis
+
+	.routine-controls
+		float: right
+
+	.toolbox-panel
+		+flex-to-size(250px)
+		border-right: 1px solid #e5e5e5
+
+	.canvas-panel
+		+no-select
+		+flex-to-fill
+		+border-radius(4px)
+		position: relative
+		overflow: scroll
+		background-color: lighten(#e5e5e5, 8%)
+
+	.inner-canvas
+		+scale(1, 1)
