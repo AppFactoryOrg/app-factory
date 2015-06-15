@@ -11,14 +11,12 @@
 		'Input':		{value: 'input'}
 		'Output':		{value: 'output'}
 
-	new: (paramaters) ->
-		'id': parameters['id']
+	new: (parameters) ->
+		'id': Meteor.uuid()
 		'name': parameters['name']
-		'description': parameters['description']
-		'position': {x: 0, y: 0}
+		'position': parameters['position']
 		'configuration': parameters['configuration']
-		'nodes': parameters['nodes']
-		'execute': parameters['execute']
+		'node_values': []
 
 	registry: []
 	register: (service) ->

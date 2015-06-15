@@ -1,8 +1,9 @@
 RoutineService.register
-	'id': 'end'
-	'type': RoutineService.SERVICE_TYPE['Logic'].value
-	'name': 'End'
+	'name': 'end'
+	'label': 'End'
 	'description': "The end point of a routine's workflow"
+	'color': '#d9534f'
+	'type': RoutineService.SERVICE_TYPE['Logic'].value
 	'configuration': {}
 	'nodes': [
 		{

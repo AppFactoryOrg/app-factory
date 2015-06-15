@@ -1,8 +1,9 @@
 RoutineService.register
-	'id': 'value'
-	'type': RoutineService.SERVICE_TYPE['Data'].value
-	'name': 'Value'
+	'name': 'value'
+	'label': 'Value'
 	'description': "A fixed, predefined value"
+	'color': '#70678E'
+	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration': 
 		'value': null
 		'data_type': null

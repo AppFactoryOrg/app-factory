@@ -1,8 +1,9 @@
 RoutineService.register
-	'id': 'output'
-	'type': RoutineService.SERVICE_TYPE['Data'].value
-	'name': 'Output'
+	'name': 'output'
+	'label': 'Output'
 	'description': "An output value for the routine"
+	'color': '#70678E'
+	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration':
 		'name': ''
 		'data_type': null

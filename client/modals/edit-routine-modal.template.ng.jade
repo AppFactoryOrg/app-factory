@@ -17,5 +17,22 @@
 
 .modal-body
 	.toolbox-panel
-	.canvas-panel
-		.inner-canvas
+		.title Services
+		.service-template(
+			ng-repeat="service in services"
+			ng-class="service.name"
+			ng-model="services"
+			drag="true"
+			jqyoui-draggable="{index: {{$index}}, placeholder: 'keep', deepCopy: true}"
+			jqyoui-options="{revert: 'invalid', helper: 'clone'}"
+		)
+			.service-badge(ng-style="{'background-color': service.color}")
+			.service-name(ng-bind="service.label")
+
+	.canvas-panel(
+		ng-model="newService"
+		jqyoui-droppable="{onDrop: 'onServiceDrop', multiple: true}"
+		drop="true"
+	)
+		.service(ng-repeat="service in services")
+			pre {{service | json}}

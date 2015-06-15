@@ -1,8 +1,9 @@
 RoutineService.register
-	'id': 'input'
-	'type': RoutineService.SERVICE_TYPE['Data'].value
-	'name': 'Input'
+	'name': 'input'
+	'label': 'Input'
 	'description': "An input value for the routine"
+	'color': '#70678E'
+	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration':
 		'name': ''
 		'data_type': null

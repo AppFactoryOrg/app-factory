@@ -11,6 +11,17 @@ angular.module('app-factory').factory 'EditRoutineModal', ->
 angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootScope', '$modalInstance', 'routine', ($scope, $rootScope, $modalInstance, routine) ->
 	
 	$scope.routine = angular.copy(routine)
+	$scope.services = RoutineService.registry
+	$scope.newService = {}
+
+	$scope.onServiceDrop = (event, ui) ->
+		service = $scope.newService
+
+		service['position'] = {'x': ui['position']['left'], 'y': ui['position']['top']}
+		service = RoutineService.new(service)
+		$scope.routine['services'].push(service)
+
+		$scope.newService = null
 
 	$scope.hasUnsavedChanges = ->
 		return false if angular.equals(routine, $scope.routine)

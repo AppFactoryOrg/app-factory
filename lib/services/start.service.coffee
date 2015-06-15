@@ -1,8 +1,9 @@
 RoutineService.register
-	'id': 'start'
-	'type': RoutineService.SERVICE_TYPE['Logic'].value
-	'name': 'Start'
+	'name': 'start'
+	'label': 'Start'
 	'description': "The entry point for a routine's workflow"
+	'color': '#5cb85c'
+	'type': RoutineService.SERVICE_TYPE['Logic'].value
 	'configuration': {}
 	'nodes': [
 		{
