@@ -1,4 +1,4 @@
-RoutineService.register
+RoutineService.registerTemplate
 	'name': 'value'
 	'label': 'Value'
 	'description': "A fixed, predefined value"

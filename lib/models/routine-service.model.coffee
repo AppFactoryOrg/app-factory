@@ -1,3 +1,4 @@
+
 @RoutineService =
 
 	SERVICE_TYPE: 
@@ -18,6 +19,6 @@
 		'configuration': parameters['configuration']
 		'node_values': []
 
-	registry: []
-	register: (service) ->
-		@registry.push(service)
+	service_templates: []
+	registerTemplate: (template) ->
+		@service_templates.push(template)

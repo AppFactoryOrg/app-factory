@@ -1,4 +1,4 @@
-RoutineService.register
+RoutineService.registerTemplate
 	'name': 'output'
 	'label': 'Output'
 	'description': "An output value for the routine"

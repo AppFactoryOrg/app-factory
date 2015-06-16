@@ -19,9 +19,9 @@
 	.toolbox-panel
 		.title Services
 		.service-template(
-			ng-repeat="service in services"
+			ng-repeat="service in serviceTemplates"
 			ng-class="service.name"
-			ng-model="services"
+			ng-model="serviceTemplates"
 			drag="true"
 			jqyoui-draggable="{index: {{$index}}, placeholder: 'keep', deepCopy: true}"
 			jqyoui-options="{revert: 'invalid', helper: 'clone'}"
@@ -33,6 +33,16 @@
 		ng-model="newService"
 		jqyoui-droppable="{onDrop: 'onServiceDrop', multiple: true}"
 		drop="true"
+		ng-click="canvasClicked($event)"
+		ng-keypress="keyPressed($event)"
 	)
-		.service(ng-repeat="service in services")
-			pre {{service | json}}
+		.service(
+			ng-repeat="service in routine.services"
+			id="{{service.id}}"
+			class="{{service.name}} ng-class:{'selected': serviceIsSelected(service)}"
+			ng-style="{'top': service.position.y, 'left': service.position.x}"
+			ng-click="serviceClicked(service, $event)"
+		)
+			.service-body
+				i.fa.fa-gear.edit-service.pull-right(ng-click="configureService(service, $event)" ng-show="serviceIsConfigurable(service)")
+				.service-name(ng-bind="service.$template.label")

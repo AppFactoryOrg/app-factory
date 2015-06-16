@@ -1,4 +1,4 @@
-RoutineService.register
+RoutineService.registerTemplate
 	'name': 'input'
 	'label': 'Input'
 	'description': "An input value for the routine"
