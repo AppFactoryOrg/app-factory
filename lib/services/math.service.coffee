@@ -48,4 +48,4 @@ RoutineService.registerTemplate
 
 		value = math.eval(expression, scope)
 
-		return [{node: 'out'}, {node: 'result', value: value}]
+		return [{node: 'result', value: value}]
