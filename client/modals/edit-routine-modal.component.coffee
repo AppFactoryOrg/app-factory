@@ -92,6 +92,8 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 	$scope.deleteService = (service) ->
 		return unless confirm('Are you sure you want to delete this service?')
 		Utils.removeFromArray(service, $scope.routine.services)
+		service['$template']['nodes'].forEach (node) ->
+			$scope.canvas.deleteEndpoint("#{service.id}_#{node.name}")
 
 	$scope.configureService = (service) ->
 		event.stopPropagation()
@@ -132,8 +134,21 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 
 			$scope.canvas.addEndpoint(service['id'], endpointStyle, additionalStyles)
 
+	$scope.setupConnection = (connection) ->
+		$scope.canvas.connect({uuids: [connection['fromNode'], connection['toNode']], editable: true})
+
 	# == Setup ===================================================
-	
+
+	$scope.refreshConnections = ->
+		$scope.routine['connections'] = []
+		connections = $scope.canvas.getConnections()
+		connections.forEach (connection) ->
+			ids = connection.getUuids()
+			$scope.routine['connections'].push(
+				'fromNode': ids[0]
+				'toNode': ids[1]
+			)
+
 	$scope.buildCanvas = ->
 		jsPlumb.ready ->
 			$scope.canvas = jsPlumb.getInstance(
@@ -141,6 +156,11 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 			)
 
 			$scope.routine['services'].forEach (service) -> $scope.setupService(service)
+			$scope.routine['connections'].forEach (connection) -> $scope.setupConnection(connection)
+
+			$scope.canvas.bind 'connection', -> $scope.$apply -> $scope.refreshConnections()
+			$scope.canvas.bind 'connectionDetached', -> $scope.$apply ->$scope.refreshConnections()
+			$scope.canvas.bind 'connectionMoved', -> $scope.$apply ->$scope.refreshConnections()
 
 	# Initialize
 	$timeout -> $scope.buildCanvas()

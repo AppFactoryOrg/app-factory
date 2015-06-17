@@ -6,6 +6,7 @@
 		'name'
 		'description'
 		'services'
+		'connections'
 	]
 
 	TYPE:
@@ -18,6 +19,7 @@
 		'description':		parameters['description']
 		'type':				parameters['type']
 		'services':			[]
+		'connections':		[]
 		'blueprint_id':		parameters['blueprint_id']
 
 	execute: (routine, inputs) ->
