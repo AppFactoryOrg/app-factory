@@ -14,5 +14,7 @@ RoutineService.registerTemplate
 		}
 	]
 
+	describeConfiguration: (service) -> ""
+
 	execute: -> 
 		return [{node: 'out'}]
