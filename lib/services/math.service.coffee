@@ -3,6 +3,7 @@ RoutineService.registerTemplate
 	'label': 'Math'
 	'description': 'Evaluates a math expression'
 	'color': '#837a9f'
+	'display_order': 10000
 	'size': {height: 70, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'nodes': [

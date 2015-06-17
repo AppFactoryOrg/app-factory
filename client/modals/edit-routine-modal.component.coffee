@@ -16,7 +16,7 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 	$scope.routine.services.forEach (service) ->
 		service['$template'] = _.findWhere(RoutineService.service_templates, 'name': service['name'])
 
-	$scope.serviceTemplates = _.clone(RoutineService.service_templates)
+	$scope.serviceTemplates = _.sortBy(_.clone(RoutineService.service_templates), 'display_order')
 	$scope.newService = {}
 	$scope.selectedService = null
 	$scope.canvas

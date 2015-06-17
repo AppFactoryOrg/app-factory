@@ -3,6 +3,7 @@ RoutineService.registerTemplate
 	'label': 'Output'
 	'description': "An output value for the routine"
 	'color': '#df706c'
+	'display_order': 400
 	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration':
