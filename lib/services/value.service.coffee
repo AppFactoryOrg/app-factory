@@ -2,7 +2,8 @@ RoutineService.registerTemplate
 	'name': 'value'
 	'label': 'Value'
 	'description': "A fixed, predefined value"
-	'color': '#70678E'
+	'color': '#837a9f'
+	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration': 
 		'value': null
@@ -11,9 +12,14 @@ RoutineService.registerTemplate
 		{
 			name: 'value'
 			type: RoutineService.NODE_TYPE['Output'].value
+			position: 'Right'
 		}
 	]
-	'execute': ({service}) ->
+	
+	describeConfiguration: (service) ->
+		return "Type"
+
+	execute: ({service}) ->
 		throw new Meteor.Error('validation', "Value service does not have a configuration") unless service['configuration']?
 		
 		value = service['configuration']['value']

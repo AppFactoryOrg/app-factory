@@ -2,7 +2,8 @@ RoutineService.registerTemplate
 	'name': 'output'
 	'label': 'Output'
 	'description': "An output value for the routine"
-	'color': '#70678E'
+	'color': '#df706c'
+	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration':
 		'name': ''
@@ -11,7 +12,12 @@ RoutineService.registerTemplate
 		{
 			name: 'value'
 			type: RoutineService.NODE_TYPE['Input'].value
+			position: 'Left'
 		}
 	]
-	'execute': ({service, routineInputs}) -> 
+
+	describeConfiguration: (service) ->
+		return "Name - Type"
+
+	execute: ({service, routineInputs}) -> 
 		return []

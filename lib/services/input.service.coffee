@@ -2,7 +2,8 @@ RoutineService.registerTemplate
 	'name': 'input'
 	'label': 'Input'
 	'description': "An input value for the routine"
-	'color': '#70678E'
+	'color': '#77C777'
+	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration':
 		'name': ''
@@ -11,9 +12,14 @@ RoutineService.registerTemplate
 		{
 			name: 'value'
 			type: RoutineService.NODE_TYPE['Output'].value
+			position: 'Right'
 		}
 	]
-	'execute': ({service, routineInputs}) -> 
+
+	describeConfiguration: (service) ->
+		return "Name - Type"
+
+	execute: ({service, routineInputs}) -> 
 		throw new Meteor.Error('validation', "Input service does not have a configuration") unless service['configuration']?
 		
 		inputData = _.find(routineInputs, {'name': service['configuration']['name']})

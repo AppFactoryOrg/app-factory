@@ -29,20 +29,27 @@
 			.service-badge(ng-style="{'background-color': service.color}")
 			.service-name(ng-bind="service.label")
 
-	.canvas-panel(
+	.canvas-panel#routine-canvas(
 		ng-model="newService"
 		jqyoui-droppable="{onDrop: 'onServiceDrop', multiple: true}"
 		drop="true"
-		ng-click="canvasClicked($event)"
+		ng-mousedown="canvasClicked($event)"
 		ng-keypress="keyPressed($event)"
 	)
 		.service(
 			ng-repeat="service in routine.services"
 			id="{{service.id}}"
 			class="{{service.name}} ng-class:{'selected': serviceIsSelected(service)}"
-			ng-style="{'top': service.position.y, 'left': service.position.x}"
-			ng-click="serviceClicked(service, $event)"
+			ng-style="{'top': service.position.y, 'left': service.position.x, 'width': service.$template.size.width, 'height': service.$template.size.height, 'background-color': service.$template.color}"
+			ng-mousedown="serviceClicked(service, $event)"
 		)
 			.service-body
 				i.fa.fa-gear.edit-service.pull-right(ng-click="configureService(service, $event)" ng-show="serviceIsConfigurable(service)")
 				.service-name(ng-bind="service.$template.label")
+				.service-subtitle(
+					ng-bind="getServiceSubtitle(service)" 
+					tooltip="{{getServiceSubtitle(service)}}"
+					tooltip-popup-delay="500"
+					tooltip-animation="true" 
+					tooltip-placement="bottom"
+				)

@@ -1,4 +1,3 @@
-
 @RoutineService =
 
 	SERVICE_TYPE: 
@@ -17,7 +16,6 @@
 		'name': parameters['name']
 		'position': parameters['position']
 		'configuration': parameters['configuration']
-		'node_values': []
 
 	service_templates: []
 	registerTemplate: (template) ->

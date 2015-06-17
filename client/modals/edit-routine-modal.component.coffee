@@ -8,7 +8,7 @@ angular.module('app-factory').factory 'EditRoutineModal', ->
 		resolve:
 			'routine': -> routine
 
-angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootScope', '$modalInstance', '$meteor', 'routine', 'toaster', ($scope, $rootScope, $modalInstance, $meteor, routine, toaster) ->
+angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootScope', '$timeout', '$modalInstance', '$meteor', 'routine', 'toaster', 'RoutineUtils', ($scope, $rootScope, $timeout, $modalInstance, $meteor, routine, toaster, RoutineUtils) ->
 	
 	DELETE_KEY = 8
 
@@ -19,47 +19,9 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 	$scope.serviceTemplates = _.clone(RoutineService.service_templates)
 	$scope.newService = {}
 	$scope.selectedService = null
+	$scope.canvas
 
-	$scope.onServiceDrop = (event, ui) ->
-		service = RoutineService.new($scope.newService)
-		service['position'] =
-			'x': event['pageX'] - $(event['target']).offset().left - 20
-			'y': event['pageY'] - $(event['target']).offset().top - 20
-		$scope.addService(service)
-
-		$scope.newService = null
-
-	$scope.serviceIsConfigurable = (service) ->
-		return service['$template']['configuration']?
-
-	$scope.serviceIsSelected = (service) ->
-		return service is $scope.selectedService
-
-	$scope.serviceClicked = (service, event) ->
-		event.stopPropagation()
-		$scope.selectedService = service
-
-	$scope.canvasClicked = (event) ->
-		event.stopPropagation()
-		$scope.selectedService = null
-
-	$scope.$on 'KEYDOWN', (e, event) ->
-		if event['which'] is DELETE_KEY and $scope.selectedService?
-			$scope.deleteService($scope.selectedService)
-			$scope.selectedService = null
-
-	$scope.configureService = (service) ->
-		event.stopPropagation()
-		$scope.selectedService = service
-		# TODO
-
-	$scope.addService = (service) ->
-		service['$template'] = _.findWhere(RoutineService.service_templates, 'name': service['name'])
-		$scope.routine['services'].push(service)
-
-	$scope.deleteService = (service) ->
-		return unless confirm('Are you sure you want to delete this service?')
-		Utils.removeFromArray(service, $scope.routine.services)
+	# == Modal Controls ===================================================
 
 	$scope.hasUnsavedChanges = ->
 		return false if angular.equals(routine, $scope.routine)
@@ -85,4 +47,102 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 	$scope.close = ->
 		return unless confirm('Are you sure you want to close? Unsaved changes will be lost.') if $scope.hasUnsavedChanges()
 		$modalInstance.dismiss()
+
+	
+	# == Canvas Helpers ===================================================
+
+	$scope.onServiceDrop = (event, ui) ->
+		service = RoutineService.new($scope.newService)
+		service['position'] =
+			'x': event['pageX'] - $(event['target']).offset().left - 20
+			'y': event['pageY'] - $(event['target']).offset().top - 20
+		$scope.addService(service)
+
+		$scope.newService = null
+
+	$scope.serviceClicked = (service, event) ->
+		event.stopPropagation()
+		$scope.selectedService = service
+
+	$scope.canvasClicked = (event) ->
+		event.stopPropagation()
+		$scope.selectedService = null
+
+	$scope.$on 'KEYDOWN', (e, event) ->
+		if event['which'] is DELETE_KEY and $scope.selectedService?
+			$scope.deleteService($scope.selectedService)
+			$scope.selectedService = null
+
+	# == Service Helpers ===================================================
+
+	$scope.serviceIsConfigurable = (service) ->
+		return service['$template']['configuration']?
+
+	$scope.serviceIsSelected = (service) ->
+		return service is $scope.selectedService
+
+	$scope.getServiceSubtitle = (service) ->
+		return service['$template'].describeConfiguration?(service)
+	
+	$scope.addService = (service) ->
+		service['$template'] = _.findWhere(RoutineService.service_templates, 'name': service['name'])
+		$scope.routine['services'].push(service)
+		$timeout -> $scope.setupService(service)
+
+	$scope.deleteService = (service) ->
+		return unless confirm('Are you sure you want to delete this service?')
+		Utils.removeFromArray(service, $scope.routine.services)
+
+	$scope.configureService = (service) ->
+		event.stopPropagation()
+		$scope.selectedService = service
+		# TODO
+
+	$scope.setupService = (service) ->
+		serviceElement = document.getElementById(service['id'])
+		serviceElement.style.left = service['position']['x']
+		serviceElement.style.top = service['position']['y']
+
+		$scope.canvas.draggable(serviceElement, {
+			containment: 'routine-canvas'
+			stop: (event) ->
+				id = event['el']['id']
+				service = _.findWhere($scope.routine['services'], {id})
+				service['position']['x'] = event['pos'][0]
+				service['position']['y'] = event['pos'][1]
+		})
+
+		service['$template']['nodes'].forEach (node) ->
+			endpointStyle = RoutineUtils.getEndpointStyleForNode(node)
+			
+			additionalStyles = {
+				anchor: node['position']
+				uuid: "#{service.id}_#{node.name}"
+			}
+
+			if node['label']?
+				additionalStyles['overlays'] = [
+					[ "Label", { 
+						id: "#{service.id}_#{node.name}_label" 
+						label: node['label']
+						location: node['labelPosition']
+						cssClass: 'service-node-label'
+					}]
+				]
+
+			$scope.canvas.addEndpoint(service['id'], endpointStyle, additionalStyles)
+
+	# == Setup ===================================================
+	
+	$scope.buildCanvas = ->
+		jsPlumb.ready ->
+			$scope.canvas = jsPlumb.getInstance(
+				Container: 'routine-canvas'
+			)
+
+			$scope.routine['services'].forEach (service) -> $scope.setupService(service)
+
+	# Initialize
+	$timeout -> $scope.buildCanvas()
+
 ])

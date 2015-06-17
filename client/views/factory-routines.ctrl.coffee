@@ -28,4 +28,7 @@ angular.module('app-factory').controller('FactoryRoutinesCtrl', ['$scope', '$roo
 		return unless confirm('Are you sure you want to delete this routine?')
 		$meteor.call('Routine.delete', routine['_id'])
 
+	#DEBUG
+	$scope.editRoutine($scope.routines[0])
+
 ])
