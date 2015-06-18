@@ -19,7 +19,8 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 	$scope.serviceTemplates = _.sortBy(_.clone(RoutineService.service_templates), 'display_order')
 	$scope.newService = {}
 	$scope.selectedService = null
-	$scope.canvas
+	$scope.canvas = null
+	$scope.configuringService = null
 
 	# == Modal Controls ===================================================
 
@@ -62,14 +63,17 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 
 	$scope.serviceClicked = (service, event) ->
 		event.stopPropagation()
+		$scope.configuringService = null unless service is $scope.configuringService
 		$scope.selectedService = service
 
 	$scope.canvasClicked = (event) ->
 		event.stopPropagation()
 		$scope.selectedService = null
+		$scope.configuringService = null
 
 	$scope.$on 'KEYDOWN', (e, event) ->
-		if event['which'] is DELETE_KEY and $scope.selectedService?
+		activeTagName = document.activeElement?.tagName?.toLowerCase()
+		if event['which'] is DELETE_KEY and $scope.selectedService? and activeTagName not in ['input', 'textarea', 'select']
 			$scope.deleteService($scope.selectedService)
 			$scope.selectedService = null
 
@@ -98,7 +102,7 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 	$scope.configureService = (service) ->
 		event.stopPropagation()
 		$scope.selectedService = service
-		# TODO
+		$scope.configuringService = service
 
 	$scope.setupService = (service) ->
 		serviceElement = document.getElementById(service['id'])

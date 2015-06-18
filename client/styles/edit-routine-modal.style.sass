@@ -60,7 +60,7 @@
 		.title
 			text-transform: uppercase
 			color: lighten(gray, 15%)
-			letter-spacing: 0.25px
+			letter-spacing: 0.55px
 			font-weight: bold
 			font-size: 10px
 			margin-bottom: 10px
@@ -152,3 +152,20 @@
 			color: rgba(white, 0.7)
 			cursor: pointer
 
+	.configuration-panel
+		+flex-to-size(250px)
+		border-left: 1px solid #e5e5e5
+		padding: 10px
+		overflow-y: auto
+		overflow-x: hidden
+
+		.title
+			text-transform: uppercase
+			color: lighten(gray, 15%)
+			letter-spacing: 0.55px
+			font-weight: bold
+			font-size: 10px
+			margin-bottom: 10px
+
+		.service-configuration
+			margin: 0px 5px

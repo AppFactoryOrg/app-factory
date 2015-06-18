@@ -22,7 +22,9 @@ RoutineService.registerTemplate
 	]
 
 	describeConfiguration: (service) ->
-		return "Name"
+		return unless service?
+		name = service['configuration']['name']
+		return "#{name}"
 
 	execute: ({service}) ->
 		throw new Meteor.Error('validation', "Define Variable service does not have any inputs") unless service.inputs?

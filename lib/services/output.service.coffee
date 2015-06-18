@@ -9,6 +9,7 @@ RoutineService.registerTemplate
 	'configuration':
 		'name': ''
 		'data_type': null
+		'document_schema_id': null
 	'nodes': [
 		{
 			name: 'value'
@@ -18,7 +19,9 @@ RoutineService.registerTemplate
 	]
 
 	describeConfiguration: (service) ->
-		return "Name - Type"
+		return unless service?
+		name = service['configuration']['name']
+		return "#{name}"
 
 	execute: ({service, routineInputs}) -> 
 		return []

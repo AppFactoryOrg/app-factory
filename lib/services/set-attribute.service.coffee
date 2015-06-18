@@ -7,8 +7,8 @@ RoutineService.registerTemplate
 	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration': 
-		document_schema_id: ''
-		attribute_id: ''
+		'document_schema_id': ''
+		'attribute_id': ''
 	'nodes': [
 		{
 			name: 'value'
@@ -23,8 +23,16 @@ RoutineService.registerTemplate
 	]
 
 	describeConfiguration: (service) ->
-		return "Name"
-
+		document_schema_id = service['configuration']['document_schema_id']
+		attribute_id = service['configuration']['attribute_id']
+		return unless document_schema_id? and attribute_id?
+		
+		documentSchema = DocumentSchema.db.findOne(document_schema_id)
+		return unless documentSchema?
+		
+		attribute = _.findWhere(documentSchema['attributes'], {id: attribute_id})
+		return "#{attribute.name}"
+		
 	execute: ({service}) ->
 		throw new Meteor.Error('validation', "Set Attribute service does not have any inputs") unless service.inputs?
 		throw new Meteor.Error('validation', "Set Attribute service does not have a 'value' input") unless service.inputs.hasOwnProperty('document')
