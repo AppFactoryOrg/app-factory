@@ -1,6 +1,6 @@
 .attribute-input.input-group.input-group-sm
 	.form-control-static
-		span(ng-bind="collection.length")
+		span(ng-bind="getLength()")
 		span(ng-show="collection") &nbsp;items
 	.input-group-btn
 		button.btn.btn-default(ng-click="editCollection()" type="button")

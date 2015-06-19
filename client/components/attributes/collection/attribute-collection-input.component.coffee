@@ -10,6 +10,10 @@ angular.module('app-factory').directive('afAttributeCollectionInput', ['$modal',
 	link: ($scope) ->
 		$scope.object[$scope.key] = [] unless $scope.object[$scope.key]?
 		$scope.collection = $scope.object[$scope.key]
+		
+		$scope.getLength = ->
+			return $scope.collection.length if _.isArray($scope.collection)
+			return 0
 
 		$scope.editCollection = ->
 			documentSchemaId = $scope.config['document_schema_id']

@@ -58,7 +58,7 @@
 						tooltip-placement="bottom"
 					)
 
-	.configuration-panel(ng-show="configuringService")
+	.configuration-panel(ng-if="configuringService")
 		.title Configure {{configuringService.$template.label}}
 		af-service-configuration(
 			service="configuringService"

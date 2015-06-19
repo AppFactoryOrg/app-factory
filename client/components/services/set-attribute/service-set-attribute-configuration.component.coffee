@@ -10,7 +10,7 @@ angular.module('app-factory').directive('afServiceSetAttributeConfiguration', ['
 
 		$scope.documentTypeChanged = ->
 			document_schema_id = $scope.service['configuration']['document_schema_id']
-			if document_schema_id?
+			unless _.isEmpty(document_schema_id)
 				$scope.selectedDocumentSchema = DocumentSchema.db.findOne(document_schema_id)
 				$scope.attributes = _.filter($scope.selectedDocumentSchema.attributes, {'value_type': DocumentAttribute.VALUE_TYPE['Input'].value})
 			else 

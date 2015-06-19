@@ -31,7 +31,7 @@ RoutineService.registerTemplate
 		return unless documentSchema?
 		
 		attribute = _.findWhere(documentSchema['attributes'], {id: attribute_id})
-		return "#{attribute.name}"
+		return "#{attribute.name}" if attribute?
 		
 	execute: ({service}) ->
 		throw new Meteor.Error('validation', "Set Attribute service does not have any inputs") unless service.inputs?
