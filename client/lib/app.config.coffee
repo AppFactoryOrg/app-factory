@@ -6,6 +6,7 @@ angular.module('app-factory', [
 	'ui.sortable'
 	'textAngular'
 	'ngDragDrop'
+	'panhandler'
 ])
 
 angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->

@@ -5,6 +5,7 @@
 	MUTABLE_PROPERTIES: [
 		'name'
 		'description'
+		'size',
 		'services'
 		'connections'
 	]
@@ -17,6 +18,7 @@
 	new: (parameters) ->
 		'name':				parameters['name']
 		'description':		parameters['description']
+		'size':				{'height': 2000, 'width': 3000}
 		'type':				parameters['type']
 		'services':			[]
 		'connections':		[]

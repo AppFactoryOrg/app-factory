@@ -168,5 +168,4 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 
 	# Initialize
 	$timeout -> $scope.buildCanvas()
-
 ])
