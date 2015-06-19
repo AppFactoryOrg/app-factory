@@ -1,10 +1,7 @@
-.form-group.attribute-collection-input
-	label.control-label.col-lg-4(ng-bind="::attribute.name")
-	.col-lg-8
-		.input-group
-			.form-control-static
-				span(ng-bind="collection.length")
-				span(ng-show="collection") &nbsp;items
-			.input-group-btn
-				button.btn.btn-default(ng-click="editCollection()" type="button")
-					i.fa.fa-pencil
+.input-group.attribute-collection-input
+	.form-control-static
+		span(ng-bind="collection.length")
+		span(ng-show="collection") &nbsp;items
+	.input-group-btn
+		button.btn.btn-default(ng-click="editCollection()" type="button")
+			i.fa.fa-pencil

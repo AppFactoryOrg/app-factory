@@ -3,26 +3,27 @@ angular.module('app-factory').directive('afAttributeUserInput', ['$modal', 'Sele
 	templateUrl: 'client/components/attributes/user/attribute-user-input.template.html'
 	replace: true
 	scope:
-		'attribute': 	'='
-		'document': 	'='	
+		'key': 		'='
+		'object': 	'='
+		'config':	'='	
 	link: ($scope) ->
 
 		$scope.userDisplayName = ''
 
 		$scope.hasValue = ->
-			return $scope.document.data[$scope.attribute['id']]?
+			return $scope.object[$scope.key]?
 
 		$scope.lookupUser = ->
 			$modal.open(new SelectUserModal()).result.then (user) ->
-				$scope.document.data[$scope.attribute['id']] = user['_id']
+				$scope.object[$scope.key] = user['_id']
 				$scope.loadUser()
 
 		$scope.clearUser = ->
-			$scope.document.data[$scope.attribute['id']] = null
+			$scope.object[$scope.key] = null
 			$scope.loadUser()
 
 		$scope.loadUser = ->
-			userId = $scope.document['data'][$scope.attribute['id']]
+			userId = $scope.object[$scope.key]
 			UserUtils.getUserName(userId)
 				.then (value) ->
 					$scope.userDisplayName = value

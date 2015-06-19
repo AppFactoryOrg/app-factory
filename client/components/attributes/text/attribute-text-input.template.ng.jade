@@ -1,7 +1,4 @@
-.form-group
-	label.control-label.col-lg-4(ng-bind="::attribute.name")
-	.col-lg-8
-		input.form-control(
-			type="text" 
-			ng-model="document.data[attribute['id']]"
-		)
+input.form-control(
+	type="text" 
+	ng-model="object[key]"
+)

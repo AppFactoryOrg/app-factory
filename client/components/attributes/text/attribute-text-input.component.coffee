@@ -3,6 +3,7 @@ angular.module('app-factory').directive('afAttributeTextInput', [() ->
 	templateUrl: 'client/components/attributes/text/attribute-text-input.template.html'
 	replace: true
 	scope:
-		'attribute': 	'='
-		'document': 	'='		
+		'key': 		'='
+		'object': 	'='
+		'config':	'='
 ])

@@ -12,10 +12,17 @@ angular.module('app-factory').directive('afEditDocumentAttributes', ['$compile',
 				return if attribute['value_type'] isnt DocumentAttribute.VALUE_TYPE['Input'].value
 				name = _.findWhere(DocumentAttribute.DATA_TYPE, 'value': attribute['data_type']).component
 				childTemplate = "
-					<af-attribute-#{name}-input 
-						attribute='documentSchema.attributes[#{index}]'
-						document='document'>
-					</af-attribute-#{name}-input >
+					<div class='form-group'>
+						<label class='control-label col-lg-4' ng-bind='::documentSchema.attributes[#{index}].name'></label>
+						<div class='col-lg-8'>
+							<af-attribute-#{name}-input 
+								object='document.data'
+								key='documentSchema.attributes[#{index}].id'
+								name='documentSchema.attributes[#{index}].name'
+								config='documentSchema.attributes[#{index}].configuration'>
+							</af-attribute-#{name}-input>
+						</div>
+					</div>
 				"
 				attributesEl = $('.attributes', $element)
 				attributesEl.append(childTemplate)

@@ -1,10 +1,7 @@
-.form-group.attribute-document-input
-	label.control-label.col-lg-4(ng-bind="::attribute.name")
-	.col-lg-8
-		.input-group
-			.form-control-static(ng-bind="documentDisplayName")
-			.input-group-btn
-				button.btn.btn-default(ng-click="lookupDocument()" type="button")
-					i.fa.fa-search
-				button.btn.btn-default(ng-click="clearDocument()" ng-disabled="!hasValue()" type="button")
-					i.fa.fa-close
+.input-group.attribute-document-input
+	.form-control-static(ng-bind="documentDisplayName")
+	.input-group-btn
+		button.btn.btn-default(ng-click="lookupDocument()" type="button")
+			i.fa.fa-search
+		button.btn.btn-default(ng-click="clearDocument()" ng-disabled="!hasValue()" type="button")
+			i.fa.fa-close
