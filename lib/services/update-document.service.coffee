@@ -55,8 +55,9 @@ RoutineService.registerTemplate
 			document['data'][update['attribute_id']] = update['value']
 
 		Meteor.call('Document.update', document)
+		updated_document = Document.db.findOne(document['_id'])
 		
 		return [
 			{node: 'out'}
-			{node: 'document_output', value: document['_id']}
+			{node: 'document_output', value: updated_document}
 		]
