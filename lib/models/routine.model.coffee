@@ -28,18 +28,18 @@
 		return {
 			routine: routine
 			records: []
-			log: (info, artifact) ->
-				console.debug(info)
+			log: (message, artifact) ->
 				date = Date.now()
-				records.push({info, artifact, date})
+				@records.push({message, artifact, date})
+				console.debug("#{date} | Routine #{@routine._id} | #{message}", artifact) if Meteor.isClient
 		}
 
-	execute: (routineId, routine_inputs) ->
-		routine = Routines.findOne(routineId)
+	execute: (routine_id, routine_inputs) ->
+		routine = Routine.db.findOne(routine_id)
 		throw new Error('Cannot find specified routine.') unless routine?
 
 		logger = Routine.makeLogger(routine)
-		logger.log("Starting execution of routine", routine_inputs)
+		logger.log("Starting execution of routine", routine)
 
 		services = _.clone(routine['services'])
 		throw new Error('Routine has no services.') unless services.length > 0
@@ -53,18 +53,10 @@
 			service['has_executed'] = false
 			service['template'] = _.find(RoutineService.service_templates, {'name': service['name']})
 
-		stack_counter = 0
+		resolveInputs = (service) ->
+			inputs = {}
 
-		processService = (service) ->
-			logger.log("Starting processing of service", service)
-
-			# Prevent infinite loops
-			stack_counter++
-			throw new Error('Routine got stuck in a potentially infinite loop.') if stack_counter > 10000
-
-			# Resolve input dependencies
-			service_inputs = {}
-			input_nodes = _.filter(service['nodes'], {'type': RoutineService.NODE_TYPE['Input'].value})
+			input_nodes = _.filter(service['template']['nodes'], {'type': RoutineService.NODE_TYPE['Input'].value})
 			input_nodes.forEach (input_node) ->
 				logger.log("Resolving service input dependency '#{input_node.name}'", service)
 				
@@ -72,36 +64,59 @@
 				throw new Error('Routine cannot find input connections.') unless input_connections?
 
 				input_connections.forEach (connection) ->
-					input_service = _.find(services, {'id': connection['fromNode'].split('_')[0]})
+					connection_service_id = connection['fromNode'].split('_')[0]
+					input_service = _.find(services, {'id': connection_service_id})
 					throw new Error('Routine cannot find input dependency service.') unless input_service?
+					
+					connection_node_name = connection['fromNode'].split('_')[1]
+					input_service_output_node = _.find(input_service['template']['nodes'], {'name': connection_node_name})
+					throw new Error('Routine cannot find input dependency node.') unless input_service_output_node?
 
-					if input_service['has_executed'] = false
+					if input_service['has_executed'] is false
 						processService(input_service)
 
-					input_service_output_node = _.find(services, {'id': connection['fromNode'].split('_')[1]})
-					output_value = _.find(input_service['outputs'], {'name': input_service_output_node['name']}
-					throw new Error('Routine cannot find input dependency value.') unless output_value?
+					output_value = input_service['outputs'][input_service_output_node['name']]
+					throw new Error('Routine cannot find input dependency value.') if _.isUndefined(output_value)
 
-					service_inputs[input_node['name']] = output_value
+					if input_node['multiple'] is true
+						inputs[input_node['name']] = [] unless _.isArray(inputs[input_node['name']])
+						inputs[input_node['name']].push(output_value)
+					else
+						inputs[input_node['name']] = output_value
 
-			# Execute the service
+			return inputs
+
+		stack_counter = 0
+		processService = (service) ->
+			logger.log("Starting processing of service", service)
+
+			# Prevent infinite loops
+			stack_counter++
+			throw new Error('Routine got stuck in a potentially infinite loop.') if stack_counter > 10000
+
+			# Resolve input dependencies and execute
+			service_inputs = resolveInputs(service)
 			results = service['template'].execute({service, service_inputs, routine_inputs})
-			throw new Error('Routine service execution results were empty.') if _.isEmpty(results)
+			throw new Error('Routine service execution results were invalid.') unless results?
 
 			# Record outputs
 			service['has_executed'] = true
-			output_nodes = _.filter(service['nodes'], {'type': RoutineService.NODE_TYPE['Output'].value})
+			output_nodes = _.filter(service['template']['nodes'], {'type': RoutineService.NODE_TYPE['Output'].value})
 			output_nodes.forEach (output_node) ->
-				service['outputs'][output_node['name']] = output_node['value']
+				node_name = output_node['name']
+				result = _.find(results, {'node': node_name})
+				throw new Error('Routine cannot find matching result for output node.') unless result?
+
+				service['outputs'][node_name] = result['value']
 
 			logger.log("Ending processing of service", service)
 			
 			# Process service outflows
 			results.forEach (result) ->
-				result_node = _.find(service['nodes'], {'name': result['node']})
+				result_node = _.find(service['template']['nodes'], {'name': result['node']})
 				throw new Error('Routine cannot find result node in service.') unless result_node?
 
-				if result_node['type'] in [RoutineService.NODE_TYPE['Output'].value, RoutineService.NODE_TYPE['Error'].value]
+				if result_node['type'] in [RoutineService.NODE_TYPE['Outflow'].value, RoutineService.NODE_TYPE['Error'].value]
 					output_connection = _.find(connections, {'fromNode': "#{service.id}_#{result_node.name}"})
 					throw new Error('Routine cannot find output connection.') unless output_connection?
 
@@ -110,21 +125,20 @@
 
 					processService(output_service)
 
-		# Kick it off
+		# Start executing the workflow, if applicable
 		start = _.findWhere(services, {'name': 'start'})
-		throw new Error('Routine has no Start service.') unless start?
+		processService(start) if start?
 
-		processService(start)
-
-		# Get output data
+		# Resolve output data
 		output_data = []
 		output_services = _.filter(services, {'name': 'output'})
 		output_services.forEach (output_service) ->
-			output =
+			service_inputs = resolveInputs(output_service)
+			output_data.push
 				name: output_service['configuration']['name']
 				type: output_service['configuration']['type']
-				value: output_service['inputs']['value']
+				value: service_inputs['value']
 
-			output_data.push(output)
+		logger.log("Ending processing of routine", routine)
 
 		return output_data

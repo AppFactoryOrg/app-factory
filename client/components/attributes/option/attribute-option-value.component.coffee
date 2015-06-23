@@ -7,11 +7,14 @@ angular.module('app-factory').directive('afAttributeOptionValue', [() ->
 		'document': 	'='
 	controller: 'CommonAttributeValueCtrl'
 	link: ($scope) ->
-		$scope.getValue().then (optionId) ->
-			return unless optionId?
+		$scope.getValue()
+			.catch ->
+				$scope.value = '[ERROR]'
+			.then (optionId) ->
+				return unless optionId?
 
-			option = _.findWhere($scope.attribute['configuration']['options'], 'id': optionId)
-			return unless option?
+				option = _.findWhere($scope.attribute['configuration']['options'], 'id': optionId)
+				return unless option?
 
-			$scope.value = option['name']
+				$scope.value = option['name']
 ])

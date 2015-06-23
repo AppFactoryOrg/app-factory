@@ -10,12 +10,14 @@ angular.module('app-factory').controller('CommonAttributeValueCtrl', ['$scope', 
 				id = $scope.attribute['routine_id']
 				inputs = [
 					{
-						'name': 'document'
+						'name': 'Document'
 						'value': $scope.document
 					}
 				]
 				$meteor.call('Routine.execute', {id, inputs})
-					.then (output) ->
+					.then (outputs) ->
+						reject("Routine output is not an valid") unless _.isArray(outputs) and not _.isEmpty(outputs)
+						output = outputs[0]['value']
 						resolve(output)
 					.catch (error) ->
 						reject(error)

@@ -25,7 +25,6 @@ RoutineService.registerTemplate
 		{
 			name: 'result'
 			type: RoutineService.NODE_TYPE['Output'].value
-			multiple: true
 			position: [1, 0.5, 1, 0]
 			label: 'Result'
 			labelPosition: [-1.2, 0.5]
@@ -37,9 +36,9 @@ RoutineService.registerTemplate
 		throw new Meteor.Error('validation', "Math service does not have a 'expression' input") unless service_inputs['expression']?
 		throw new Meteor.Error('validation', 'validation', "Math service does not have a 'variables' input") unless service_inputs['variables']?
 		
+		scope = {}
 		expression = service_inputs['expression']
 		variables = service_inputs['variables']
-		scope = {}
 		variables.forEach (variable) ->
 			name = variable['name']
 			value = variable['value']

@@ -39,9 +39,5 @@ Meteor.methods
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Id is required') if _.isEmpty(id) and _.isString(id)
 
-		try 
-			outputs = Routine.execute(id, inputs)
-		catch error
-			throw new Meteor.Error('logic', 'Routine execution failed', error)
-
+		outputs = Routine.execute(id, inputs)
 		return outputs

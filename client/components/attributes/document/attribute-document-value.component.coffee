@@ -7,12 +7,15 @@ angular.module('app-factory').directive('afAttributeDocumentValue', ['$modal', '
 		'document': 	'='
 	controller: 'CommonAttributeValueCtrl'
 	link: ($scope) ->
-		$scope.getValue().then (documentId) ->
-			DocumentUtils.getPrimaryAttributeValue(documentId)
-				.then (value) ->
-					$scope.value = value
-				.catch ->
-					$scope.value = null
+		$scope.getValue()
+			.catch ->
+				$scope.value = '[ERROR]'
+			.then (documentId) ->
+				DocumentUtils.getPrimaryAttributeValue(documentId)
+					.then (value) ->
+						$scope.value = value
+					.catch ->
+						$scope.value = null
 
 		$scope.viewDocument = ->
 			DocumentUtils.getById(documentId)

@@ -7,7 +7,10 @@ angular.module('app-factory').directive('afAttributeDateValue', ['$filter', ($fi
 		'document': 	'='
 	controller: 'CommonAttributeValueCtrl'
 	link: ($scope) ->
-		$scope.getValue().then (value) ->
-			value = $filter('date')(value, 'shortDate') if value?
-			$scope.value = value
+		$scope.getValue()
+			.catch ->
+				$scope.value = '[ERROR]'
+			.then (value) ->
+				value = $filter('date')(value, 'shortDate') if value?
+				$scope.value = value
 ])
