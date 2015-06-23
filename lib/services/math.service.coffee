@@ -32,13 +32,13 @@ RoutineService.registerTemplate
 		}
 	]
 
-	execute: ({service}) ->
-		throw new Meteor.Error('validation', "Math service does not have any inputs") unless service.inputs?
-		throw new Meteor.Error('validation', "Math service does not have a 'expression' input") unless service.inputs.hasOwnProperty('expression')
-		throw new Meteor.Error('validation', 'validation', "Math service does not have a 'variables' input") unless service.inputs.hasOwnProperty('variables')
+	execute: ({service, service_inputs}) ->
+		throw new Meteor.Error('validation', "Math service does not have any inputs") unless service_inputs?
+		throw new Meteor.Error('validation', "Math service does not have a 'expression' input") unless service_inputs['expression']?
+		throw new Meteor.Error('validation', 'validation', "Math service does not have a 'variables' input") unless service_inputs['variables']?
 		
-		expression = service.inputs['expression']
-		variables = service.inputs['variables']
+		expression = service_inputs['expression']
+		variables = service_inputs['variables']
 		scope = {}
 		variables.forEach (variable) ->
 			name = variable['name']

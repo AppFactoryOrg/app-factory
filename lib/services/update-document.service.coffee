@@ -43,14 +43,14 @@ RoutineService.registerTemplate
 
 	describeConfiguration: (service) -> ""
 
-	execute: ({service}) ->
-		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service.inputs?
-		throw new Meteor.Error('validation', "Update Document service does not have a 'Document' input") unless service.inputs.hasOwnProperty('document_input')
-		throw new Meteor.Error('validation', "Update Document service does not have an 'Updates' input") unless service.inputs.hasOwnProperty('updates')
+	execute: ({service, service_inputs}) ->
+		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service_inputs?
+		throw new Meteor.Error('validation', "Update Document service does not have a 'Document' input") unless service_inputs['document_input']?
+		throw new Meteor.Error('validation', "Update Document service does not have an 'Updates' input") unless service_inputs['updates']?
 		
-		document = service.inputs['document_input']
+		document = service_inputs['document_input']
 		
-		updates = service.inputs['updates']
+		updates = service_inputs['updates']
 		updates.forEach (update) ->
 			document['data'][update['attribute_id']] = update['value']
 

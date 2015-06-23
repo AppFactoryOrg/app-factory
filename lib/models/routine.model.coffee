@@ -42,67 +42,66 @@
 		logger.log("Starting execution of routine", routine_inputs)
 
 		services = _.clone(routine['services'])
-		throw new Error('Routine has no services.') unless services.length
+		throw new Error('Routine has no services.') unless services.length > 0
 
 		connections = _.clone(routine['connections'])
-		throw new Error('Routine has no connections.') unless connections.length
+		throw new Error('Routine has no connections.') unless connections.length > 0
+
+		# Prep services for execution
+		services.forEach (service) -> 
+			service['outputs'] = {}
+			service['has_executed'] = false
+			service['template'] = _.find(RoutineService.service_templates, {'name': service['name']})
 
 		stack_counter = 0
+
 		processService = (service) ->
 			logger.log("Starting processing of service", service)
 
 			# Prevent infinite loops
 			stack_counter++
 			throw new Error('Routine got stuck in a potentially infinite loop.') if stack_counter > 10000
-			
-			# Check for inputs and execute them first
-			input_nodes = _.filter(service.nodes, {'type': 'input'})
+
+			# Resolve input dependencies
+			service_inputs = {}
+			input_nodes = _.filter(service['nodes'], {'type': RoutineService.NODE_TYPE['Input'].value})
 			input_nodes.forEach (input_node) ->
+				logger.log("Resolving service input dependency '#{input_node.name}'", service)
+				
 				input_connections = _.filter(connections, {'toNode': "#{service.id}_#{input_node.name}"})
 				throw new Error('Routine cannot find input connections.') unless input_connections?
 
-				input_connections.forEach (inputConnection) ->
-					inputService = _.find(services, {'id': inputConnection['fromNode'].split('_')[0]})
-					throw new Error('Routine cannot find input service.') unless inputService?
+				input_connections.forEach (connection) ->
+					input_service = _.find(services, {'id': connection['fromNode'].split('_')[0]})
+					throw new Error('Routine cannot find input dependency service.') unless input_service?
 
-					processService(inputService)
+					if input_service['has_executed'] = false
+						processService(input_service)
 
-			# Lookup the service template, which contains the execute function
-			service_template = _.find(RoutineService.service_templates, {'name': service['name']})
-			throw new Error('Routine cannot find matching service template.') unless service_template?
+					input_service_output_node = _.find(services, {'id': connection['fromNode'].split('_')[1]})
+					output_value = _.find(input_service['outputs'], {'name': input_service_output_node['name']}
+					throw new Error('Routine cannot find input dependency value.') unless output_value?
+
+					service_inputs[input_node['name']] = output_value
 
 			# Execute the service
-			results = service_template.execute({service, routine_inputs})
+			results = service['template'].execute({service, service_inputs, routine_inputs})
 			throw new Error('Routine service execution results were empty.') if _.isEmpty(results)
+
+			# Record outputs
+			service['has_executed'] = true
+			output_nodes = _.filter(service['nodes'], {'type': RoutineService.NODE_TYPE['Output'].value})
+			output_nodes.forEach (output_node) ->
+				service['outputs'][output_node['name']] = output_node['value']
 
 			logger.log("Ending processing of service", service)
 			
+			# Process service outflows
 			results.forEach (result) ->
-				# Process result node
 				result_node = _.find(service['nodes'], {'name': result['node']})
 				throw new Error('Routine cannot find result node in service.') unless result_node?
-				
-				if result_node['type'] is RoutineService.NODE_TYPE['Output'].value
-					# Pass output value to next services
-					output_connections = _.filter(connections, {'fromNode': "#{service.id}_#{result_node.name}"})
-					throw new Error('Routine cannot find output connections.') unless output_connections?
 
-					output_connections.forEach (output_connection) ->
-						output_service = _.find(services, {'id': output_connection['toNode'].split('_')[0]})
-						throw new Error('Routine cannot find output service.') unless output_service?
-
-						input_node = _.find(output_service.nodes, {name: output_connection['toNode'].split('_')[1]})
-						throw new Error('Routine cannot find input node of output service.') unless input_node?
-						
-						output_service.inputs = [] unless output_service.inputs?
-						if input_node['multiple'] is true
-							output_service.inputs[input_node['name']] = [] unless _.isArray(output_service.inputs[input_node['name']])
-							output_service.inputs[input_node['name']].push(result['value'])
-						else
-							output_service.inputs[input_node['name']] = result['value']
-
-				else if result_node['type'] in [RoutineService.NODE_TYPE['Output'].value, RoutineService.NODE_TYPE['Error'].value]
-					# Pass flow to next service
+				if result_node['type'] in [RoutineService.NODE_TYPE['Output'].value, RoutineService.NODE_TYPE['Error'].value]
 					output_connection = _.find(connections, {'fromNode': "#{service.id}_#{result_node.name}"})
 					throw new Error('Routine cannot find output connection.') unless output_connection?
 

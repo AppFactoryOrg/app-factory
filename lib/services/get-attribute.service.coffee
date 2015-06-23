@@ -33,13 +33,13 @@ RoutineService.registerTemplate
 		attribute = _.findWhere(documentSchema['attributes'], {id: attribute_id})
 		return "#{attribute.name}" if attribute?
 
-	execute: ({service}) ->
-		throw new Meteor.Error('validation', "Get Attribute service does not have any inputs") unless service.inputs?
-		throw new Meteor.Error('validation', "Get Attribute service does not have a 'document' input") unless service.inputs.hasOwnProperty('document')
-		throw new Meteor.Error('validation', "Get Attribute service does not have a configuration") unless service.configuration?
+	execute: ({service, service_inputs}) ->
+		throw new Meteor.Error('validation', "Get Attribute service does not have any inputs") unless service_inputs?
+		throw new Meteor.Error('validation', "Get Attribute service does not have a 'document' input") unless service_inputs['document']?
+		throw new Meteor.Error('validation', "Get Attribute service does not have a configuration") unless service['configuration']?
 		
-		document = service.inputs['document']
-		attribute_id = service.configuration['attribute_id']
+		document = service_inputs['document']
+		attribute_id = service['configuration']['attribute_id']
 		value = document['data'][attribute_id]
 
 		return [{node: 'output', value: value}]

@@ -23,5 +23,5 @@ RoutineService.registerTemplate
 		name = service['configuration']['name']
 		return "#{name}"
 
-	execute: ({service, routineInputs}) -> 
+	execute: -> 
 		return []

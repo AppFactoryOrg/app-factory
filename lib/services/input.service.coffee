@@ -23,12 +23,12 @@ RoutineService.registerTemplate
 		name = service['configuration']['name']
 		return "#{name}"
 
-	execute: ({service, routineInputs}) -> 
+	execute: ({service, routine_inputs}) -> 
 		throw new Meteor.Error('validation', "Input service does not have a configuration") unless service['configuration']?
 		
-		inputData = _.find(routineInputs, {'name': service['configuration']['name']})
-		throw new Meteor.Error('data', "Input service could not find required input data") unless inputData?
+		input_data = _.find(routine_inputs, {'name': service['configuration']['name']})
+		throw new Meteor.Error('data', "Input service could not find required input data") unless input_data?
 
-		value = inputData['value']
+		value = input_data['value']
 
 		return [{node: 'value', value: value}]

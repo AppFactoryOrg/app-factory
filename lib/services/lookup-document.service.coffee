@@ -43,11 +43,11 @@ RoutineService.registerTemplate
 
 	describeConfiguration: (service) -> ""
 
-	execute: ({service}) ->
-		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service.inputs?
-		throw new Meteor.Error('validation', "Update Document service does not have a 'Reference' input") unless service.inputs.hasOwnProperty('reference')
+	execute: ({service, service_inputs}) ->
+		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service_inputs?
+		throw new Meteor.Error('validation', "Update Document service does not have a 'Reference' input") unless service_inputs['reference']?
 		
-		reference = service.inputs['reference']
+		reference = service_inputs['reference']
 
 		if _.isString(reference)
 			document_id = reference

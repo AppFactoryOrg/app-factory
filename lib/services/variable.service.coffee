@@ -26,13 +26,13 @@ RoutineService.registerTemplate
 		name = service['configuration']['name']
 		return "#{name}"
 
-	execute: ({service}) ->
-		throw new Meteor.Error('validation', "Define Variable service does not have any inputs") unless service.inputs?
-		throw new Meteor.Error('validation', "Define Variable service does not have a 'value' input") unless service.inputs.hasOwnProperty('value')
-		throw new Meteor.Error('validation', "Define Variable service does not have a configuration") unless service.configuration?
+	execute: ({service, service_inputs}) ->
+		throw new Meteor.Error('validation', "Define Variable service does not have any inputs") unless service_inputs?
+		throw new Meteor.Error('validation', "Define Variable service does not have a 'value' input") unless service_inputs['value']?
+		throw new Meteor.Error('validation', "Define Variable service does not have a configuration") unless service['configuration']?
 		
 		value =
-			name: service.configuration['name']				
-			value: service.inputs['value']
+			name: service['configuration']['name']				
+			value: service_inputs['value']
 
 		return [{node: 'output', value: value}]
