@@ -21,7 +21,7 @@ RoutineService.registerTemplate
 			type: RoutineService.NODE_TYPE['Input'].value
 			position: [0, 0.6, -1, 0]
 			label: 'Document'
-			labelPosition: [2.9, 0.55]
+			labelPosition: [2.9, 0.5]
 		}
 		{
 			name: 'updates'
@@ -29,7 +29,7 @@ RoutineService.registerTemplate
 			multiple: true
 			position: [0, 0.8, -1, 0]
 			label: 'Updates'
-			labelPosition: [2.6, 0.55]
+			labelPosition: [2.6, 0.5]
 		}
 		{
 			name: 'document_output'

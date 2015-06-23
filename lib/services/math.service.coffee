@@ -10,7 +10,7 @@ RoutineService.registerTemplate
 		{
 			name: 'expression'
 			type: RoutineService.NODE_TYPE['Input'].value
-			position: [0, 0.55, -1, 0]
+			position: [0, 0.5, -1, 0]
 			label: 'Expression'
 			labelPosition: [2.95, 0.5]
 		}
@@ -18,7 +18,7 @@ RoutineService.registerTemplate
 			name: 'variables'
 			type: RoutineService.NODE_TYPE['Input'].value
 			multiple: true
-			position: [0, 0.77, -1, 0]
+			position: [0, 0.75, -1, 0]
 			label: 'Variables'
 			labelPosition: [2.65, 0.5]
 		}
@@ -26,7 +26,7 @@ RoutineService.registerTemplate
 			name: 'result'
 			type: RoutineService.NODE_TYPE['Output'].value
 			multiple: true
-			position: [1, 0.55, 1, 0]
+			position: [1, 0.5, 1, 0]
 			label: 'Result'
 			labelPosition: [-1.2, 0.5]
 		}

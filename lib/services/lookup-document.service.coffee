@@ -19,15 +19,15 @@ RoutineService.registerTemplate
 		{
 			name: 'reference'
 			type: RoutineService.NODE_TYPE['Input'].value
-			position: [0, 0.6, -1, 0]
+			position: [0, 0.75, -1, 0]
 			label: 'Reference'
-			labelPosition: [2.9, 0.55]
+			labelPosition: [2.9, 0.5]
 		}
 		{
 			name: 'error_not_found'
 			type: RoutineService.NODE_TYPE['Error'].value
 			multiple: true
-			position: [1, 0.55, 1, 0]
+			position: [1, 0.5, 1, 0]
 			label: 'Not Found'
 			labelPosition: [-1.85, 0.5]
 		}
@@ -35,7 +35,7 @@ RoutineService.registerTemplate
 			name: 'document'
 			type: RoutineService.NODE_TYPE['Output'].value
 			multiple: true
-			position: [1, 0.77, 1, 0]
+			position: [1, 0.75, 1, 0]
 			label: 'Document'
 			labelPosition: [-1.85, 0.5]
 		}
