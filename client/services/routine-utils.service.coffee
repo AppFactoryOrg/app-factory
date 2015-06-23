@@ -101,6 +101,39 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 				hoverClass: 'hover'
 				activeClass: 'active'
 
+		'error': 
+			endpoint: 'Dot'
+			isSource: true
+			scope: 'execution'
+			paintStyle:
+				fillStyle: '#df706c'
+				strokeStyle: '#eaa8a7'
+				lineWidth: 2
+				radius: 5
+			connector: [
+				'Flowchart'
+				{
+					stub: [
+						10
+						10
+					]
+					gap: 11
+					cornerRadius: 5
+					alwaysRespectStubs: true
+				}
+			]
+			connectorStyle: 
+				lineWidth: 2
+				strokeStyle: '#5bc0de'
+				joinstyle: 'round'
+			hoverPaintStyle: 
+				fillStyle: '#A9DCEB'
+				strokeStyle: '#A9DCEB'
+			connectorHoverStyle: 
+				lineWidth: 4
+				strokeStyle: '#5bc0de'
+			dragOptions: {}
+
 	getEndpointStyleForNode: (node) ->
 		key = node['type']
 		return @endpointStyles[key]

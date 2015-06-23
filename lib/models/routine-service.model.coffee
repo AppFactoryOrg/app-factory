@@ -10,6 +10,7 @@
 		'Outflow':		{value: 'outflow'}
 		'Input':		{value: 'input'}
 		'Output':		{value: 'output'}
+		'Error':		{value: 'error'}
 
 	new: (parameters) ->
 		'id': Meteor.uuid()

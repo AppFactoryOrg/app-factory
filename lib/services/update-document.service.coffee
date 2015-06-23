@@ -17,7 +17,7 @@ RoutineService.registerTemplate
 			position: [1, 0.25, 1, 0]
 		}
 		{
-			name: 'document'
+			name: 'document_input'
 			type: RoutineService.NODE_TYPE['Input'].value
 			position: [0, 0.6, -1, 0]
 			label: 'Document'
@@ -29,7 +29,15 @@ RoutineService.registerTemplate
 			multiple: true
 			position: [0, 0.8, -1, 0]
 			label: 'Updates'
-			labelPosition: [2.5, 0.55]
+			labelPosition: [2.6, 0.55]
+		}
+		{
+			name: 'document_output'
+			type: RoutineService.NODE_TYPE['Output'].value
+			multiple: true
+			position: [1, 0.6, 1, 0]
+			label: 'Document'
+			labelPosition: [-1.85, 0.5]
 		}
 	]
 
@@ -37,10 +45,10 @@ RoutineService.registerTemplate
 
 	execute: ({service}) ->
 		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service.inputs?
-		throw new Meteor.Error('validation', "Update Document service does not have a 'document' input") unless service.inputs.hasOwnProperty('document')
-		throw new Meteor.Error('validation', "Update Document service does not have a 'updates' input") unless service.inputs.hasOwnProperty('updates')
+		throw new Meteor.Error('validation', "Update Document service does not have a 'Document' input") unless service.inputs.hasOwnProperty('document_input')
+		throw new Meteor.Error('validation', "Update Document service does not have an 'Updates' input") unless service.inputs.hasOwnProperty('updates')
 		
-		document = service.inputs['document']
+		document = service.inputs['document_input']
 		
 		updates = service.inputs['updates']
 		updates.forEach (update) ->
@@ -48,4 +56,7 @@ RoutineService.registerTemplate
 
 		Meteor.call('Document.update', document)
 		
-		return [{node: 'out'}]
+		return [
+			{node: 'out'}
+			{node: 'document_output', value: document['_id']}
+		]

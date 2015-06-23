@@ -29,6 +29,6 @@ angular.module('app-factory').controller('FactoryRoutinesCtrl', ['$scope', '$roo
 		$meteor.call('Routine.delete', routine['_id'])
 
 	#DEBUG
-	$scope.editRoutine($scope.routines[0])
+	# $scope.editRoutine($scope.routines[0])
 
 ])
