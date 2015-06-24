@@ -43,10 +43,15 @@ RoutineService.registerTemplate
 		variables.forEach (variable) ->
 			name = variable['name']
 			value = variable['value']
-			throw new Meteor.Error("Math service encountered a non-numeric variable.") unless _.isNumber(value)
+			return unless _.isNumber(value)
 
 			scope[name] = value
 
-		value = math.eval(expression, scope)
+		try 
+			value = math.eval(expression, scope)
+			value = math.format(value, {precision: 14})
+			value = parseFloat(value)
+		catch error
+			console.log("Math service encounted error: #{error}")
 
-		return [{node: 'result', value: value}]
+		return [{node: 'result', value: value ? null}]
