@@ -1,4 +1,4 @@
-angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', '$timeout', 'EditDocumentModal', 'ViewDocumentModal', ($rootScope, $modal, $meteor, $timeout, EditDocumentModal, ViewDocumentModal) ->
+angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', '$timeout', 'toaster', 'EditDocumentModal', 'ViewDocumentModal', ($rootScope, $modal, $meteor, $timeout, toaster, EditDocumentModal, ViewDocumentModal) ->
 	restrict: 'E'
 	templateUrl: 'client/components/app/app-widget-table.template.html'
 	replace: true
@@ -94,16 +94,15 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.executeAction = (action, document) ->
 			routine_id = action['routine_id']
-			inputs = [
-				{
-					'name': 'document'
-					'value': document
-				}
-			]
+			inputs = [{
+				name: 'Document'
+				value: document
+			}]
 			$meteor.call('Routine.execute', {routine_id, inputs})
 				.finally ->
 					$scope.isLoading = false
 				.catch (error) ->
+					console.error(error)
 					toaster.pop(
 						type: 'error'
 						body: "#{error.reason}"

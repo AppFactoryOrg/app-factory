@@ -43,7 +43,7 @@ RoutineService.registerTemplate
 		variables.forEach (variable) ->
 			name = variable['name']
 			value = variable['value']
-			throw new Error("Math service encountered a non-numeric variable.") unless _.isNumber(value)
+			throw new Meteor.Error("Math service encountered a non-numeric variable.") unless _.isNumber(value)
 
 			scope[name] = value
 
