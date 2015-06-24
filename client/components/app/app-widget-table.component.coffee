@@ -93,14 +93,14 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			$meteor.call('Document.delete', document['_id'])
 
 		$scope.executeAction = (action, document) ->
-			id = action['routine_id']
+			routine_id = action['routine_id']
 			inputs = [
 				{
 					'name': 'document'
 					'value': document
 				}
 			]
-			$meteor.call('Routine.execute', {id, inputs})
+			$meteor.call('Routine.execute', {routine_id, inputs})
 				.finally ->
 					$scope.isLoading = false
 				.catch (error) ->

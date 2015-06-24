@@ -31,7 +31,7 @@
 			log: (message, artifact) ->
 				date = Date.now()
 				@records.push({message, artifact, date})
-				console.debug("#{date} | Routine #{@routine._id} | #{message}", artifact) if Meteor.isClient
+				console.log("#{date} | Routine #{@routine._id} | #{message}", artifact) if Meteor.isClient
 		}
 
 	execute: (routine_id, routine_inputs) ->

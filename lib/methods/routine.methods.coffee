@@ -34,10 +34,3 @@ Meteor.methods
 		Routine.db.remove(id)
 
 		return
-
-	'Routine.execute': ({id, inputs}) ->
-		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
-		throw new Meteor.Error('validation', 'Id is required') if _.isEmpty(id) and _.isString(id)
-
-		outputs = Routine.execute(id, inputs)
-		return outputs
