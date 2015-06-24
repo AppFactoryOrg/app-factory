@@ -3,7 +3,6 @@
 	db: new Mongo.Collection('documents',
 		transform: (document) ->
 			return document if Meteor.isClient
-			document_id = document['_id']
 
 			document_schema = DocumentSchema.db.findOne(document['document_schema_id'])
 			throw new Meteor.Error('data', 'Cannot find Document Schema') unless document_schema?
@@ -11,20 +10,25 @@
 			routine_attributes = _.filter(document_schema['attributes'], {'value_type': DocumentAttribute.VALUE_TYPE['Routine'].value})
 			routine_attributes.forEach (attribute) ->
 				routine_id = attribute['routine_id']
+				return unless routine_id?
+				
+				routine = Routine.db.findOne(routine_id)
+				return unless routine?
+				throw new Meteor.Error('validation', "Routine is not of the 'Attribute' type") unless routine['type'] is Routine.TYPE['Attribute'].value
+
 				inputs = [{
 					name: 'Document'
 					value: document
 				}]
 
-				outputs = Meteor.call('Routine.execute', {routine_id, inputs})
+				outputs = Routine.execute(routine, inputs)
 
 				if outputs.length > 0
 					value = outputs[0]['value']
 				else 
 					value = null
 
-				attribute_id = attribute['id']
-				document['data'][attribute_id] = value
+				document['data'][attribute['id']] = value
 
 			return document
 	)

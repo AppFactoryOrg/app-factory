@@ -12,10 +12,11 @@ angular.module('app-factory').directive('afAppWidgetButton', ['$meteor', 'toaste
 		$scope.isLoading = false
 
 		$scope.click = ->
-			id = $scope.widget['configuration']['routine_id']
-			return unless id?
+			routine_id = $scope.widget['configuration']['routine_id']
+			return unless routine_id?
+			
 			$scope.isLoading = true
-			$meteor.call('Routine.execute', {id})
+			$meteor.call('Routine.execute', {routine_id})
 				.finally ->
 					$scope.isLoading = false
 				.catch (error) ->

@@ -18,7 +18,7 @@ angular.module('app-factory').directive('afAttributeDocumentValue', ['$modal', '
 						$scope.value = null
 
 		$scope.viewDocument = ->
-			DocumentUtils.getById(documentId)
+			DocumentUtils.getById($scope.document['_id'])
 				.then ({document, documentSchema}) ->
 					options =
 						'deleteDisabled': true

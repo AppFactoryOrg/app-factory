@@ -31,7 +31,7 @@
 			log: (message, artifact) ->
 				date = Date.now()
 				@records.push({message, artifact, date})
-				console.log("#{date} | Routine #{@routine._id} | #{message}", artifact) if Meteor.isClient
+				# console.log("#{date} | Routine #{@routine._id} | #{message}", artifact)
 		}
 
 	execute: (routine_id, routine_inputs) ->
@@ -118,7 +118,7 @@
 
 				if result_node['type'] in [RoutineService.NODE_TYPE['Outflow'].value, RoutineService.NODE_TYPE['Error'].value]
 					output_connection = _.find(connections, {'fromNode': "#{service.id}_#{result_node.name}"})
-					throw new Error('Routine cannot find output connection.') unless output_connection?
+					return unless output_connection?
 
 					output_service = _.find(services, {'id': output_connection['toNode'].split('_')[0]})
 					throw new Error('Routine cannot find output service.') unless output_service?

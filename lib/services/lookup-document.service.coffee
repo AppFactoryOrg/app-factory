@@ -44,22 +44,27 @@ RoutineService.registerTemplate
 	describeConfiguration: (service) -> ""
 
 	execute: ({service, service_inputs}) ->
-		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service_inputs?
-		throw new Meteor.Error('validation', "Update Document service does not have a 'Reference' input") unless service_inputs['reference']?
+		throw new Meteor.Error('validation', "Lookup Document service does not have any inputs") unless service_inputs?
 		
 		reference = service_inputs['reference']
 
-		if _.isString(reference)
-			document_id = reference
-		else if reference.hasOwnProperty('_id')
-			document_id = reference['_id']
+		if reference?
+			if _.isString(reference)
+				document_id = reference
+			else if reference.hasOwnProperty('_id')
+				document_id = reference['_id']
+			
+			if _.isString(document_id) and not _.isEmpty(document_id)
+				document = Document.db.findOne(document_id)
 		
-		return [{node: 'error_not_found', value: "Reference is invalid"}] unless _.isString(document_id) and not _.isEmpty(document_id)
-		
-		document = Document.db.findOne(document_id)
-		return [{node: 'error_not_found', value: "Document could not be found by the specified reference"}] unless document?
-		
-		return [
-			{node: 'out'}
-			{node: 'document', value: document}
-		]
+		if document?
+			return [
+				{node: 'out'}
+				{node: 'document', value: document}
+			]
+		else
+			return [
+				{node: 'error_not_found', value: "Document could not be found by the specified reference"}
+				{node: 'document', value: null}
+			] 
+			
