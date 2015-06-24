@@ -11,14 +11,15 @@ angular.module('app-factory').directive('afAttributeDocumentValue', ['$modal', '
 			.catch ->
 				$scope.value = '[ERROR]'
 			.then (documentId) ->
+				$scope.value = documentId
 				DocumentUtils.getPrimaryAttributeValue(documentId)
 					.then (value) ->
-						$scope.value = value
+						$scope.displayValue = value
 					.catch ->
-						$scope.value = null
+						$scope.displayValue = null
 
 		$scope.viewDocument = ->
-			DocumentUtils.getById($scope.document['_id'])
+			DocumentUtils.getById($scope.value)
 				.then ({document, documentSchema}) ->
 					options =
 						'deleteDisabled': true
