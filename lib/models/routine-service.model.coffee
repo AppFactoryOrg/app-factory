@@ -21,3 +21,16 @@
 	service_templates: []
 	registerTemplate: (template) ->
 		@service_templates.push(template)
+
+	getServicesTemplatesForRoutine: (routine) ->
+		switch routine['type']
+			when Routine.TYPE['Attribute'].value
+				templates = _.filter(RoutineService.service_templates, (template) ->
+					return false if _.contains(template['flags'], 'modifies_db')
+					return true
+				)
+				console.log templates
+				return templates
+			else
+				return RoutineService.service_templates
+

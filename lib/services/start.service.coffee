@@ -6,6 +6,7 @@ RoutineService.registerTemplate
 	'display_order': 100
 	'size': {height: 60, width: 60}
 	'type': RoutineService.SERVICE_TYPE['Logic'].value
+	'flags': []
 	'nodes': [
 		{
 			name: 'out'

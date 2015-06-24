@@ -9,6 +9,7 @@ RoutineService.registerTemplate
 	'configuration': 
 		'document_schema_id': ''
 		'attribute_id': ''
+	'flags': []
 	'nodes': [
 		{
 			name: 'document'

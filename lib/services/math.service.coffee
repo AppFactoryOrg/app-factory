@@ -6,6 +6,7 @@ RoutineService.registerTemplate
 	'display_order': 10000
 	'size': {height: 70, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
+	'flags': []
 	'nodes': [
 		{
 			name: 'expression'

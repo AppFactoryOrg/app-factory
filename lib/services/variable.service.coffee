@@ -8,6 +8,7 @@ RoutineService.registerTemplate
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration': 
 		'name': ''
+	'flags': []
 	'nodes': [
 		{
 			name: 'value'

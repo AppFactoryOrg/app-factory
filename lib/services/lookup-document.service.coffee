@@ -5,6 +5,7 @@ RoutineService.registerTemplate
 	'color': '#567CA0'
 	'display_order': 50000
 	'size': {height: 80, width: 150}
+	'flags': ['accesses_db']
 	'nodes': [
 		{
 			name: 'in'
