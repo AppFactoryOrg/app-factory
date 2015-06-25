@@ -3,6 +3,7 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 		'outflow':
 			endpoint: 'Dot'
 			isSource: true
+			maxConnections: -1
 			scope: 'execution'
 			paintStyle:
 				fillStyle: '#5bc0de'

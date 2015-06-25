@@ -13,9 +13,14 @@ RoutineService.registerTemplate
 	'flags': []
 	'nodes': [
 		{
+			name: 'in'
+			type: RoutineService.NODE_TYPE['Inflow'].value
+			position: [0, 0.3, -1, 0]
+		}
+		{
 			name: 'value'
 			type: RoutineService.NODE_TYPE['Input'].value
-			position: 'Left'
+			position: [0, 0.7, -1, 0]
 		}
 	]
 
