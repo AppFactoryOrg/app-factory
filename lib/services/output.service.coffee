@@ -21,8 +21,12 @@ RoutineService.registerTemplate
 
 	describeConfiguration: (service) ->
 		return unless service?
-		name = service['configuration']['name']
-		return "#{name}"
+		type = service['configuration']['data_type']
+		if type?
+			type = _.findWhere(Utils.mapToArray(DocumentAttribute.DATA_TYPE), {'value': type})
+			return "#{type.name}"
+		else
+			return ""
 
 	execute: -> 
 		return []

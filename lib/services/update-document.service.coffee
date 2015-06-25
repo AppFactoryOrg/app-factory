@@ -6,6 +6,8 @@ RoutineService.registerTemplate
 	'display_order': 50000
 	'size': {height: 80, width: 150}
 	'flags': ['accesses_db', 'modifies_db']
+	'configuration':
+		'name': ''
 	'nodes': [
 		{
 			name: 'in'
@@ -32,14 +34,6 @@ RoutineService.registerTemplate
 			label: 'Updates'
 			labelPosition: [2.6, 0.5]
 		}
-		{
-			name: 'document_output'
-			type: RoutineService.NODE_TYPE['Output'].value
-			multiple: true
-			position: [1, 0.6, 1, 0]
-			label: 'Document'
-			labelPosition: [-1.85, 0.5]
-		}
 	]
 
 	describeConfiguration: (service) -> ""
@@ -53,12 +47,9 @@ RoutineService.registerTemplate
 		
 		updates = service_inputs['updates']
 		updates.forEach (update) ->
-			document['data'][update['attribute_id']] = update['value']
+			update_content = update['value']
+			document['data'][update_content['attribute_id']] = update_content['value']
 
 		Meteor.call('Document.update', document)
-		updated_document = Document.db.findOne(document['_id'])
 		
-		return [
-			{node: 'out'}
-			{node: 'document_output', value: updated_document}
-		]
+		return [{node: 'out'}]

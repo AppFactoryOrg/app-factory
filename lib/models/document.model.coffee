@@ -24,12 +24,11 @@
 				try
 					outputs = Routine.execute(routine, inputs)
 				catch error
-					console.log(error)
+					console.log("Routine attribute encountered an error: #{error.stack}")
 
+				value = null
 				if outputs?.length > 0
 					value = outputs[0]['value']
-				else 
-					value = null
 
 				document['data'][attribute['id']] = value
 

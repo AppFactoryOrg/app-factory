@@ -36,4 +36,9 @@ RoutineService.registerTemplate
 			name: service['configuration']['name']				
 			value: service_inputs['value']
 
-		return [{node: 'output', value: value}]
+		return [{
+			node: 'output'
+			output:
+				value: value
+				name: service['configuration']['name']
+		}]

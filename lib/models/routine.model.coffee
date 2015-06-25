@@ -107,7 +107,7 @@
 				result = _.find(results, {'node': node_name})
 				throw new Error('Routine cannot find matching result for output node.') unless result?
 
-				service['outputs'][node_name] = result['value']
+				service['outputs'][node_name] = result['output']
 
 			logger.log("Ending processing of service", service)
 			
@@ -134,10 +134,10 @@
 		output_services = _.filter(services, {'name': 'output'})
 		output_services.forEach (output_service) ->
 			service_inputs = resolveInputs(output_service)
+			value = service_inputs['value']?['value']
 			output_data.push
 				name: output_service['configuration']['name']
-				type: output_service['configuration']['type']
-				value: service_inputs['value']
+				value: value ? null
 
 		logger.log("Ending processing of routine", routine)
 

@@ -8,6 +8,7 @@ RoutineService.registerTemplate
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'flags': []
 	'configuration': 
+		'name': ''
 		'expression': ''
 	'nodes': [
 		{
@@ -35,18 +36,25 @@ RoutineService.registerTemplate
 		scope = {}
 		expression = service['configuration']['expression']
 		variables = service_inputs['variables']
-		variables.forEach (variable) ->
-			name = variable['name']
-			value = variable['value']
-			return unless _.isNumber(value)
-
-			scope[name] = value
 
 		try 
+			variables.forEach (variable) ->
+				name = variable['name']
+				value = variable['value']
+				return unless _.isNumber(value)
+				scope[name] = value
+
 			value = math.eval(expression, scope)
 			value = math.format(value, {precision: 14})
 			value = parseFloat(value)
 		catch error
-			console.log("Math service encounted error: #{error}")
+			console.log("Math service encounted error: #{error.stack}")
 
-		return [{node: 'result', value: value ? null}]
+		value = value ? null
+
+		return [{
+			node: 'result'
+			output:
+				value: value
+				name: service['configuration']['name']
+		}]

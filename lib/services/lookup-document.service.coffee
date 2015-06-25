@@ -47,7 +47,7 @@ RoutineService.registerTemplate
 	execute: ({service, service_inputs}) ->
 		throw new Meteor.Error('validation', "Lookup Document service does not have any inputs") unless service_inputs?
 		
-		reference = service_inputs['reference']
+		reference = service_inputs['reference']?['value']
 
 		if reference?
 			if _.isString(reference)
@@ -61,11 +61,21 @@ RoutineService.registerTemplate
 		if document?
 			return [
 				{node: 'out'}
-				{node: 'document', value: document}
+				{
+					node: 'document'
+					output:
+						value: document
+						name: service['configuration']['name']
+				}
 			]
 		else
 			return [
 				{node: 'error_not_found', value: "Document could not be found by the specified reference"}
-				{node: 'document', value: null}
-			] 
+				{
+					node: 'document'
+					output:
+						value: null
+						name: service['configuration']['name']
+				}
+			]
 			

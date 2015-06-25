@@ -7,6 +7,7 @@ RoutineService.registerTemplate
 	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration': 
+		'name': ''
 		'document_schema_id': ''
 		'attribute_id': ''
 	'flags': []
@@ -38,10 +39,17 @@ RoutineService.registerTemplate
 		throw new Meteor.Error('validation', "Get Attribute service does not have any inputs") unless service_inputs?
 		throw new Meteor.Error('validation', "Get Attribute service does not have a configuration") unless service['configuration']?
 		
-		document = service_inputs['document']
+		document = service_inputs['document']?['value']
 
 		if document?
 			attribute_id = service['configuration']['attribute_id']
 			value = document?['data'][attribute_id]
 
-		return [{node: 'output', value: value ? null}]
+		value = value ? null
+
+		return [{
+			node: 'output'
+			output:
+				value: value
+				name: service['configuration']['name']
+		}]

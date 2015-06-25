@@ -21,8 +21,12 @@ RoutineService.registerTemplate
 
 	describeConfiguration: (service) ->
 		return unless service?
-		name = service['configuration']['name']
-		return "#{name}"
+		type = service['configuration']['data_type']
+		if type?
+			type = _.findWhere(Utils.mapToArray(DocumentAttribute.DATA_TYPE), {'value': type})
+			return "#{type.name}"
+		else
+			return ""
 
 	execute: ({service, routine_inputs}) -> 
 		throw new Meteor.Error('validation', "Input service does not have a configuration") unless service['configuration']?
@@ -30,6 +34,11 @@ RoutineService.registerTemplate
 		input_data = _.find(routine_inputs, {'name': service['configuration']['name']})
 		throw new Meteor.Error('data', "Input service could not find required input data") unless input_data?
 
-		value = input_data['value']
+		value = input_data['value'] ? null
 
-		return [{node: 'value', value: value}]
+		return [{
+			node: 'value'
+			output:
+				value: value
+				name: service['configuration']['name']
+		}]
