@@ -21,9 +21,12 @@
 					value: document
 				}]
 
-				outputs = Routine.execute(routine, inputs)
+				try
+					outputs = Routine.execute(routine, inputs)
+				catch error
+					console.log(error)
 
-				if outputs.length > 0
+				if outputs?.length > 0
 					value = outputs[0]['value']
 				else 
 					value = null
