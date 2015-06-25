@@ -9,8 +9,25 @@
 		label Type
 		select.form-control.input-sm(
 			ng-options="type.value as type.name for type in dataTypes"
-			ng-model="service.configuration.data_type"
+			ng-model="selectedDataType"
+			ng-change="dataTypeChanged()"
+		)
+	.form-group(ng-show="showDocumentTypeSelection()")
+		label Document Type
+		select.form-control.input-sm(
+			ng-options="documentSchema as documentSchema.name for documentSchema in documentSchemas"
+			ng-model="selectedDocumentSchema"
+			ng-change="documentTypeChanged()"
+		)
+	.form-group(ng-show="showAttributeSelection()")
+		label Attribute
+		select.form-control.input-sm(
+			ng-options="attribute as attribute.name for attribute in attributes"
+			ng-model="selectedAttribute"
+			ng-change="attributeChanged()"
 		)
 	.form-group(ng-show="showValue()")
 		label Value
 		.service-value
+
+	pre {{service.configuration}}

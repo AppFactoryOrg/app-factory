@@ -27,6 +27,7 @@
 			value: 300
 			component: 'document'
 			icon: 'fa-file-o'
+			data_dependent: true
 			configuration:
 				'document_schema_id': null
 
@@ -34,6 +35,7 @@
 			value: 400
 			component: 'collection'
 			icon: 'fa-files-o'
+			data_dependent: true
 			configuration:
 				'document_schema_id': null
 

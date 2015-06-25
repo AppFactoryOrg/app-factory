@@ -29,7 +29,6 @@
 					return false if _.contains(template['flags'], 'modifies_db')
 					return true
 				)
-				console.log templates
 				return templates
 			else
 				return RoutineService.service_templates

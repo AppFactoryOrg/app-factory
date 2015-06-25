@@ -11,6 +11,7 @@ RoutineService.registerTemplate
 		'value': null
 		'data_type': null
 		'document_schema_id': null
+		'attribute_id': null
 	'flags': []
 	'nodes': [
 		{
