@@ -6,6 +6,8 @@ RoutineService.registerTemplate
 	'display_order': 50000
 	'size': {height: 80, width: 150}
 	'flags': ['accesses_db']
+	'configuration':
+		'name': ''
 	'nodes': [
 		{
 			name: 'in'
@@ -25,17 +27,8 @@ RoutineService.registerTemplate
 			labelPosition: [2.9, 0.5]
 		}
 		{
-			name: 'error_not_found'
-			type: RoutineService.NODE_TYPE['Error'].value
-			multiple: true
-			position: [1, 0.5, 1, 0]
-			label: 'Not Found'
-			labelPosition: [-1.85, 0.5]
-		}
-		{
 			name: 'document'
 			type: RoutineService.NODE_TYPE['Output'].value
-			multiple: true
 			position: [1, 0.75, 1, 0]
 			label: 'Document'
 			labelPosition: [-1.85, 0.5]
@@ -46,7 +39,7 @@ RoutineService.registerTemplate
 
 	execute: ({service, service_inputs}) ->
 		throw new Meteor.Error('validation', "Lookup Document service does not have any inputs") unless service_inputs?
-		
+
 		reference = service_inputs['reference']?['value']
 
 		if reference?
@@ -54,28 +47,16 @@ RoutineService.registerTemplate
 				document_id = reference
 			else if reference.hasOwnProperty('_id')
 				document_id = reference['_id']
-			
+
 			if _.isString(document_id) and not _.isEmpty(document_id)
 				document = Document.db.findOne(document_id)
-		
-		if document?
-			return [
-				{node: 'out'}
-				{
-					node: 'document'
-					output:
-						value: document
-						name: service['configuration']['name']
-				}
-			]
-		else
-			return [
-				{node: 'error_not_found', value: "Document could not be found by the specified reference"}
-				{
-					node: 'document'
-					output:
-						value: null
-						name: service['configuration']['name']
-				}
-			]
-			
+
+		return [
+			{node: 'out'}
+			{
+				node: 'document'
+				output:
+					value: document
+					name: service['configuration']['name']
+			}
+		]

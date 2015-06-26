@@ -3,7 +3,6 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 		'outflow':
 			endpoint: 'Dot'
 			isSource: true
-			maxConnections: -1
 			scope: 'execution'
 			paintStyle:
 				fillStyle: '#5bc0de'
@@ -22,14 +21,14 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 					alwaysRespectStubs: true
 				}
 			]
-			connectorStyle: 
+			connectorStyle:
 				lineWidth: 2
 				strokeStyle: '#5bc0de'
 				joinstyle: 'round'
-			hoverPaintStyle: 
+			hoverPaintStyle:
 				fillStyle: '#A9DCEB'
 				strokeStyle: '#A9DCEB'
-			connectorHoverStyle: 
+			connectorHoverStyle:
 				lineWidth: 4
 				strokeStyle: '#5bc0de'
 			dragOptions: {}
@@ -43,7 +42,7 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 				strokeStyle: '#A9DCEB'
 				radius: 5
 				lineWidth: 2
-			hoverPaintStyle: 
+			hoverPaintStyle:
 				fillStyle: '#A9DCEB'
 				strokeStyle: '#A9DCEB'
 			maxConnections: 1
@@ -51,11 +50,10 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 				hoverClass: 'hover'
 				activeClass: 'active'
 
-		'output': 
+		'output':
 			endpoint: 'Dot'
 			isSource: true
 			scope: 'information'
-			maxConnections: -1
 			paintStyle:
 				fillStyle: '#837a9f'
 				strokeStyle: '#a7a1ba'
@@ -73,14 +71,14 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 					alwaysRespectStubs: true
 				}
 			]
-			connectorStyle: 
+			connectorStyle:
 				lineWidth: 2
 				strokeStyle: '#a7a1ba'
 				joinstyle: 'round'
-			hoverPaintStyle: 
+			hoverPaintStyle:
 				fillStyle: '#a7a1ba'
 				strokeStyle: '#a7a1ba'
-			connectorHoverStyle: 
+			connectorHoverStyle:
 				lineWidth: 4
 				strokeStyle: '#a7a1ba'
 			dragOptions: {}
@@ -94,15 +92,31 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 				strokeStyle: '#a7a1ba'
 				radius: 5
 				lineWidth: 2
-			hoverPaintStyle: 
+			hoverPaintStyle:
 				fillStyle: '#a7a1ba'
 				strokeStyle: '#a7a1ba'
-			maxConnections: -1
 			dropOptions:
 				hoverClass: 'hover'
 				activeClass: 'active'
 
-		'error': 
+		'input-multiple':
+			endpoint: 'Dot'
+			isTarget: true
+			scope: 'information'
+			maxConnections: -1
+			paintStyle:
+				fillStyle: '#837a9f'
+				strokeStyle: '#a7a1ba'
+				radius: 5
+				lineWidth: 2
+			hoverPaintStyle:
+				fillStyle: '#a7a1ba'
+				strokeStyle: '#a7a1ba'
+			dropOptions:
+				hoverClass: 'hover'
+				activeClass: 'active'
+
+		'error':
 			endpoint: 'Dot'
 			isSource: true
 			scope: 'execution'
@@ -123,19 +137,55 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 					alwaysRespectStubs: true
 				}
 			]
-			connectorStyle: 
+			connectorStyle:
 				lineWidth: 2
 				strokeStyle: '#5bc0de'
 				joinstyle: 'round'
-			hoverPaintStyle: 
+			hoverPaintStyle:
 				fillStyle: '#A9DCEB'
 				strokeStyle: '#A9DCEB'
-			connectorHoverStyle: 
+			connectorHoverStyle:
+				lineWidth: 4
+				strokeStyle: '#5bc0de'
+			dragOptions: {}
+
+		'success':
+			endpoint: 'Dot'
+			isSource: true
+			scope: 'execution'
+			paintStyle:
+				fillStyle: '#7ac67a'
+				strokeStyle: '#aedbaf'
+				lineWidth: 2
+				radius: 5
+			connector: [
+				'Flowchart'
+				{
+					stub: [
+						10
+						10
+					]
+					gap: 11
+					cornerRadius: 5
+					alwaysRespectStubs: true
+				}
+			]
+			connectorStyle:
+				lineWidth: 2
+				strokeStyle: '#5bc0de'
+				joinstyle: 'round'
+			hoverPaintStyle:
+				fillStyle: '#A9DCEB'
+				strokeStyle: '#A9DCEB'
+			connectorHoverStyle:
 				lineWidth: 4
 				strokeStyle: '#5bc0de'
 			dragOptions: {}
 
 	getEndpointStyleForNode: (node) ->
-		key = node['type']
+		if node['style']?
+			key = node['style']
+		else
+			key = node['type']
 		return @endpointStyles[key]
 ])

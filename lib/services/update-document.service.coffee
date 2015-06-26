@@ -6,8 +6,6 @@ RoutineService.registerTemplate
 	'display_order': 50000
 	'size': {height: 80, width: 150}
 	'flags': ['accesses_db', 'modifies_db']
-	'configuration':
-		'name': ''
 	'nodes': [
 		{
 			name: 'in'
@@ -20,15 +18,16 @@ RoutineService.registerTemplate
 			position: [1, 0.25, 1, 0]
 		}
 		{
-			name: 'document_input'
+			name: 'reference'
 			type: RoutineService.NODE_TYPE['Input'].value
 			position: [0, 0.6, -1, 0]
-			label: 'Document'
+			label: 'Reference'
 			labelPosition: [2.9, 0.5]
 		}
 		{
 			name: 'updates'
 			type: RoutineService.NODE_TYPE['Input'].value
+			style: 'input-multiple'
 			multiple: true
 			position: [0, 0.8, -1, 0]
 			label: 'Updates'
@@ -40,16 +39,25 @@ RoutineService.registerTemplate
 
 	execute: ({service, service_inputs}) ->
 		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service_inputs?
-		throw new Meteor.Error('validation', "Update Document service does not have a 'Document' input") unless service_inputs['document_input']?
 		throw new Meteor.Error('validation', "Update Document service does not have an 'Updates' input") unless service_inputs['updates']?
-		
-		document = service_inputs['document_input']
-		
-		updates = service_inputs['updates']
-		updates.forEach (update) ->
-			update_content = update['value']
-			document['data'][update_content['attribute_id']] = update_content['value']
 
-		Meteor.call('Document.update', document)
-		
+		reference = service_inputs['reference']?['value']
+
+		if reference?
+			if _.isString(reference)
+				document_id = reference
+			else if reference.hasOwnProperty('_id')
+				document_id = reference['_id']
+
+		throw new Meteor.Error('validation', "Update Document service was given an invalid document reference.") if _.isEmpty(document_id)
+
+		attributes = []
+		service_inputs['updates'].forEach (update) ->
+			update_content = update['value']
+			attributes.push
+				'id': update_content['attribute_id']
+				'value': update_content['value']
+
+		Meteor.call('Document.updateAttributes', {document_id, attributes})
+
 		return [{node: 'out'}]

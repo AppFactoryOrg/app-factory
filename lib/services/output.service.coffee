@@ -1,15 +1,11 @@
 RoutineService.registerTemplate
 	'name': 'output'
 	'label': 'Output'
-	'description': "An output value for the routine"
+	'description': "The output values for the routine"
 	'color': '#df706c'
 	'display_order': 400
-	'size': {height: 50, width: 130}
+	'size': {height: 56, width: 80}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
-	'configuration':
-		'name': ''
-		'data_type': null
-		'document_schema_id': null
 	'flags': []
 	'nodes': [
 		{
@@ -18,20 +14,22 @@ RoutineService.registerTemplate
 			position: [0, 0.3, -1, 0]
 		}
 		{
-			name: 'value'
+			name: 'values'
 			type: RoutineService.NODE_TYPE['Input'].value
+			style: 'input-multiple'
+			multiple: true
 			position: [0, 0.7, -1, 0]
+			label: 'Values'
+			labelPosition: [2.4, 0.5]
 		}
 	]
 
-	describeConfiguration: (service) ->
-		return unless service?
-		type = service['configuration']['data_type']
-		if type?
-			type = _.findWhere(Utils.mapToArray(DocumentAttribute.DATA_TYPE), {'value': type})
-			return "#{type.name}"
-		else
-			return ""
+	describeConfiguration: (service) -> ""
 
-	execute: -> 
+	execute: ({service, service_inputs}) ->
+		throw new Meteor.Error('validation', "Output service does not have any inputs") unless service_inputs?
+
+		outputs = service_inputs['values']
+		service['outputs'] = outputs
+
 		return []

@@ -6,7 +6,7 @@ RoutineService.registerTemplate
 	'display_order': 600
 	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
-	'configuration': 
+	'configuration':
 		'name': ''
 	'flags': []
 	'nodes': [
@@ -31,10 +31,9 @@ RoutineService.registerTemplate
 		throw new Meteor.Error('validation', "Define Variable service does not have any inputs") unless service_inputs?
 		throw new Meteor.Error('validation', "Define Variable service does not have a 'value' input") unless service_inputs['value']?
 		throw new Meteor.Error('validation', "Define Variable service does not have a configuration") unless service['configuration']?
-		
-		value =
-			name: service['configuration']['name']				
-			value: service_inputs['value']
+
+		value = service_inputs['value']?['value']
+		value = value ? null
 
 		return [{
 			node: 'output'

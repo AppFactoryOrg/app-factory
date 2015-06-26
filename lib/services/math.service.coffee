@@ -7,13 +7,14 @@ RoutineService.registerTemplate
 	'size': {height: 50, width: 130}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'flags': []
-	'configuration': 
+	'configuration':
 		'name': ''
 		'expression': ''
 	'nodes': [
 		{
 			name: 'variables'
 			type: RoutineService.NODE_TYPE['Input'].value
+			style: 'input-multiple'
 			multiple: true
 			position: 'Left'
 		}
@@ -32,12 +33,12 @@ RoutineService.registerTemplate
 	execute: ({service, service_inputs}) ->
 		throw new Meteor.Error('validation', "Math service does not have any inputs") unless service_inputs?
 		throw new Meteor.Error('validation', "Math service does not have a 'variables' input") unless service_inputs['variables']?
-		
+
 		scope = {}
 		expression = service['configuration']['expression']
 		variables = service_inputs['variables']
 
-		try 
+		try
 			variables.forEach (variable) ->
 				name = variable['name']
 				value = variable['value']

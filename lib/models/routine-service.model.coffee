@@ -1,6 +1,6 @@
 @RoutineService =
 
-	SERVICE_TYPE: 
+	SERVICE_TYPE:
 		'Logic':	 	{value: 'logic', name: 'Logic'}
 		'Workflow': 	{value: 'workflow', name: 'Workflow'}
 		'Data': 		{value: 'data', name: 'Data'}
@@ -10,7 +10,6 @@
 		'Outflow':		{value: 'outflow'}
 		'Input':		{value: 'input'}
 		'Output':		{value: 'output'}
-		'Error':		{value: 'error'}
 
 	new: (parameters) ->
 		'id': Meteor.uuid()
@@ -32,4 +31,3 @@
 				return templates
 			else
 				return RoutineService.service_templates
-
