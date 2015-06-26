@@ -36,8 +36,4 @@ angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalSta
 				showCloseButton: true
 			)
 			$state.go('account')
-
-	$(document).keydown (event) ->
-		$rootScope.$broadcast('KEYDOWN', event)
 ])
-
