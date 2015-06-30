@@ -28,7 +28,7 @@ RoutineService.registerTemplate
 		{
 			name: 'result'
 			type: RoutineService.NODE_TYPE['Output'].value
-			position: [1, 0.7, 1, 0]
+			position: [1, 0.5, 1, 0]
 		}
 	]
 
