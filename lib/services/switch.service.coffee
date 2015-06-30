@@ -32,7 +32,7 @@ RoutineService.registerTemplate
 		{
 			name: 'value'
 			type: RoutineService.NODE_TYPE['Input'].value
-			style: 'input-multiple'
+			style: 'input'
 			position: [0, 0.7, -1, 0]
 		}
 	]

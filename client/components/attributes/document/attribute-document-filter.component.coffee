@@ -4,12 +4,13 @@ angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 
 	replace: true
 	scope:
 		'attribute': 	'='
-		'filterValue': 	'='		
+		'filterValue': 	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"
+		operators = DocumentAttribute.DATA_TYPE['Document'].operators
 
-		$scope.operatorOptions = ['is']
+		$scope.operatorOptions = _.values(operators)
 		$scope.operator = null
 		$scope.value = null
 		$scope.documentDisplayName = ''
@@ -19,7 +20,7 @@ angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 
 			documentSchema = DocumentSchema.db.findOne(documentSchemaId)
 			$modal.open(new SelectDocumentModal(documentSchema)).result.then (document) ->
 				$scope.value = document['_id']
-				$scope.operator = 'is'
+				$scope.operator = operators['is']
 				$scope.updateFilterValue()
 				$scope.loadDocument()
 
@@ -47,7 +48,7 @@ angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 
 			operator = $scope.operator
 
 			if not operator? and value?
-				$scope.operator = operator = 'is'
+				$scope.operator = operator = operators['is']
 
 			$scope.filterValue[key] = value
 
@@ -59,7 +60,7 @@ angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 
 				return
 
 			$scope.value = $scope.filterValue[key]
-			$scope.operator = 'is'
+			$scope.operator = operators['is']
 			$scope.loadDocument()
 		)
 ])

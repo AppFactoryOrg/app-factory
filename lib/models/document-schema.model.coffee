@@ -1,4 +1,4 @@
-@DocumentSchema = 
+@DocumentSchema =
 
 	db: new Mongo.Collection('document-schema')
 
@@ -33,5 +33,6 @@
 	getFilterableAttributes: (documentSchema) ->
 		attributes = []
 		for attribute in documentSchema['attributes']
-			attributes.push(attribute)
+			if attribute['value_type'] is DocumentAttribute.VALUE_TYPE['Input'].value
+				attributes.push(attribute)
 		return attributes

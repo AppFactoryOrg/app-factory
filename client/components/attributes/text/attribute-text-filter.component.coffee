@@ -4,12 +4,13 @@ angular.module('app-factory').directive('afAttributeTextFilter', [() ->
 	replace: true
 	scope:
 		'attribute': 	'='
-		'filterValue': 	'='		
+		'filterValue': 	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"
+		operators = DocumentAttribute.DATA_TYPE['Text'].operators
 
-		$scope.operatorOptions = ['is', 'contains']
+		$scope.operatorOptions = _.values(operators)
 		$scope.operator = null
 		$scope.value = null
 
@@ -28,11 +29,11 @@ angular.module('app-factory').directive('afAttributeTextFilter', [() ->
 			operator = $scope.operator
 
 			if not operator? and value?
-				$scope.operator = operator = 'is'
+				$scope.operator = operator = operators['is']
 
 			$scope.filterValue[key] = switch operator
-				when 'is' then "#{value}"
-				when 'contains' then {'$regex': "#{value}", '$options': 'i'}
+				when operators['is'] then "#{value}"
+				when operators['contains'] then {'$regex': "#{value}", '$options': 'i'}
 
 		$scope.$watch('filterValue', ->
 			if $scope.filterValue is null or not $scope.filterValue.hasOwnProperty(key)
@@ -43,10 +44,10 @@ angular.module('app-factory').directive('afAttributeTextFilter', [() ->
 			value = $scope.filterValue[key]
 			if _.isObject(value)
 				if value['$regex']?
-					$scope.operator = 'contains'
+					$scope.operator = operators['contains']
 					$scope.value = value['$regex']
 			else
 				$scope.value = value
-				$scope.operator = 'is'
+				$scope.operator = operators['is']
 		)
 ])

@@ -4,18 +4,19 @@ angular.module('app-factory').directive('afAttributeNumberFilter', [() ->
 	replace: true
 	scope:
 		'attribute': 	'='
-		'filterValue': 	'='		
+		'filterValue': 	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"
+		operators = DocumentAttribute.DATA_TYPE['Number'].operators
 
-		$scope.operatorOptions = ['equals', 'greater than', 'less than', 'between']
+		$scope.operatorOptions = _.values(operators)
 		$scope.operator = null
 		$scope.value1 = null
 		$scope.value2 = null
 
 		$scope.shouldShowValue2 = ->
-			return $scope.operator in ['between']
+			return $scope.operator is operators['between']
 
 		$scope.hasValue = ->
 			return true if $scope.value1 isnt null
@@ -38,16 +39,18 @@ angular.module('app-factory').directive('afAttributeNumberFilter', [() ->
 			operator = $scope.operator
 
 			if operator is null and value1 isnt null
-				$scope.operator = operator = 'equals'
+				$scope.operator = operator = operators['=']
 
 			if not $scope.shouldShowValue2() and value2?
-				value2 = null 
+				value2 = null
 
 			$scope.filterValue[key] = switch operator
-				when 'equals' then value1
-				when 'greater than' then {'$gt': value1}
-				when 'less than' then {'$lt': value1}
-				when 'between' then {'$gt': value1, '$lt': value2}
+				when operators['='] then value1
+				when operators['>'] then {'$gt': value1}
+				when operators['>='] then {'$gte': value1}
+				when operators['<'] then {'$lt': value1}
+				when operators['<='] then {'$lte': value1}
+				when operators['between'] then {'$gte': value1, '$lte': value2}
 
 		$scope.$watch('filterValue', ->
 			if $scope.filterValue is null or not $scope.filterValue.hasOwnProperty(key)
@@ -58,18 +61,26 @@ angular.module('app-factory').directive('afAttributeNumberFilter', [() ->
 			if _.isObject(value)
 				greaterThan = value['$gt']
 				lessThan = value['$lt']
-				if greaterThan isnt undefined and lessThan isnt undefined
-					$scope.operator = 'between'
-					$scope.value1 = greaterThan
-					$scope.value2 = lessThan
+				greaterThanEqual = value['$gte']
+				lessThanEqual = value['$lte']
+				if greaterThanEqual isnt undefined and lessThanEqual isnt undefined
+					$scope.operator = operators['between']
+					$scope.value1 = greaterThanEqual
+					$scope.value2 = lessThanEqual
 				else if greaterThan isnt undefined
-					$scope.operator = 'greater than'
+					$scope.operator = operators['>']
 					$scope.value1 = greaterThan
+				else if greaterThanEqual isnt undefined
+					$scope.operator = operators['>=']
+					$scope.value1 = greaterThanEqual
 				else if lessThan isnt undefined
-					$scope.operator = 'less than'
+					$scope.operator = operators['<']
 					$scope.value1 = lessThan
+				else if lessThanEqual isnt undefined
+					$scope.operator = operators['<=']
+					$scope.value1 = lessThanEqual
 			else
 				$scope.value1 = value
-				$scope.operator = 'equals'
+				$scope.operator = operators['=']
 		)
 ])
