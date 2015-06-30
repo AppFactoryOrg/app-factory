@@ -48,8 +48,6 @@ RoutineService.registerTemplate
 		else
 			result = false
 
-		console.log('condition', values, operator, result)
-
 		return [{
 			node: 'result'
 			output:
