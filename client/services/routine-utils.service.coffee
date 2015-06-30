@@ -54,6 +54,7 @@ angular.module('app-factory').factory('RoutineUtils', ['$meteor', '$q', ($meteor
 			endpoint: 'Dot'
 			isSource: true
 			scope: 'information'
+			maxConnections: -1
 			paintStyle:
 				fillStyle: '#837a9f'
 				strokeStyle: '#a7a1ba'

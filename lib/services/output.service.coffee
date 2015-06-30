@@ -4,7 +4,7 @@ RoutineService.registerTemplate
 	'description': "The output values for the routine"
 	'color': '#df706c'
 	'display_order': 400
-	'size': {height: 56, width: 80}
+	'size': {height: 56, width: 110}
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'flags': []
 	'nodes': [

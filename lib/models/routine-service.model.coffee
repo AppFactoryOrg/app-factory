@@ -21,6 +21,9 @@
 	registerTemplate: (template) ->
 		@service_templates.push(template)
 
+	getTemplate: (service_name) ->
+		return _.findWhere(@service_templates, {'name': service_name})
+
 	getServicesTemplatesForRoutine: (routine) ->
 		switch routine['type']
 			when Routine.TYPE['Attribute'].value

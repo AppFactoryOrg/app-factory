@@ -6,4 +6,8 @@ angular.module('app-factory').directive('afAttributeTextInput', [() ->
 		'key': 		'='
 		'object': 	'='
 		'config':	'='
+	link: ($scope) ->
+		$scope.textUpdated = ->
+			if $scope.object[$scope.key] is ''
+				$scope.object[$scope.key] = null
 ])
