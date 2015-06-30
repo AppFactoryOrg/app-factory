@@ -4,7 +4,7 @@ RoutineService.registerTemplate
 	'description': "Compares two inputs based on an operator"
 	'color': '#64adc9'
 	'display_order': 460
-	'size': {height: 60, width: 120}
+	'size': {height: 60, width: 110}
 	'type': RoutineService.SERVICE_TYPE['Logic'].value
 	'flags': []
 	'configuration':
@@ -28,7 +28,7 @@ RoutineService.registerTemplate
 		{
 			name: 'result'
 			type: RoutineService.NODE_TYPE['Output'].value
-			position: [1, 0.6, 1, 0]
+			position: [1, 0.7, 1, 0]
 		}
 	]
 
