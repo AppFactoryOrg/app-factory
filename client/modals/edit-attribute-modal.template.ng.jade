@@ -49,12 +49,11 @@
 						attribute="attribute"
 						ng-show="shouldShowConfiguration()"
 					)
-					.form-group
+					.form-group(ng-show="shouldShowRoutineSelection()")
 						label Routine
 						select.form-control(
 							name="routineId"
 							ng-required="shouldShowRoutineSelection()"
-							ng-show="shouldShowRoutineSelection()"
 							ng-options="routine._id as routine.name for routine in routines"
 							ng-model="attribute.routine_id"
 						)

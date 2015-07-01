@@ -3,7 +3,7 @@ RoutineService.registerTemplate
 	'label': 'Lookup Document'
 	'description': "Fetches a document from the database"
 	'color': '#567CA0'
-	'display_order': 50000
+	'display_order': 50100
 	'size': {height: 80, width: 150}
 	'flags': ['accesses_db']
 	'configuration':

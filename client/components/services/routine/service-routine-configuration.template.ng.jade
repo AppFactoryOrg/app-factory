@@ -1,0 +1,7 @@
+.service-routine-configuration
+	.form-group
+		label Routine
+		select.form-control(
+			ng-options="routine._id as routine.name for routine in routines"
+			ng-model="service.configuration.routine_id"
+		)

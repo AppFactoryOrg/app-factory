@@ -3,7 +3,7 @@ RoutineService.registerTemplate
 	'label': 'Update Document'
 	'description': "Updates a document with the specified updates"
 	'color': '#567CA0'
-	'display_order': 50000
+	'display_order': 50200
 	'size': {height: 80, width: 150}
 	'flags': ['accesses_db', 'modifies_db']
 	'nodes': [

@@ -22,7 +22,7 @@
 								th Type
 								th(width="75")
 						tbody
-							tr(ng-repeat="routine in routines")
+							tr(ng-repeat="routine in routines | orderBy: 'type'")
 								td(ng-bind="routine.name")
 								td(ng-bind="routine.description")
 								td(ng-bind="routine.type  | dictionary:routineTypes")
@@ -34,4 +34,3 @@
 							tr(ng-if="!routines.length")
 								td(colspan="99")
 									.text-muted No Routines Yet
-
