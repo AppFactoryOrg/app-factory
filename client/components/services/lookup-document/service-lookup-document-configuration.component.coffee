@@ -3,5 +3,4 @@ angular.module('app-factory').directive('afServiceLookupDocumentConfiguration', 
 	templateUrl: 'client/components/services/lookup-document/service-lookup-document-configuration.template.html'
 	scope:
 		'service': 	'='
-	link: ($scope, $element) ->
 ])

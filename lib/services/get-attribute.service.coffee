@@ -8,8 +8,8 @@ RoutineService.registerTemplate
 	'type': RoutineService.SERVICE_TYPE['Data'].value
 	'configuration':
 		'name': ''
-		'document_schema_id': ''
-		'attribute_id': ''
+		'document_schema_id': null
+		'attribute_id': null
 	'flags': []
 	'nodes': [
 		{

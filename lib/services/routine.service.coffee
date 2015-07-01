@@ -42,7 +42,7 @@ RoutineService.registerTemplate
 		return "" unless routine?
 		return routine.name
 
-	execute: ({service, service_inputs}) ->
+	execute: ({service, service_inputs, environment_id}) ->
 		throw new Meteor.Error('validation', "Routine service does not have any inputs") unless service_inputs?
 		throw new Meteor.Error('validation', "Routine service does not specify a routine") unless service['configuration']['routine_id']?
 
@@ -50,7 +50,7 @@ RoutineService.registerTemplate
 		routine = Routine.db.findOne(routine_id)
 		throw new Meteor.Error('data', "Routine cannot be found") unless routine?
 
-		outputs = Routine.execute(routine_id, service_inputs)
+		outputs = Routine.execute(routine_id, service_inputs, environment_id)
 
 		return [
 			{node: 'out'}

@@ -1,5 +1,5 @@
 RoutineService.registerTemplate
-	'name': 'get-output'
+	'name': 'get_output'
 	'label': 'Get Output'
 	'description': "Retrieves output from a Routine service"
 	'color': '#837a9f'

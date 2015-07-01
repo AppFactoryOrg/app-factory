@@ -34,7 +34,7 @@
 				# console.log("#{date} | Routine #{@routine._id} | #{message}", artifact)
 		}
 
-	execute: (routine_id, routine_inputs) ->
+	execute: (routine_id, routine_inputs, environment_id) ->
 		routine = Routine.db.findOne(routine_id)
 		throw new Error('Cannot find specified routine.') unless routine?
 
@@ -96,7 +96,7 @@
 
 			# Resolve input dependencies and execute
 			service_inputs = resolveInputs(service)
-			results = service['template'].execute({service, service_inputs, routine_inputs})
+			results = service['template'].execute({service, service_inputs, routine_inputs, environment_id})
 			throw new Error('Routine service execution results were invalid.') unless results?
 
 			# Record outputs
