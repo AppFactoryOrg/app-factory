@@ -8,8 +8,6 @@ angular.module('app-factory').controller('AccountEnrollCtrl', ['$scope', '$state
 	
 	$scope.showValidationErrors = false
 
-	console.log $stateParams.token
-
 	$scope.submit = ->
 		if $scope.form.$invalid
 			$scope.showValidationErrors = true

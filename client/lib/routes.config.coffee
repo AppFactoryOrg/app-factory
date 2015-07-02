@@ -1,5 +1,6 @@
-angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', ($urlRouterProvider, $stateProvider) ->
+angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$locationProvider', ($urlRouterProvider, $stateProvider, $locationProvider) ->
 
+	$locationProvider.html5Mode(true)
 	$urlRouterProvider.otherwise('/account/applications')
 
 	$stateProvider
