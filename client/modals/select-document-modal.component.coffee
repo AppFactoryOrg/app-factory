@@ -6,7 +6,7 @@ angular.module('app-factory').factory 'SelectDocumentModal', ->
 		resolve:
 			'documentSchema': -> documentSchema
 
-angular.module('app-factory').controller 'SelectDocumentModalCtrl', ($scope, $modalInstance, documentSchema) ->
+angular.module('app-factory').controller('SelectDocumentModalCtrl', ['$scope', '$modalInstance', 'documentSchema', ($scope, $modalInstance, documentSchema) ->
 	$scope.widget = ScreenWidget.new({type: ScreenWidget.TYPE['Table'].value})
 	$scope.widget['name'] = "Select #{documentSchema.name}"
 	$scope.widget['configuration']['data_source']['type'] = ScreenWidget.DATA_SOURCE_TYPE['Database'].value
@@ -18,3 +18,5 @@ angular.module('app-factory').controller 'SelectDocumentModalCtrl', ($scope, $mo
 		$modalInstance.close(document)
 		event.stopPropagation()
 	)
+
+])
