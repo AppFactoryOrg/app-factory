@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('LoginCtrl', ['$scope', '$state', '$meteor', 'toaster', ($scope, $state, $meteor, toaster) ->
+angular.module('app-factory').controller('AccountLoginCtrl', ['$scope', '$state', '$meteor', 'toaster', ($scope, $state, $meteor, toaster) ->
 
 	$scope.email = ''
 	$scope.password = ''
@@ -19,7 +19,7 @@ angular.module('app-factory').controller('LoginCtrl', ['$scope', '$state', '$met
 			$scope.password
 		).then( ->
 				console.log('Login successful')
-				$state.go('account')
+				$state.go('account.applications')
 			, (err) ->
 				console.error('login error - ', err)
 				toaster.pop(

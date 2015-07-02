@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('RegisterCtrl', ['$scope', '$meteor', 'toaster', ($scope, $meteor, toaster) ->
+angular.module('app-factory').controller('AccountRegisterCtrl', ['$scope', '$meteor', 'toaster', ($scope, $meteor, toaster) ->
 
 	$('body').removeClass()
 	$('body').addClass('boxed-layout')

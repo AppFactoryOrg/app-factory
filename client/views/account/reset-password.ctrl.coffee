@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('ResetPasswordCtrl', ['$scope', '$stateParams', '$state', 'toaster', ($scope, $stateParams, $state, toaster) ->
+angular.module('app-factory').controller('AccountResetPasswordCtrl', ['$scope', '$stateParams', '$state', 'toaster', ($scope, $stateParams, $state, toaster) ->
 
 	$('body').removeClass()
 	$('body').addClass('boxed-layout')
@@ -28,7 +28,7 @@ angular.module('app-factory').controller('ResetPasswordCtrl', ['$scope', '$state
 						showCloseButton: true
 					)
 				else
-					$state.go('account')
+					$state.go('account.applications')
 			)
 
 ])

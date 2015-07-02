@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootScope', '$state', 'application', 'environment', 'blueprint', ($scope, $rootScope, $state, application, environment, blueprint) ->
+angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootScope', '$state', '$meteor', 'application', 'environment', 'blueprint', ($scope, $rootScope, $state, $meteor, application, environment, blueprint) ->
 
 	$scope.application = $rootScope.application = application
 	$scope.environment = $rootScope.environment = environment
@@ -11,7 +11,7 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 
 	$scope.logout = ->
 		$meteor.logout()
-		$state.go('login')
+		$state.go('account.login')
 
 	# Initialize
 	$('body').removeClass()

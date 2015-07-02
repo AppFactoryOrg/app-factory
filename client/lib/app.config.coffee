@@ -28,12 +28,12 @@ angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalSta
 		console.error(error)
 		if error is 'AUTH_REQUIRED'
 			console.warn('Unauthorized route - redirecting to login')
-			$state.go('login')
+			$state.go('account.login')
 		else
 			toaster.pop(
 				type: 'error'
 				body: "#{error}"
 				showCloseButton: true
 			)
-			$state.go('account')
+			$state.go('account.applications')
 ])

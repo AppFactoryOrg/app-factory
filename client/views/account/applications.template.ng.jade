@@ -1,14 +1,11 @@
-.account-view
-	.clearfix
-		h1.pull-left Account
-		button.btn.btn-xs.btn-link.pull-right(type="button" ng-click="logout()") 
-			span Log out
-			i.fa.fa-sign-out
-	br/
-	
+.account-applications-view
+	button.btn.btn-xs.btn-primary.pull-right.logout(type="button" ng-click="logout()") 
+		span Log out
+		i.fa.fa-sign-out
+		
 	.ibox
 		.ibox-title 
-			h5 Applications
+			h5 My Applications
 		.ibox-content
 			.application-summary.well(ng-repeat="application in applications")
 				.name {{application.name}}
@@ -33,4 +30,3 @@
 				button.btn.btn-success.pull-right(type="button" ng-click="createApplication()") 
 					i.fa.fa-plus
 					span Create Application
-

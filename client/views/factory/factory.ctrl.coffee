@@ -28,7 +28,7 @@ angular.module('app-factory').controller('FactoryCtrl', ['$scope', '$rootScope',
 
 	$scope.logout = ->
 		$meteor.logout()
-		$state.go('login')
+		$state.go('account.login')
 
 	$scope.createDocument = ->
 		$modal.open(new GenericModal(
