@@ -1,20 +1,20 @@
 angular.module('app-factory').factory 'ViewCollectionModal', ->
-	return ({attribute, collection, documentSchema, options}) ->
+	return ({name, collection, documentSchema, options}) ->
 		templateUrl: 'client/modals/view-collection-modal.template.html'
 		controller: 'ViewCollectionModalCtrl'
 		size: 'lg'
 		resolve:
-			'attribute': -> attribute
+			'name': -> name
 			'collection': -> collection
 			'documentSchema': -> documentSchema
 			'options': -> options or {}
 
-angular.module('app-factory').controller('ViewCollectionModalCtrl', ['$scope', '$modal', '$modalInstance', 'SelectDocumentModal', 'attribute', 'collection', 'documentSchema', 'options', ($scope, $modal, $modalInstance, SelectDocumentModal, attribute, collection, documentSchema, options) ->
+angular.module('app-factory').controller('ViewCollectionModalCtrl', ['$scope', '$modal', '$modalInstance', 'SelectDocumentModal', 'name', 'collection', 'documentSchema', 'options', ($scope, $modal, $modalInstance, SelectDocumentModal, name, collection, documentSchema, options) ->
 	$scope.documentSchema = documentSchema
 	$scope.editMode = options['edit'] is true
 
 	$scope.widget = ScreenWidget.new({type: ScreenWidget.TYPE['Table'].value})
-	$scope.widget['name'] = "#{attribute.name}"
+	$scope.widget['name'] = "#{name}"
 	$scope.widget['configuration']['data_source']['type'] = ScreenWidget.DATA_SOURCE_TYPE['Fixed'].value
 	$scope.widget['configuration']['data_source']['document_schema_id'] = documentSchema['_id']
 	$scope.widget['configuration']['data_source']['collection'] = collection

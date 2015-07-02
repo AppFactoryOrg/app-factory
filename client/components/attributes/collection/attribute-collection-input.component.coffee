@@ -3,21 +3,24 @@ angular.module('app-factory').directive('afAttributeCollectionInput', ['$modal',
 	templateUrl: 'client/components/attributes/collection/attribute-collection-input.template.html'
 	replace: true
 	scope:
-		'attribute': 	'='
-		'document': 	'='	
+		'name':		'='
+		'key': 		'='
+		'object': 	'='
+		'config':	'='	
 	link: ($scope) ->
-
-		# Initialize empty collection
-		$scope.document.data[$scope.attribute['id']] = [] unless $scope.document.data[$scope.attribute['id']]?
-
-		$scope.collection = $scope.document.data[$scope.attribute['id']]
+		$scope.object[$scope.key] = [] unless $scope.object[$scope.key]?
+		$scope.collection = $scope.object[$scope.key]
+		
+		$scope.getLength = ->
+			return $scope.collection.length if _.isArray($scope.collection)
+			return 0
 
 		$scope.editCollection = ->
-			documentSchemaId = $scope.attribute['configuration']['document_schema_id']
+			documentSchemaId = $scope.config['document_schema_id']
 			documentSchema = DocumentSchema.db.findOne(documentSchemaId)
-			attribute = $scope.attribute
+			name = $scope.name
 			collection = $scope.collection
 			options =
 				'edit': true
-			$modal.open(new ViewCollectionModal({attribute, collection, documentSchema, options}))
+			$modal.open(new ViewCollectionModal({name, collection, documentSchema, options}))
 ])

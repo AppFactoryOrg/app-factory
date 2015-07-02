@@ -3,8 +3,9 @@ angular.module('app-factory').directive('afAttributeOptionInput', [() ->
 	templateUrl: 'client/components/attributes/option/attribute-option-input.template.html'
 	replace: true
 	scope:
-		'attribute': 	'='
-		'document': 	'='
+		'key': 		'='
+		'object': 	'='
+		'config':	'='	
 	link: ($scope) ->
-		$scope.options = _.filter($scope.attribute['configuration']['options'], 'active': true)		
+		$scope.options = _.filter($scope.config['options'], 'active': true)		
 ])

@@ -5,9 +5,13 @@ angular.module('app-factory').directive('afAttributeCollectionValue', ['$modal',
 	scope:
 		'attribute': 	'='
 		'document': 	'='
+	controller: 'CommonAttributeValueCtrl'
 	link: ($scope) ->
-
-		$scope.collection = $scope.document['data'][$scope.attribute['id']]
+		$scope.getValue()
+			.catch ->
+				$scope.hasError = true
+			.then (collection) ->
+				$scope.collection = collection
 
 		$scope.viewCollection = ->
 			documentSchemaId = $scope.attribute['configuration']['document_schema_id']

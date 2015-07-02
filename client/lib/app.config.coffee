@@ -5,6 +5,8 @@ angular.module('app-factory', [
 	'toaster'
 	'ui.sortable'
 	'textAngular'
+	'ngDragDrop'
+	'panhandler'
 ])
 
 angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->
@@ -12,7 +14,13 @@ angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->
 	datepickerConfig.showWeeks = false
 ])
 
-angular.module('app-factory').run(['$rootScope', '$state', 'toaster', ($rootScope, $state, toaster) ->
+angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalStack', ($rootScope, $state, toaster, $modalStack) ->
+
+	$rootScope.$on '$locationChangeStart', (event) ->
+		top = $modalStack.getTop()
+		if top?
+			event.preventDefault()
+
 	$rootScope.$on '$stateChangeSuccess', (event, toState) ->
 		window.scroll(0, 0)
 
@@ -29,4 +37,3 @@ angular.module('app-factory').run(['$rootScope', '$state', 'toaster', ($rootScop
 			)
 			$state.go('account')
 ])
-

@@ -1,0 +1,20 @@
+.service-get-attribute-configuration
+	.form-group
+		label Document Type
+		select.form-control.input-sm(
+			ng-options="documentSchema._id as documentSchema.name for documentSchema in documentSchemas"
+			ng-model="service.configuration.document_schema_id"
+			ng-change="documentTypeChanged()"
+		)
+	.form-group(ng-show="showAttributeSelection()")
+		label Attribute
+		select.form-control.input-sm(
+			ng-options="attribute.id as attribute.name for attribute in attributes"
+			ng-model="service.configuration.attribute_id"
+		)
+	.form-group
+		label Reference Name
+		input.form-control.input-sm(
+			type="text"
+			ng-model="service.configuration.name"
+		)

@@ -3,6 +3,11 @@ angular.module('app-factory').directive('afAttributeTextInput', [() ->
 	templateUrl: 'client/components/attributes/text/attribute-text-input.template.html'
 	replace: true
 	scope:
-		'attribute': 	'='
-		'document': 	'='		
+		'key': 		'='
+		'object': 	'='
+		'config':	'='
+	link: ($scope) ->
+		$scope.textUpdated = ->
+			if $scope.object[$scope.key] is ''
+				$scope.object[$scope.key] = null
 ])

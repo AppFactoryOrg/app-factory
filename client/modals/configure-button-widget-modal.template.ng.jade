@@ -1,0 +1,22 @@
+.configure-button-widget-modal
+	form(novalidate name="form" ng-submit="submit()")
+		.modal-header
+			.modal-title Configure Button
+
+		.modal-body
+			.row
+				.form-group.col-sm-12
+					label Routine
+					select.form-control(
+						name="routineId"
+						required
+						ng-options="routine._id as routine.name for routine in routines"
+						ng-model="result.routine_id"
+					)
+			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+				div(ng-show="form.routineId.$error.required") Routine is required.
+		.modal-footer
+			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+			button.btn.btn-primary(type="submit") 
+				span Save
+				i.fa.fa-chevron-right

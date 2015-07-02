@@ -1,0 +1,13 @@
+.service-create-document-configuration
+	.form-group
+		label Document Type
+		select.form-control.input-sm(
+			ng-options="documentSchema._id as documentSchema.name for documentSchema in documentSchemas"
+			ng-model="service.configuration.document_schema_id"
+		)
+	.form-group
+		label Reference Name
+		input.form-control.input-sm(
+			type="text"
+			ng-model="service.configuration.name"
+		)

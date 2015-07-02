@@ -1,0 +1,7 @@
+.service-condition-configuration
+	.form-group
+		label Operator
+		select.form-control.input-sm(
+			ng-options="operator for operator in operators"
+			ng-model="service.configuration.operator"
+		)

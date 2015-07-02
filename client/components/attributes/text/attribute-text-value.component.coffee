@@ -6,4 +6,10 @@ angular.module('app-factory').directive('afAttributeTextValue', [() ->
 		'attribute': 	'='
 		'document': 	'='
 	controller: 'CommonAttributeValueCtrl'
+	link: ($scope) ->
+		$scope.getValue()
+			.catch ->
+				$scope.value = '[ERROR]'
+			.then (value) ->
+				$scope.value = value
 ])

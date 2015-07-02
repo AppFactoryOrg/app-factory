@@ -1,4 +1,4 @@
-angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', '$timeout', 'EditDocumentModal', 'ViewDocumentModal', ($rootScope, $modal, $meteor, $timeout, EditDocumentModal, ViewDocumentModal) ->
+angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$modal', '$meteor', '$timeout', 'toaster', 'EditDocumentModal', 'ViewDocumentModal', ($rootScope, $modal, $meteor, $timeout, toaster, EditDocumentModal, ViewDocumentModal) ->
 	restrict: 'E'
 	templateUrl: 'client/components/app/app-widget-table.template.html'
 	replace: true
@@ -92,6 +92,24 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return unless confirm('Are you sure you want to delete this record? This action cannot be undone.')
 			$meteor.call('Document.delete', document['_id'])
 
+		$scope.executeAction = (action, document) ->
+			routine_id = action['routine_id']
+			environment_id = document['environment_id']
+			inputs = [{
+				name: 'Document'
+				value: document
+			}]
+			$meteor.call('Routine.execute', {routine_id, inputs, environment_id})
+				.finally ->
+					$scope.isLoading = false
+				.catch (error) ->
+					console.error(error)
+					toaster.pop(
+						type: 'error'
+						body: "#{error.reason}"
+						showCloseButton: true
+					)
+
 		$scope.selectDocument = (document) ->
 			$scope.$emit('DOCUMENT_SELECTED', document)
 
@@ -119,7 +137,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.documentSchema = DocumentSchema.db.findOne(dataSource['document_schema_id'])
 		$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 		$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
-		
+
 		switch dataSource['type']
 			when ScreenWidget.DATA_SOURCE_TYPE['Database'].value
 				$meteor.autorun($scope, ->
@@ -161,7 +179,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 				$scope.collection = dataSource['collection']
 				$meteor.autorun($scope, ->
 					collection = $scope.getReactively('collection', true)
-					filter = 
+					filter =
 						'_id': {'$in': collection}
 						'environment_id': $rootScope.environment['_id']
 						'document_schema_id': $scope.documentSchema['_id']
@@ -179,7 +197,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 						.then ->
 							allDocuments = Document.db.find(filter).fetch()
 							collectionDocuments = []
-							collection.forEach (id) -> 
+							collection.forEach (id) ->
 								document = _.find(allDocuments, {'_id': id})
 								document = angular.copy(document)
 								collectionDocuments.push(document)

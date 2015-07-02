@@ -1,7 +1,6 @@
-.form-group
-	label.control-label.col-lg-4(ng-bind="::attribute.name")
-	.col-lg-8
-		input.form-control(
-			type="text" 
-			ng-model="document.data[attribute['id']]"
-		)
+.attribute-input
+	input.form-control.input-sm(
+		type="text" 
+		ng-model="object[key]"
+		ng-change="textUpdated()"
+	)

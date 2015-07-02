@@ -1,0 +1,31 @@
+.edit-action-modal
+	form(novalidate name="form" ng-submit="submit()")
+		.modal-header
+			.modal-title Configure Action
+
+		.modal-body
+			.row
+				.form-group.col-sm-12
+					label Name
+					input.form-control(
+						type="text"
+						name="name"
+						required
+						ng-model="action.name"
+					)
+				.form-group.col-sm-12
+					label Routine
+					select.form-control(
+						name="routineId"
+						required
+						ng-options="routine._id as routine.name for routine in routines"
+						ng-model="action.routine_id"
+					)
+			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+				div(ng-show="form.name.$error.required") Name is required.
+				div(ng-show="form.routineId.$error.required") Routine is required.
+		.modal-footer
+			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+			button.btn.btn-primary(type="submit") 
+				span Save
+				i.fa.fa-chevron-right

@@ -3,21 +3,22 @@ angular.module('app-factory').directive('afAttributeDateInput', ['$filter', ($fi
 	templateUrl: 'client/components/attributes/date/attribute-date-input.template.html'
 	replace: true
 	scope:
-		'attribute': 	'='
-		'document': 	'='	
+		'key': 		'='
+		'object': 	'='
+		'config':	'='
 	link: ($scope) ->
 		$scope.calendarIsOpen = false
 		$scope.calendarFormat = 'shortDate'
 
-		if $scope.document['data'].hasOwnProperty($scope.attribute['id'])
-			$scope.value = $filter('date')($scope.document['data'][$scope.attribute['id']], $scope.calendarFormat)
+		if $scope.object.hasOwnProperty($scope.key)
+			$scope.value = $filter('date')($scope.object[$scope.key], $scope.calendarFormat)
 
 		$scope.valueUpdated = ->
 			finalValue = null
 			if $scope.value?
 				finalValue = try Date.parse($scope.value).valueOf()
 
-			$scope.document['data'][$scope.attribute['id']] = finalValue
+			$scope.object[$scope.key] = finalValue
 
 		$scope.openCalendar = (event) ->
 			event.preventDefault()

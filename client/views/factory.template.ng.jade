@@ -46,15 +46,9 @@
 								span New
 
 				li(ui-sref-active="active")
-					a(ng-click="routinesExpanded=!routinesExpanded")
+					a(ui-sref="factory.routines")
 						i.fa.fa-gears
 						span.nav-label Routines
-						span.fa.pull-right(ng-class="{'fa-angle-down': !routinesExpanded, 'fa-angle-right': routinesExpanded}")
-					ul.nav.nav-second-level(collapse="!routinesExpanded")
-						li(ng-if="blueprintIsEditable()")
-							a
-								i.fa.fa-plus
-								span New
 
 				li(ui-sref-active="active")
 					a(ui-sref="factory.layout")

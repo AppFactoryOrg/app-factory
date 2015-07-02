@@ -1,11 +1,14 @@
-angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$meteor', '$modal', 'documentSchema', 'EditAttributeModal', ($scope, $state, $meteor, $modal, documentSchema, EditAttributeModal) ->
+angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$meteor', '$modal', 'documentSchema', 'EditAttributeModal', 'EditActionModal', ($scope, $state, $meteor, $modal, documentSchema, EditAttributeModal, EditActionModal) ->
 
 	$scope.originalDocumentSchema = documentSchema
 	$scope.documentSchema = documentSchema
 	$scope.attributeDataTypes = Utils.mapToArray(DocumentAttribute.DATA_TYPE)
 	$scope.editMode = false
-	$scope.sortableOptions =
-		containment: '#sort-bounds'
+	$scope.sortableOptionsAttributes =
+		containment: '#sort-bounds-attributes'
+		containerPositioning: 'relative'
+	$scope.sortableOptionsActions =
+		containment: '#sort-bounds-actions'
 		containerPositioning: 'relative'
 
 	$scope.startEditDocumentSchema = ->
@@ -41,9 +44,21 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 	$scope.deleteAttribute = (attribute) ->
 		return unless confirm('Are you sure you want to delete this attribute? Application data may be lost.')
 		Utils.removeFromArray(attribute, $scope.documentSchema.attributes)
-		$scope.selectedAttribute = null if $scope.selectedAttribute is attribute
 
 	$scope.getPrimaryAttributeName = ->
 		attribute = _.find($scope.documentSchema['attributes'], {'id': $scope.documentSchema['primary_attribute_id']})
 		return attribute?.name
+
+	$scope.newAction = ->
+		$modal.open(new EditActionModal()).result.then (parameters) ->
+			action = DocumentAction.new(parameters)
+			$scope.documentSchema.actions.push(action)
+
+	$scope.editAction = (action) ->
+		$modal.open(new EditActionModal(action)).result.then (parameters) ->
+			_.assign(action, parameters)
+
+	$scope.deleteAction = (action) ->
+		return unless confirm('Are you sure you want to delete this action? Application data may be lost.')
+		Utils.removeFromArray(action, $scope.documentSchema.actions)
 ])

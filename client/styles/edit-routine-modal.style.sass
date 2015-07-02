@@ -1,0 +1,188 @@
+@import "_mixins"
+
+.edit-routine-modal
+
+	.modal-dialog
+		position: fixed
+		top: 20px
+		bottom: 20px
+		left: 20px
+		right: 20px
+		width: inherit
+		margin: 0
+
+	.modal-content
+		width: 100%
+		height: 100%
+
+	.modal-body
+		+flex-container
+		width: 100%
+		height: 100%
+		padding: 0px 0px 70px 0px
+
+	.routine-header
+		float: left
+
+		i.fa
+			position: absolute
+			top: 17px
+			left: 12px
+			font-size: 18px
+
+	.routine-title
+		font-size: 16px
+		font-weight: bold
+		margin-left: 17px
+
+	.routine-description
+		font-size: 12px
+		font-style: italic
+		margin-left: 17px
+
+	.routine-title,
+	.routine-description
+		width: 400px
+		white-space: nowrap
+		overflow: hidden
+		text-overflow: ellipsis
+
+	.routine-controls
+		float: right
+
+	.toolbox-panel
+		+flex-to-size(250px)
+		border-right: 1px solid #e5e5e5
+		padding: 10px
+		overflow-y: auto
+		overflow-x: hidden
+
+		.title
+			text-transform: uppercase
+			color: lighten(gray, 15%)
+			letter-spacing: 0.55px
+			font-weight: bold
+			font-size: 10px
+			margin-bottom: 10px
+
+		.service-template
+			+no-select
+			padding: 7px
+			border: 1px solid lighten(gray, 30%)
+			background: lighten(gray, 45%)
+			cursor: pointer
+			margin-bottom: 5px
+			min-width: 229px
+
+			&:hover
+				background: lighten(gray, 35%)
+
+		.service-badge
+			height: 15px
+			width: 15px
+			border: 1px solid transparent
+			+border-radius(3px)
+			display: inline-block
+			position: relative
+			top: 2px
+
+		.service-name
+			display: inline-block
+			margin-left: 5px
+
+	.canvas-panel
+		+no-select
+		+flex-to-fill
+		+border-radius(4px)
+		position: relative
+		overflow: scroll
+		background-color: lighten(#e5e5e5, 8%)
+
+		#routine-canvas
+			min-height: 2000px
+			min-width: 3000px
+			position: absolute
+			top: 0
+			left: 0
+
+		.service
+			+border-radius(5px)
+			position: absolute
+			cursor: pointer
+			border: 3px solid rgba(white, 0.4)
+			background-color: lighten(#2b3e50, 7%)
+			font-size: 12px
+			color: white
+
+			&.start,
+			&.end
+				+border-radius(75px)
+				text-align: center
+
+				.service-body
+					padding: 18.5px 0px
+
+			&.compare
+				.service-subtitle
+					position: relative
+					left: 9px
+					top: 5px
+
+			&.routine
+				.service-subtitle
+					width: 120px
+
+			&.selected
+				+box-shadow(0px, 0px, 12px, #4b91d7)
+
+			.service-body
+				position: relative
+				width: 100%
+				height: 100%
+				padding: 5px 30px 5px 10px
+
+			.edit-service
+				position: absolute
+				top: 3px
+				right: 4px
+				padding: 4px
+				color: rgba(white, 0.65)
+
+				&:hover
+					color: white
+					background-color: rgba(white, 0.20)
+
+			.service-subtitle
+				color: rgba(white, 0.6)
+				font-size: 10px
+				width: 75px
+				white-space: nowrap
+				overflow: hidden
+				text-overflow: ellipsis
+
+				&.long
+					width: 120px
+
+		.service-node-label
+			font-size: 10px
+			letter-spacing: 0.2px
+			color: rgba(white, 0.7)
+			cursor: pointer
+
+	.configuration-panel
+		+flex-to-size(275px)
+		border-left: 1px solid #e5e5e5
+		padding: 10px
+		overflow-y: auto
+		overflow-x: hidden
+
+		.title
+			text-transform: uppercase
+			color: lighten(gray, 15%)
+			letter-spacing: 0.55px
+			font-weight: bold
+			font-size: 10px
+			margin-bottom: 10px
+
+		.service-configuration
+			margin: 0px 5px

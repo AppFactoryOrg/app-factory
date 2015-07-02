@@ -4,12 +4,13 @@ angular.module('app-factory').directive('afAttributeUserFilter', ['$modal', 'Sel
 	replace: true
 	scope:
 		'attribute': 	'='
-		'filterValue': 	'='		
+		'filterValue': 	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"
+		operators = DocumentAttribute.DATA_TYPE['User'].operators
 
-		$scope.operatorOptions = ['is']
+		$scope.operatorOptions = _.values(operators)
 		$scope.operator = null
 		$scope.value = null
 		$scope.userDisplayName = ''
@@ -17,7 +18,7 @@ angular.module('app-factory').directive('afAttributeUserFilter', ['$modal', 'Sel
 		$scope.lookupUser = ->
 			$modal.open(new SelectUserModal()).result.then (user) ->
 				$scope.value = user['_id']
-				$scope.operator = 'is'
+				$scope.operator = operators['is']
 				$scope.updateFilterValue()
 				$scope.loadUser()
 
@@ -45,7 +46,7 @@ angular.module('app-factory').directive('afAttributeUserFilter', ['$modal', 'Sel
 			operator = $scope.operator
 
 			if not operator? and value?
-				$scope.operator = operator = 'is'
+				$scope.operator = operator = operators['is']
 
 			$scope.filterValue[key] = value
 
@@ -57,7 +58,7 @@ angular.module('app-factory').directive('afAttributeUserFilter', ['$modal', 'Sel
 				return
 
 			$scope.value = $scope.filterValue[key]
-			$scope.operator = 'is'
+			$scope.operator = operators['is']
 			$scope.loadUser()
 		)
 ])

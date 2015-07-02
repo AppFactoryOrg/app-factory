@@ -1,0 +1,16 @@
+.service-value-configuration
+	.form-group
+		label Type
+		select.form-control.input-sm(
+			ng-options="type.value as type.name for type in dataTypes"
+			ng-model="service.configuration.data_type"
+		)
+	.form-group(ng-show="showValue()")
+		label Value
+		.service-value
+	.form-group
+		label Reference Name
+		input.form-control.input-sm(
+			type="text"
+			ng-model="service.configuration.name"
+		)

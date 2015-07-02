@@ -3,28 +3,29 @@ angular.module('app-factory').directive('afAttributeDocumentInput', ['$modal', '
 	templateUrl: 'client/components/attributes/document/attribute-document-input.template.html'
 	replace: true
 	scope:
-		'attribute': 	'='
-		'document': 	'='	
+		'key': 		'='
+		'object': 	'='
+		'config':	'='	
 	link: ($scope) ->
 
 		$scope.documentDisplayName = ''
 
 		$scope.hasValue = ->
-			return $scope.document.data[$scope.attribute['id']]?
+			return $scope.object[$scope.key]?
 
 		$scope.lookupDocument = ->
-			documentSchemaId = $scope.attribute['configuration']['document_schema_id']
+			documentSchemaId = $scope.config['document_schema_id']
 			documentSchema = DocumentSchema.db.findOne(documentSchemaId)
 			$modal.open(new SelectDocumentModal(documentSchema)).result.then (document) ->
-				$scope.document.data[$scope.attribute['id']] = document['_id']
+				$scope.object[$scope.key] = document['_id']
 				$scope.loadDocument()
 
 		$scope.clearDocument = ->
-			$scope.document.data[$scope.attribute['id']] = null
+			$scope.object[$scope.key] = null
 			$scope.loadDocument()
 
 		$scope.loadDocument = ->
-			documentId = $scope.document['data'][$scope.attribute['id']]
+			documentId = $scope.object[$scope.key]
 			DocumentUtils.getPrimaryAttributeValue(documentId)
 				.then (value) ->
 					$scope.documentDisplayName = value

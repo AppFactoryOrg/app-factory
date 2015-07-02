@@ -41,3 +41,14 @@ span + i
 	background-color: rgba(white, 0.8)
 	padding-top: 15%
 	z-index: $z-index-error
+
+.dropdown-menu
+	margin: 6px 2px 0
+
+._jsPlumb_drag_select
+	+no-select
+
+body > .dropdown-menu[datepicker-popup-wrap]
+	z-index: 10000
+	margin: 6px -1px 0
+	padding: 6px

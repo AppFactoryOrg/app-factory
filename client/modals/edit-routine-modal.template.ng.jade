@@ -1,0 +1,65 @@
+.modal-header.clearfix
+	.routine-header
+		i.fa.fa-gear
+		.routine-title(ng-bind="routine.name")
+		.routine-description(ng-bind="routine.description" tooltip="{{routine.description}}" tooltip-placement="bottom" tooltip-popup-delay="1000")
+		.routine-description(ng-hide="routine.description") (no description)
+	.routine-controls
+		button.btn.btn-sm.btn-primary(ng-click="save()" ng-disabled="!hasUnsavedChanges()" type="button") 
+			i.fa.fa-save
+			span Save
+		button.btn.btn-sm.btn-primary(ng-click="saveAndClose()" ng-disabled="!hasUnsavedChanges()" type="button") 
+			i.fa.fa-save
+			span Save & Close
+		button.btn.btn-sm.btn-default(ng-click="close()" type="button") 
+			i.fa.fa-close
+			span Close
+
+.modal-body
+	.toolbox-panel
+		.title Services
+		.service-template(
+			ng-repeat="service in serviceTemplates"
+			ng-class="service.name"
+			ng-model="serviceTemplates"
+			drag="true"
+			jqyoui-draggable="{index: {{$index}}, placeholder: 'keep', deepCopy: true}"
+			jqyoui-options="{revert: 'invalid', helper: 'clone'}"
+		)
+			.service-badge(ng-style="{'background-color': service.color}")
+			.service-name(ng-bind="service.label")
+
+	.canvas-panel(
+		ng-model="newService"
+		jqyoui-droppable="{onDrop: 'onServiceDrop', multiple: true}"
+		drop="true"
+		ng-mousedown="canvasClicked($event)"
+		ng-keypress="keyPressed($event)"
+		panhandler=""
+	)
+		#routine-canvas(
+			ng-style="{'height': routine.size.height, 'width': routine.size.width}"
+		)
+			.service(
+				ng-repeat="service in routine.services"
+				id="{{service.id}}"
+				class="{{service.name}} ng-class:{'selected': serviceIsSelected(service)}"
+				ng-style="{'top': service.position.y, 'left': service.position.x, 'width': service.$template.size.width, 'height': service.$template.size.height, 'background-color': service.$template.color}"
+				ng-mousedown="serviceClicked(service, $event)"
+			)
+				.service-body
+					i.fa.fa-gear.edit-service.pull-right(ng-click="configureService(service, $event)" ng-show="serviceIsConfigurable(service)")
+					.service-name(ng-bind="service.$template.label")
+					.service-subtitle(
+						ng-bind="getServiceSubtitle(service)" 
+						tooltip="{{getServiceSubtitle(service)}}"
+						tooltip-popup-delay="500"
+						tooltip-animation="true" 
+						tooltip-placement="bottom"
+					)
+
+	.configuration-panel(ng-if="configuringService")
+		.title Configure {{configuringService.$template.label}}
+		af-service-configuration(
+			service="configuringService"
+		)

@@ -1,0 +1,14 @@
+.service-compare-configuration
+	.form-group
+		label Type
+		select.form-control.input-sm(
+			ng-options="type.value as type.name for type in dataTypes"
+			ng-model="service.configuration.data_type"
+			ng-change="resolveOperators()"
+		)
+	.form-group(ng-show="showOperators()")
+		label Operator
+		select.form-control.input-sm(
+			ng-options="operator for operator in operators"
+			ng-model="service.configuration.operator"
+		)
