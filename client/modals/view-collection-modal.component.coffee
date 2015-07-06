@@ -25,7 +25,7 @@ angular.module('app-factory').controller('ViewCollectionModalCtrl', ['$scope', '
 	$scope.widget['configuration']['show_select_button'] = false
 	$scope.widget['configuration']['allow_reordering'] = options['edit'] is true
 
-	$scope.addItem =->
+	$scope.addItem = ->
 		$modal.open(new SelectDocumentModal(documentSchema)).result.then (document) ->
 			collection.unshift(document['_id'])
 ])

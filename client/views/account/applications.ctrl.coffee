@@ -1,7 +1,13 @@
 angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '$rootScope', '$meteor', '$state', '$modal', 'GenericModal', ($scope, $rootScope, $meteor, $state, $modal, GenericModal) ->
 
-	$scope.$meteorSubscribe('Application')
-	$scope.applications = $scope.$meteorCollection -> Application.db.find()
+	$meteor.autorun($scope, ->
+		currentUser = $scope.getReactively('currentUser')
+		return unless currentUser?
+		applicationIds = _.pluck(currentUser['profile']['application_roles'], 'application_id')
+		$scope.$meteorSubscribe('Applications', applicationIds)
+			.then ->
+				$scope.applications = $scope.$meteorCollection -> Application.db.find()
+	)
 
 	$('body').removeClass()
 	$('body').addClass('boxed-layout')

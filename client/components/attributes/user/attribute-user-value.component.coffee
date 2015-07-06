@@ -7,13 +7,13 @@ angular.module('app-factory').directive('afAttributeUserValue', ['UserUtils', (U
 		'document': 	'='
 	controller: 'CommonAttributeValueCtrl'
 	link: ($scope) ->
-		$scope.getValue()
-			.catch ->
-				$scope.value = '[ERROR]'
-			.then (userId) ->
+		$scope.$on 'ATTRIBUTE_VALUE', (e, userId) ->
+			if userId?
 				UserUtils.getUserName(userId)
 					.then (value) ->
 						$scope.value = value
 					.catch ->
 						$scope.value = null
+			else
+				$scope.value = null
 ])
