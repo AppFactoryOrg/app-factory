@@ -21,5 +21,5 @@ Meteor.publish 'Users', ({application_id}) ->
 	return User.db.find(filters, {fields})
 
 Meteor.users.deny(
-	update: () -> return true
+	update: -> return false
 )

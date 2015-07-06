@@ -6,7 +6,7 @@
 				li.nav-header#side-menu
 					img.af-logo(src="/images/factory.png")
 					.af-title App Factory
-					.af-version v1.0.0
+					.af-version(ng-bind="version")
 
 				li(ui-sref-active="active")
 					a(ui-sref="factory.dashboard")

@@ -16,6 +16,8 @@ angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->
 
 angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalStack', ($rootScope, $state, toaster, $modalStack) ->
 
+	$rootScope.version = 'v1.0.1'
+
 	$rootScope.$on '$locationChangeStart', (event) ->
 		top = $modalStack.getTop()
 		if top?

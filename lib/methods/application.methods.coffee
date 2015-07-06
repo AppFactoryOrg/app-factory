@@ -27,7 +27,7 @@ Meteor.methods
 				'default_environment_id': environment['_id']
 		)
 
-		User.db.update(@userId,
+		User.db.update(Meteor.userId(),
 			$addToSet:
 				'profile.application_roles':
 					'application_id': application['_id']
