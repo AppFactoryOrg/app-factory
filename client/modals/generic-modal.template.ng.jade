@@ -13,7 +13,7 @@
 						name="{{attribute.name}}"
 						ng-model="result[attribute.name]"
 						ng-required="attribute.required"
-						autofocus="{{attribute.autofocus}}"
+						autofocus="{{attribute.autofocus || false}}"
 					)
 					textarea.form-control(
 						ng-switch-when="textarea"
@@ -21,14 +21,14 @@
 						name="{{attribute.name}}"
 						ng-model="result[attribute.name]"
 						ng-required="attribute.required"
-						autofocus="{{attribute.autofocus}}"
+						autofocus="{{attribute.autofocus || false}}"
 					)
 					text-angular(
 						ng-switch-when="html"
 						name="{{attribute.name}}"
 						ng-model="result[attribute.name]"
 						ng-required="attribute.required"
-						autofocus="{{attribute.autofocus}}"
+						autofocus="{{attribute.autofocus || false}}"
 						ta-toolbar="{{taToolbar}}"
 					)
 					input.form-control(
@@ -37,7 +37,7 @@
 						name="{{attribute.name}}"
 						ng-model="result[attribute.name]"
 						ng-required="attribute.required"
-						autofocus="{{attribute.autofocus}}"
+						autofocus="{{attribute.autofocus || false}}"
 					)
 
 			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")

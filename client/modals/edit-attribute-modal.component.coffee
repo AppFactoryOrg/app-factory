@@ -56,5 +56,5 @@ angular.module('app-factory').controller('EditAttributeModalCtrl', ['$scope', '$
 		$scope.attribute =
 			'name': null
 			'data_type': null
-			'value_type': null
+			'value_type': DocumentAttribute.VALUE_TYPE['Input'].value
 ])

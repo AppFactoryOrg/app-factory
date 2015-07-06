@@ -18,7 +18,7 @@
 					label Document Type
 					select.form-control(
 						name="documentSchemaId"
-						autofocus
+						autofocus="true"
 						ng-required="shouldShowDocumentType()"
 						ng-options="documentSchema._id as documentSchema.name for documentSchema in documentSchemas"
 						ng-model="result.data_source.document_schema_id"
