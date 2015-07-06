@@ -1,5 +1,5 @@
 Meteor.methods
-	'ScreenSchema.create': (parameters) ->
+	'ScreenSchema.create': (parameters) -> Utils.logErrors ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -18,7 +18,7 @@ Meteor.methods
 
 		return screenSchema['_id']
 
-	'ScreenSchema.update': (parameters) ->
+	'ScreenSchema.update': (parameters) -> Utils.logErrors ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 
@@ -30,7 +30,7 @@ Meteor.methods
 
 		return screenSchema['_id']
 
-	'ScreenSchema.delete': (id) ->
+	'ScreenSchema.delete': (id) -> Utils.logErrors ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Id is required') if _.isEmpty(id) and _.isString(id)
 

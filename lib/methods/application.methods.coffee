@@ -1,5 +1,5 @@
 Meteor.methods
-	'Application.create': (parameters) ->
+	'Application.create': (parameters) -> Utils.logErrors ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -28,7 +28,7 @@ Meteor.methods
 		)
 
 		User.db.update(@userId,
-			$addToSet: 
+			$addToSet:
 				'profile.application_roles':
 					'application_id': application['_id']
 					'role': User.ROLE['Owner'].value
@@ -37,7 +37,7 @@ Meteor.methods
 
 		return application['_id']
 
-	'Application.update': (parameters) ->
+	'Application.update': (parameters) -> Utils.logErrors ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 

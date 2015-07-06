@@ -36,4 +36,22 @@ angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalSta
 				showCloseButton: true
 			)
 			$state.go('account.applications')
+
+
 ])
+
+angular.module('app-factory').factory('$exceptionHandler', ->
+	return (error, cause) ->
+		console.error(error)
+		Utils.logError(error)
+)
+
+window.onerror = (message, file, line_number, column_number, error_object) ->
+	if error_object?
+		error = error_object
+	else
+		error =
+			'message': message
+			'stack': "#{file} #{line_number}:#{column_number}"
+
+	Utils.logError(error)

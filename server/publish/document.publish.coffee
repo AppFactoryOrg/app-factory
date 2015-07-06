@@ -1,7 +1,7 @@
 Meteor.publish 'Document', (document_id) ->
 	return Document.db.find('_id': document_id)
 
-Meteor.publishComposite 'Documents', (filter, paging) ->
+Meteor.publishComposite 'Documents', (filter, paging) -> Utils.logErrors ->
 	throw new Error('Filter parameter is required') unless filter?
 	throw new Error('Filter parameter requires environment_id attribute') unless filter['environment_id']?
 	throw new Error('Filter parameter requires document_schema_id attribute') unless filter['document_schema_id']?
@@ -10,7 +10,7 @@ Meteor.publishComposite 'Documents', (filter, paging) ->
 	childDocumentAttributeIds = _.pluck(_.filter(documentSchema['attributes'], {'data_type': DocumentAttribute.DATA_TYPE['Document'].value}), 'id')
 	childUserAttributeIds = _.pluck(_.filter(documentSchema['attributes'], {'data_type': DocumentAttribute.DATA_TYPE['User'].value}), 'id')
 
-	return { 
+	return {
 		find: ->
 			paging = {'limit': Config['MAX_TABLE_RECORDS']} unless paging?
 			paging['limit'] = Config['MAX_TABLE_RECORDS'] if paging['limit'] > Config['MAX_TABLE_RECORDS']
@@ -28,10 +28,10 @@ Meteor.publishComposite 'Documents', (filter, paging) ->
 					childUserIds = _.values(_.pick(document['data'], childUserAttributeIds))
 					return if _.isEmpty(childUserIds)
 
-					filters = 
+					filters =
 						'_id': {'$in': childUserIds}
 
-					fields = 
+					fields =
 						'_id': 1
 						'profile': 1
 						'emails': 1
