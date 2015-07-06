@@ -20,7 +20,7 @@ angular.module('app-factory').directive('afAttributeCollectionValue', ['$modal',
 			documentSchema = DocumentSchema.db.findOne(documentSchemaId)
 			attribute = $scope.attribute
 			collection = $scope.collection
-			debugger
-			$modal.open(new ViewCollectionModal({attribute, collection, documentSchema}))
+			name = attribute['name']
+			$modal.open(new ViewCollectionModal({name, attribute, collection, documentSchema}))
 
 ])

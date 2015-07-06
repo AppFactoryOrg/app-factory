@@ -12,6 +12,7 @@
 						required
 						ng-options="routine._id as routine.name for routine in routines"
 						ng-model="result.routine_id"
+						autofocus="true"
 					)
 			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
 				div(ng-show="form.routineId.$error.required") Routine is required.
