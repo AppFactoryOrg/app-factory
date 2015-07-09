@@ -4,8 +4,9 @@
 
 	MUTABLE_PROPERTIES: [
 		'name'
+		'type'
 		'description'
-		'size',
+		'size'
 		'services'
 		'connections'
 	]

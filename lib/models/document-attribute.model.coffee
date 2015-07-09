@@ -31,6 +31,7 @@
 			value: 300
 			component: 'document'
 			icon: 'fa-file-o'
+			data_dependent: true
 			operators: {'is'}
 			configuration:
 				'document_schema_id': null
@@ -39,6 +40,7 @@
 			value: 400
 			component: 'collection'
 			icon: 'fa-files-o'
+			data_dependent: true
 			operators: {'contains'}
 			configuration:
 				'document_schema_id': null
@@ -118,7 +120,7 @@
 						return value_a > value_b
 
 			when DocumentAttribute.DATA_TYPE['Option']
-				return false unless _.isNumber(value_a) and _.isNumber(value_b)
+				return false unless _.isString(value_a) and _.isString(value_b)
 				switch operator
 					when data_type['operators']['is']
 						return value_a is value_b
