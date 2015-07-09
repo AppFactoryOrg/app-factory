@@ -86,8 +86,6 @@
 
 		data_type =  DocumentAttribute.getDataType(data_type)
 
-		console.log value_a, value_b, data_type, operator
-
 		switch data_type
 			when DocumentAttribute.DATA_TYPE['Text']
 				return false unless _.isString(value_a) and _.isString(value_b)
