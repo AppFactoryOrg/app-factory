@@ -15,14 +15,14 @@
 	.form-group(ng-show="showDocumentTypeSelection()")
 		label Document Type
 		select.form-control.input-sm(
-			ng-options="documentSchema as documentSchema.name for documentSchema in documentSchemas"
+			ng-options="documentSchema as documentSchema.name for documentSchema in documentSchemas track by documentSchema._id"
 			ng-model="selectedDocumentSchema"
 			ng-change="documentTypeChanged()"
 		)
 	.form-group(ng-show="showAttributeSelection()")
 		label Attribute
 		select.form-control.input-sm(
-			ng-options="attribute as attribute.name for attribute in attributes"
+			ng-options="attribute as attribute.name for attribute in attributes track by attribute.id"
 			ng-model="selectedAttribute"
 			ng-change="attributeChanged()"
 		)
@@ -30,4 +30,4 @@
 		label Value
 		.service-value
 
-	pre {{service.configuration}}
+	pre {{service.configuration | json}}
