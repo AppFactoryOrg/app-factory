@@ -1,8 +1,8 @@
 Meteor.publish 'User', ({user_id}) ->
-	filters = 
+	filters =
 		'_id': user_id
 
-	fields = 
+	fields =
 		'_id': 1
 		'profile': 1
 		'emails': 1
@@ -10,12 +10,16 @@ Meteor.publish 'User', ({user_id}) ->
 	return User.db.find(filters, {fields})
 
 Meteor.publish 'Users', ({application_id}) ->
-	filters = 
+	filters =
 		'profile.application_roles.application_id': application_id
 
-	fields = 
+	fields =
 		'_id': 1
 		'profile': 1
 		'emails': 1
 
 	return User.db.find(filters, {fields})
+
+Meteor.users.deny(
+	update: -> return false
+)

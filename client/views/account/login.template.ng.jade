@@ -1,0 +1,40 @@
+.account-subview
+	.ibox
+		.ibox-title 
+			h5 Login
+		.ibox-content
+			form(novalidate name="form" ng-submit="submit()")
+				.form-group
+					label(for="email") Email
+					input.form-control(
+						type="email"
+						id="email"
+						name="email"
+						ng-model="email"
+						required
+						autofocus
+					)
+				.form-group
+					label(for="password") Password
+					input.form-control(
+						type="password"
+						id="password"
+						name="password"
+						ng-model="password"
+						required
+					)
+
+				.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+					div(ng-show="form.email.$error.required") Email is required.
+					div(ng-show="form.email.$error.email") Email format is invalid.
+					div(ng-show="form.password.$error.required") Password is required.
+
+				button.btn.btn-primary(type="submit")
+					span Login
+					i.fa.fa-angle-right
+
+				button.btn.btn-link(type="button" ui-sref="account.register")
+					span Register
+
+				button.btn.btn-link(type="button" ui-sref="account.forgot-password")
+					span Forgot Password?

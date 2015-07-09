@@ -5,19 +5,20 @@
 
 		.modal-body
 			.row
-				.form-group.col-sm-12
-					label Data Source
-					select.form-control(
-						name="dataSourceType"
-						ng-options="type.value as type.name for type in dataSourceTypes | orderBy:type.value"
-						ng-model="result.data_source.type"
-						required
-						autofocus
-					)
+				//- .form-group.col-sm-12
+				//- 	label Data Source
+				//- 	select.form-control(
+				//- 		name="dataSourceType"
+				//- 		ng-options="type.value as type.name for type in dataSourceTypes | orderBy:type.value"
+				//- 		ng-model="result.data_source.type"
+				//- 		required
+				//- 		autofocus
+				//- 	)
 				.form-group.col-sm-12(ng-show="shouldShowDocumentType()")
 					label Document Type
 					select.form-control(
 						name="documentSchemaId"
+						autofocus="true"
 						ng-required="shouldShowDocumentType()"
 						ng-options="documentSchema._id as documentSchema.name for documentSchema in documentSchemas"
 						ng-model="result.data_source.document_schema_id"

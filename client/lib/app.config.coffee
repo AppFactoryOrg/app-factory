@@ -16,6 +16,8 @@ angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->
 
 angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalStack', ($rootScope, $state, toaster, $modalStack) ->
 
+	$rootScope.version = 'v1.0.1'
+
 	$rootScope.$on '$locationChangeStart', (event) ->
 		top = $modalStack.getTop()
 		if top?
@@ -28,16 +30,30 @@ angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalSta
 		console.error(error)
 		if error is 'AUTH_REQUIRED'
 			console.warn('Unauthorized route - redirecting to login')
-			$state.go('login')
+			$state.go('account.login')
 		else
 			toaster.pop(
 				type: 'error'
 				body: "#{error}"
 				showCloseButton: true
 			)
-			$state.go('account')
+			$state.go('account.applications')
 
-	$(document).keydown (event) ->
-		$rootScope.$broadcast('KEYDOWN', event)
+
 ])
 
+angular.module('app-factory').factory('$exceptionHandler', ->
+	return (error, cause) ->
+		console.error(error)
+		Utils.logError(error)
+)
+
+window.onerror = (message, file, line_number, column_number, error_object) ->
+	if error_object?
+		error = error_object
+	else
+		error =
+			'message': message
+			'stack': "#{file} #{line_number}:#{column_number}"
+
+	Utils.logError(error)

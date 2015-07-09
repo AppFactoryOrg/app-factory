@@ -3,7 +3,7 @@ RoutineService.registerTemplate
 	'label': 'Update Document'
 	'description': "Updates a document with the specified updates"
 	'color': '#567CA0'
-	'display_order': 50000
+	'display_order': 50200
 	'size': {height: 80, width: 150}
 	'flags': ['accesses_db', 'modifies_db']
 	'nodes': [
@@ -18,27 +18,20 @@ RoutineService.registerTemplate
 			position: [1, 0.25, 1, 0]
 		}
 		{
-			name: 'document_input'
+			name: 'reference'
 			type: RoutineService.NODE_TYPE['Input'].value
 			position: [0, 0.6, -1, 0]
-			label: 'Document'
+			label: 'Reference'
 			labelPosition: [2.9, 0.5]
 		}
 		{
 			name: 'updates'
 			type: RoutineService.NODE_TYPE['Input'].value
+			style: 'input-multiple'
 			multiple: true
 			position: [0, 0.8, -1, 0]
 			label: 'Updates'
 			labelPosition: [2.6, 0.5]
-		}
-		{
-			name: 'document_output'
-			type: RoutineService.NODE_TYPE['Output'].value
-			multiple: true
-			position: [1, 0.6, 1, 0]
-			label: 'Document'
-			labelPosition: [-1.85, 0.5]
 		}
 	]
 
@@ -46,19 +39,25 @@ RoutineService.registerTemplate
 
 	execute: ({service, service_inputs}) ->
 		throw new Meteor.Error('validation', "Update Document service does not have any inputs") unless service_inputs?
-		throw new Meteor.Error('validation', "Update Document service does not have a 'Document' input") unless service_inputs['document_input']?
 		throw new Meteor.Error('validation', "Update Document service does not have an 'Updates' input") unless service_inputs['updates']?
-		
-		document = service_inputs['document_input']
-		
-		updates = service_inputs['updates']
-		updates.forEach (update) ->
-			document['data'][update['attribute_id']] = update['value']
 
-		Meteor.call('Document.update', document)
-		updated_document = Document.db.findOne(document['_id'])
-		
-		return [
-			{node: 'out'}
-			{node: 'document_output', value: updated_document}
-		]
+		reference = service_inputs['reference']?['value']
+
+		if reference?
+			if _.isString(reference)
+				document_id = reference
+			else if reference.hasOwnProperty('_id')
+				document_id = reference['_id']
+
+		throw new Meteor.Error('validation', "Update Document service was given an invalid document reference.") if _.isEmpty(document_id)
+
+		attributes = []
+		service_inputs['updates'].forEach (update) ->
+			update_content = update['value']
+			attributes.push
+				'id': update_content['attribute_id']
+				'value': update_content['value']
+
+		Meteor.call('Document.updateAttributes', {document_id, attributes})
+
+		return [{node: 'out'}]

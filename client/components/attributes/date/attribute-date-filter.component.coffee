@@ -4,12 +4,13 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 	replace: true
 	scope:
 		'attribute': 	'='
-		'filterValue': 	'='		
+		'filterValue': 	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"
+		operators = DocumentAttribute.DATA_TYPE['Date'].operators
 
-		$scope.operatorOptions = ['on', 'before', 'after', 'between']
+		$scope.operatorOptions = _.values(operators)
 		$scope.operator = null
 		$scope.value1 = null
 		$scope.value2 = null
@@ -39,7 +40,7 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 			return false
 
 		$scope.shouldShowValue2 = ->
-			return true if $scope.operator is 'between'
+			return true if $scope.operator is operators['between']
 			return false
 
 		$scope.clear = ->
@@ -56,16 +57,16 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 			operator = $scope.operator
 
 			if not operator? and value1?
-				$scope.operator = operator = 'on'
+				$scope.operator = operator = operators['on']
 
 			if not $scope.shouldShowValue2() and value2?
 				$scope.value2 = value2 = null
-			
+
 			$scope.filterValue[key] = switch operator
-				when 'on' then value1
-				when 'before' then {'$lt': value1}
-				when 'after' then {'$gt': value1}
-				when 'between' then {'$gt': value1, '$lt': value2}
+				when operators['on'] then value1
+				when operators['before'] then {'$lt': value1}
+				when operators['after'] then {'$gt': value1}
+				when operators['between'] then {'$gt': value1, '$lt': value2}
 
 		$scope.$watch('filterValue', ->
 			if not $scope.filterValue? or not $scope.filterValue.hasOwnProperty(key)
@@ -79,17 +80,17 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 				lessThan = value['$lt']
 				greaterThan = value['$gt']
 				if lessThan isnt undefined and greaterThan isnt undefined
-					$scope.operator = 'between'
+					$scope.operator = operators['between']
 					$scope.value1 = greaterThan
 					$scope.value2 = lessThan
 				else if lessThan isnt undefined
-					$scope.operator = 'before'
+					$scope.operator = operators['before']
 					$scope.value1 = lessThan
 				else if greaterThan isnt undefined
-					$scope.operator = 'after'
+					$scope.operator = operators['after']
 					$scope.value1 = greaterThan
 			else
 				$scope.value = value
-				$scope.operator = 'on'
+				$scope.operator = operators['on']
 		)
 ])

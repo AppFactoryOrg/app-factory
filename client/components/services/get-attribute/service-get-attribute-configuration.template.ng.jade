@@ -12,3 +12,9 @@
 			ng-options="attribute.id as attribute.name for attribute in attributes"
 			ng-model="service.configuration.attribute_id"
 		)
+	.form-group
+		label Reference Name
+		input.form-control.input-sm(
+			type="text"
+			ng-model="service.configuration.name"
+		)

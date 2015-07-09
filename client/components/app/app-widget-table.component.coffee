@@ -94,11 +94,12 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.executeAction = (action, document) ->
 			routine_id = action['routine_id']
+			environment_id = document['environment_id']
 			inputs = [{
 				name: 'Document'
 				value: document
 			}]
-			$meteor.call('Routine.execute', {routine_id, inputs})
+			$meteor.call('Routine.execute', {routine_id, inputs, environment_id})
 				.finally ->
 					$scope.isLoading = false
 				.catch (error) ->
@@ -136,7 +137,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.documentSchema = DocumentSchema.db.findOne(dataSource['document_schema_id'])
 		$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 		$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
-		
+
 		switch dataSource['type']
 			when ScreenWidget.DATA_SOURCE_TYPE['Database'].value
 				$meteor.autorun($scope, ->
@@ -178,7 +179,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 				$scope.collection = dataSource['collection']
 				$meteor.autorun($scope, ->
 					collection = $scope.getReactively('collection', true)
-					filter = 
+					filter =
 						'_id': {'$in': collection}
 						'environment_id': $rootScope.environment['_id']
 						'document_schema_id': $scope.documentSchema['_id']
@@ -196,7 +197,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 						.then ->
 							allDocuments = Document.db.find(filter).fetch()
 							collectionDocuments = []
-							collection.forEach (id) -> 
+							collection.forEach (id) ->
 								document = _.find(allDocuments, {'_id': id})
 								document = angular.copy(document)
 								collectionDocuments.push(document)

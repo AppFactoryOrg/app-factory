@@ -1,0 +1,43 @@
+.account-subview
+	.ibox
+		.ibox-title 
+			h5 Register
+		.ibox-content
+			form.clearfix(novalidate name="form" ng-submit="submit()" ng-show="showRegisterForm")
+				.form-group
+					label(for="name") Name
+					input.form-control(
+						type="name"
+						id="name"
+						name="name"
+						ng-model="user.name"
+						required
+						ng-trim="true"
+						autofocus
+					)
+				.form-group
+					label(for="email") Email
+					input.form-control(
+						type="email"
+						id="email"
+						name="email"
+						ng-model="user.email"
+						required
+						ng-trim="true"
+					)
+
+				.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+					div(ng-show="form.name.$error.required") Name is required.
+					div(ng-show="form.email.$error.required") Email is required.
+					div(ng-show="form.email.$error.email") Email format is invalid.
+
+				.pull-right
+					button.btn.btn-link(type="button" ui-sref="account.login")
+						span Back to Login
+					button.btn.btn-primary(type="submit")
+						span Register
+						i.fa.fa-angle-right
+
+			.alert.alert-success(ng-show="showSuccessMessage")
+				i.fa.fa-envelope
+				span Registration was successful. Please check your email for a confirmation link.

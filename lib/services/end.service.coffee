@@ -17,5 +17,5 @@ RoutineService.registerTemplate
 
 	describeConfiguration: (service) -> ""
 
-	execute: -> 
+	execute: ->
 		return []

@@ -1,11 +1,5 @@
 .service-input-configuration
 	.form-group
-		label Name
-		input.form-control.input-sm(
-			type="text"
-			ng-model="service.configuration.name"
-		)
-	.form-group
 		label Type
 		select.form-control.input-sm(
 			ng-options="type.value as type.name for type in dataTypes"
@@ -17,4 +11,10 @@
 		select.form-control.input-sm(
 			ng-options="documentSchema._id as documentSchema.name for documentSchema in documentSchemas"
 			ng-model="service.configuration.document_schema_id"
+		)
+	.form-group
+		label Reference Name
+		input.form-control.input-sm(
+			type="text"
+			ng-model="service.configuration.name"
 		)

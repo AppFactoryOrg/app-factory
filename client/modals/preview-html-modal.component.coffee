@@ -6,6 +6,8 @@ angular.module('app-factory').factory 'PreviewHtmlModal', ->
 		resolve:
 			'html': -> html
 
-angular.module('app-factory').controller 'PreviewHtmlModalCtrl', ($scope, $modalInstance, html) ->
+angular.module('app-factory').controller('PreviewHtmlModalCtrl', ['$scope', '$modalInstance', 'html', ($scope, $modalInstance, html) ->
 
 	$scope.html = html
+
+])

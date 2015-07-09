@@ -1,5 +1,5 @@
 Meteor.methods
-	'Routine.create': (parameters) ->
+	'Routine.create': (parameters) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Parameters object is required') unless parameters?
 		throw new Meteor.Error('validation', 'Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -15,7 +15,7 @@ Meteor.methods
 
 		return routine['_id']
 
-	'Routine.update': (parameters) ->
+	'Routine.update': (parameters) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Parameters object is required') unless parameters?
 
@@ -27,7 +27,7 @@ Meteor.methods
 
 		return routine['_id']
 
-	'Routine.delete': (id) ->
+	'Routine.delete': (id) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Id is required') if _.isEmpty(id) and _.isString(id)
 

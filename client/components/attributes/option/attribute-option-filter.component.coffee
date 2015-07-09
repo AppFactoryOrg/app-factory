@@ -4,13 +4,14 @@ angular.module('app-factory').directive('afAttributeOptionFilter', [() ->
 	replace: true
 	scope:
 		'attribute': 	'='
-		'filterValue': 	'='		
+		'filterValue': 	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"
+		operators = DocumentAttribute.DATA_TYPE['Option'].operators
 
-		$scope.options = _.filter($scope.attribute['configuration']['options'], 'active': true)		
-		$scope.operatorOptions = ['is']
+		$scope.options = _.filter($scope.attribute['configuration']['options'], 'active': true)
+		$scope.operatorOptions = _.values(operators)
 		$scope.operator = null
 		$scope.value = null
 
@@ -29,7 +30,7 @@ angular.module('app-factory').directive('afAttributeOptionFilter', [() ->
 			operator = $scope.operator
 
 			if not operator? and value?
-				$scope.operator = operator = 'is'
+				$scope.operator = operator = operators['is']
 
 			$scope.filterValue[key] = value
 
@@ -41,6 +42,6 @@ angular.module('app-factory').directive('afAttributeOptionFilter', [() ->
 
 			value = $scope.filterValue[key]
 			$scope.value = value
-			$scope.operator = 'is'
+			$scope.operator = operators['is']
 		)
 ])

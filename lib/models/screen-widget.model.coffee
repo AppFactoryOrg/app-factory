@@ -20,14 +20,14 @@
 				'show_select_button': false
 				'allow_reordering': false
 				'data_source':
-					'type': null
+					'type': 100
 					'document_schema_id': null
 					'collection': null
 
 		'Content':
 			value: 250
 			component: 'content'
-			icon: 'fa-paragraph' 
+			icon: 'fa-paragraph'
 			configuration:
 				'content_html': null
 
@@ -64,7 +64,7 @@
 			'configuration':	_.clone(type['configuration'])
 			'parent_id':		null
 			'child_ids':		[]
-		
+
 		switch type
 			when ScreenWidget.TYPE['Container']
 				result['configuration']['layout'] = ScreenWidget.CONTAINER_LAYOUT['Vertical'].value

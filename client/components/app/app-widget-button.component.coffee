@@ -1,4 +1,4 @@
-angular.module('app-factory').directive('afAppWidgetButton', ['$meteor', 'toaster', ($meteor, toaster) ->
+angular.module('app-factory').directive('afAppWidgetButton', ['$meteor', '$rootScope', 'toaster', ($meteor, $rootScope, toaster) ->
 	restrict: 'E'
 	templateUrl: 'client/components/app/app-widget-button.template.html'
 	replace: true
@@ -14,9 +14,11 @@ angular.module('app-factory').directive('afAppWidgetButton', ['$meteor', 'toaste
 		$scope.click = ->
 			routine_id = $scope.widget['configuration']['routine_id']
 			return unless routine_id?
-			
+
+			environment_id = $rootScope.environment['_id']
+
 			$scope.isLoading = true
-			$meteor.call('Routine.execute', {routine_id})
+			$meteor.call('Routine.execute', {routine_id, environment_id})
 				.finally ->
 					$scope.isLoading = false
 				.catch (error) ->
@@ -25,5 +27,5 @@ angular.module('app-factory').directive('afAppWidgetButton', ['$meteor', 'toaste
 						body: "#{error.reason}"
 						showCloseButton: true
 					)
-		
+
 ])

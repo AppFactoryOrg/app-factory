@@ -9,7 +9,7 @@ angular.module('app-factory').factory 'EditRoutineModal', ->
 			'routine': -> routine
 
 angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootScope', '$timeout', '$modalInstance', '$meteor', 'routine', 'toaster', 'RoutineUtils', ($scope, $rootScope, $timeout, $modalInstance, $meteor, routine, toaster, RoutineUtils) ->
-	
+
 	DELETE_KEY = 8
 
 	$scope.routine = angular.copy(routine)
@@ -49,7 +49,7 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 		return unless confirm('Are you sure you want to close? Unsaved changes will be lost.') if $scope.hasUnsavedChanges()
 		$modalInstance.dismiss()
 
-	
+
 	# == Canvas Helpers ===================================================
 
 	$scope.onServiceDrop = (event, ui) ->
@@ -71,11 +71,14 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 		$scope.selectedService = null
 		$scope.configuringService = null
 
-	$scope.$on 'KEYDOWN', (e, event) ->
+	$scope.onKeyDown = ->
 		activeTagName = document.activeElement?.tagName?.toLowerCase()
 		if event['which'] is DELETE_KEY and $scope.selectedService? and activeTagName not in ['input', 'textarea', 'select']
 			$scope.deleteService($scope.selectedService)
 			$scope.selectedService = null
+
+	$(document).on('keydown', $scope.onKeyDown)
+	$scope.$on '$destroy', -> $(document).off('keydown', $scope.onKeyDown)
 
 	# == Service Helpers ===================================================
 
@@ -87,7 +90,7 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 
 	$scope.getServiceSubtitle = (service) ->
 		return service['$template'].describeConfiguration?(service)
-	
+
 	$scope.addService = (service) ->
 		service['$template'] = _.findWhere(RoutineService.service_templates, 'name': service['name'])
 		$scope.routine['services'].push(service)
@@ -120,7 +123,7 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 
 		service['$template']['nodes'].forEach (node) ->
 			endpointStyle = RoutineUtils.getEndpointStyleForNode(node)
-			
+
 			additionalStyles = {
 				anchor: node['position']
 				uuid: "#{service.id}_#{node.name}"
@@ -128,8 +131,8 @@ angular.module('app-factory').controller('EditRoutineCtrl', ['$scope', '$rootSco
 
 			if node['label']?
 				additionalStyles['overlays'] = [
-					[ "Label", { 
-						id: "#{service.id}_#{node.name}_label" 
+					[ "Label", {
+						id: "#{service.id}_#{node.name}_label"
 						label: node['label']
 						location: node['labelPosition']
 						cssClass: 'service-node-label'

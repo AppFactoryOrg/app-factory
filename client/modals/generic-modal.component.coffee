@@ -8,7 +8,7 @@ angular.module('app-factory').factory 'GenericModal', ->
 		resolve:
 			'parameters': -> parameters
 
-angular.module('app-factory').controller 'GenericModalCtrl', ($scope, $modalInstance, parameters) ->
+angular.module('app-factory').controller('GenericModalCtrl', ['$scope', '$modalInstance', 'parameters', ($scope, $modalInstance, parameters) ->
 
 	$scope.parameters = angular.copy(parameters)
 	$scope.showValidationErrors = false
@@ -30,3 +30,4 @@ angular.module('app-factory').controller 'GenericModalCtrl', ($scope, $modalInst
 			$scope.showValidationErrors = false
 			
 		$modalInstance.close($scope.result)
+])

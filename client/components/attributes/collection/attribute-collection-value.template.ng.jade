@@ -1,5 +1,4 @@
 .attribute-collection-value(ng-click="viewCollection()")
-	span(ng-show="hasError") [ERROR]
-	span(ng-hide="hasError")
-		span(ng-bind="::collection.length")
+	span(ng-show="hasCollection")
+		span(ng-bind="collection.length")
 		span(ng-show="collection") &nbsp;items

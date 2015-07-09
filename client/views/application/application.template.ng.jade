@@ -1,0 +1,41 @@
+.application
+	#wrapper
+		#page-wrapper.gray-bg
+			#top-nav.row.border-bottom.white-bg
+				.navbar.navbar-static-top
+					ul.nav.navbar-nav
+						li.navbar-header
+							a
+								i.fa.fa-cube
+								span(ng-bind="application.name")
+						li(ng-repeat="navigationItem in blueprint.layout.navigation_items" ui-sref-active="active")
+							a(
+								ng-if="navigationItem.type===NAVIGATION_SCREEN_TYPE"
+								ui-sref="application.screen({'screen_schema_id':navigationItem.screen_schema_id})"
+							)
+								span(ng-bind="navigationItem.name")
+							a(
+								ng-if="navigationItem.type===NAVIGATION_LINK_TYPE"
+								ng-href="{{navigationItem.url}}"
+								target="_blank"
+							)
+								span(ng-bind="navigationItem.name")
+
+					ul.nav.navbar-top-links.navbar-right
+						li
+							span.text-muted Welcome, {{currentUser.profile.name}}
+							.user-avatar
+								i.fa.fa-user
+						li
+							a(ng-click="logout()")
+								span Log out
+								i.fa.fa-sign-out
+			
+			#main-content.container
+				div(ui-view="")
+
+			#footer.footer
+				i.fa.fa-gear
+				span Powered by&nbsp;
+				a(href="http://app-factory.io" target="_blank") App Factory&nbsp;
+				span(ng-bind="version")

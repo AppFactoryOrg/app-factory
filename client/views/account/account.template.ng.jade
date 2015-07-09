@@ -1,0 +1,15 @@
+.account-view
+	.acccount-header.clearfix
+		img.af-logo(src="/images/factory.png")
+		.af-description
+			span.af-title App Factory
+			span.af-version(ng-bind="version")
+
+	div(ui-view="")
+
+	.account-footer
+		a(href="http://app-factory.io" target="_blank") App Factory
+		a License
+		a Privacy
+		a Terms
+		a Support

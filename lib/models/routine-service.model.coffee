@@ -1,6 +1,6 @@
 @RoutineService =
 
-	SERVICE_TYPE: 
+	SERVICE_TYPE:
 		'Logic':	 	{value: 'logic', name: 'Logic'}
 		'Workflow': 	{value: 'workflow', name: 'Workflow'}
 		'Data': 		{value: 'data', name: 'Data'}
@@ -10,7 +10,6 @@
 		'Outflow':		{value: 'outflow'}
 		'Input':		{value: 'input'}
 		'Output':		{value: 'output'}
-		'Error':		{value: 'error'}
 
 	new: (parameters) ->
 		'id': Meteor.uuid()
@@ -22,6 +21,9 @@
 	registerTemplate: (template) ->
 		@service_templates.push(template)
 
+	getTemplate: (service_name) ->
+		return _.findWhere(@service_templates, {'name': service_name})
+
 	getServicesTemplatesForRoutine: (routine) ->
 		switch routine['type']
 			when Routine.TYPE['Attribute'].value
@@ -32,4 +34,3 @@
 				return templates
 			else
 				return RoutineService.service_templates
-

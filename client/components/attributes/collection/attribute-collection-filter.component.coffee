@@ -4,12 +4,13 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 	replace: true
 	scope:
 		'attribute': 	'='
-		'filterValue': 	'='		
+		'filterValue': 	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"
+		operators = DocumentAttribute.DATA_TYPE['Collection'].operators
 
-		$scope.operatorOptions = ['contains']
+		$scope.operatorOptions = _.values(operators)
 		$scope.operator = null
 		$scope.value = null
 		$scope.documentDisplayName = ''
@@ -19,7 +20,7 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 			documentSchema = DocumentSchema.db.findOne(documentSchemaId)
 			$modal.open(new SelectDocumentModal(documentSchema)).result.then (document) ->
 				$scope.value = document['_id']
-				$scope.operator = 'contains'
+				$scope.operator = operators['contains']
 				$scope.updateFilterValue()
 				$scope.loadDocument()
 
@@ -47,7 +48,7 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 			operator = $scope.operator
 
 			if not operator? and value?
-				$scope.operator = operator = 'contains'
+				$scope.operator = operator = operators['contains']
 
 			$scope.filterValue[key] = value
 
@@ -59,7 +60,7 @@ angular.module('app-factory').directive('afAttributeCollectionFilter', ['$modal'
 				return
 
 			$scope.value = $scope.filterValue[key]
-			$scope.operator = 'contains'
+			$scope.operator = operators['contains']
 			$scope.loadDocument()
 		)
 ])

@@ -1,10 +1,10 @@
 Meteor.methods
-	'User.register': (parameters) ->
+	'User.register': (parameters) -> Utils.logErrors ->
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Email is required') if _.isEmpty(parameters['email'])
 
-		user = 
+		user =
 			'email': parameters['email']
 			'profile':
 				'name': parameters['name']
@@ -16,7 +16,7 @@ Meteor.methods
 
 		return
 
-	'User.invite': (parameters) ->
+	'User.invite': (parameters) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
@@ -28,7 +28,7 @@ Meteor.methods
 
 		user = User.db.findOne({'emails.address': parameters['email']})
 
-		role = 
+		role =
 			'application_id': parameters['application_id']
 			'role': User.ROLE['User'].value
 			'can_edit': false
@@ -36,25 +36,25 @@ Meteor.methods
 		if user?
 			if _.some(user['profile']['application_roles'], {'application_id': parameters['application_id']})
 				throw new Meteor.Error('logic', 'User already has access to the application')
-				
+
 			User.db.update(user['_id'],
-				$addToSet: 
+				$addToSet:
 					'profile.application_roles': role
 			)
 		else
-			user = 
+			user =
 				'email': parameters['email']
 				'profile':
 					'name': parameters['name']
 					'application_roles': [role]
 
 			user['_id'] = Accounts.createUser(user)
-			
+
 			Accounts.sendEnrollmentEmail(user['_id'])
 
 		return
 
-	'User.revoke': (parameters) ->
+	'User.revoke': (parameters) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'User not specified') if _.isEmpty(parameters['user_id'])
@@ -69,7 +69,7 @@ Meteor.methods
 		throw new Meteor.Error('logic', 'Cannot revoke the application\'s owner') if User.isApplicationOwner({user, application})
 
 		User.db.update(user['_id'],
-			$pull: 
+			$pull:
 				'profile.application_roles': {'application_id': application['_id']}
 		)
 

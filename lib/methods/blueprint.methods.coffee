@@ -1,5 +1,5 @@
 Meteor.methods
-	'Blueprint.update': (parameters) ->
+	'Blueprint.update': (parameters) -> Utils.logErrors ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 

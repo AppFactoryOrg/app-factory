@@ -1,11 +1,12 @@
 @Routine =
-	
+
 	db: new Mongo.Collection('routines')
-	
+
 	MUTABLE_PROPERTIES: [
 		'name'
+		'type'
 		'description'
-		'size',
+		'size'
 		'services'
 		'connections'
 	]
@@ -34,7 +35,7 @@
 				# console.log("#{date} | Routine #{@routine._id} | #{message}", artifact)
 		}
 
-	execute: (routine_id, routine_inputs) ->
+	execute: (routine_id, routine_inputs, environment_id) ->
 		routine = Routine.db.findOne(routine_id)
 		throw new Error('Cannot find specified routine.') unless routine?
 
@@ -48,7 +49,7 @@
 		throw new Error('Routine has no connections.') unless connections.length > 0
 
 		# Prep services for execution
-		services.forEach (service) -> 
+		services.forEach (service) ->
 			service['outputs'] = {}
 			service['has_executed'] = false
 			service['template'] = _.find(RoutineService.service_templates, {'name': service['name']})
@@ -59,7 +60,7 @@
 			input_nodes = _.filter(service['template']['nodes'], {'type': RoutineService.NODE_TYPE['Input'].value})
 			input_nodes.forEach (input_node) ->
 				logger.log("Resolving service input dependency '#{input_node.name}'", service)
-				
+
 				input_connections = _.filter(connections, {'toNode': "#{service.id}_#{input_node.name}"})
 				throw new Error('Routine cannot find input connections.') unless input_connections?
 
@@ -67,7 +68,7 @@
 					connection_service_id = connection['fromNode'].split('_')[0]
 					input_service = _.find(services, {'id': connection_service_id})
 					throw new Error('Routine cannot find input dependency service.') unless input_service?
-					
+
 					connection_node_name = connection['fromNode'].split('_')[1]
 					input_service_output_node = _.find(input_service['template']['nodes'], {'name': connection_node_name})
 					throw new Error('Routine cannot find input dependency node.') unless input_service_output_node?
@@ -96,7 +97,7 @@
 
 			# Resolve input dependencies and execute
 			service_inputs = resolveInputs(service)
-			results = service['template'].execute({service, service_inputs, routine_inputs})
+			results = service['template'].execute({service, service_inputs, routine_inputs, environment_id})
 			throw new Error('Routine service execution results were invalid.') unless results?
 
 			# Record outputs
@@ -107,16 +108,16 @@
 				result = _.find(results, {'node': node_name})
 				throw new Error('Routine cannot find matching result for output node.') unless result?
 
-				service['outputs'][node_name] = result['value']
+				service['outputs'][node_name] = result['output']
 
 			logger.log("Ending processing of service", service)
-			
+
 			# Process service outflows
 			results.forEach (result) ->
 				result_node = _.find(service['template']['nodes'], {'name': result['node']})
 				throw new Error('Routine cannot find result node in service.') unless result_node?
 
-				if result_node['type'] in [RoutineService.NODE_TYPE['Outflow'].value, RoutineService.NODE_TYPE['Error'].value]
+				if result_node['type'] is RoutineService.NODE_TYPE['Outflow'].value
 					output_connection = _.find(connections, {'fromNode': "#{service.id}_#{result_node.name}"})
 					return unless output_connection?
 
@@ -130,14 +131,11 @@
 		processService(start) if start?
 
 		# Resolve output data
-		output_data = []
-		output_services = _.filter(services, {'name': 'output'})
-		output_services.forEach (output_service) ->
-			service_inputs = resolveInputs(output_service)
-			output_data.push
-				name: output_service['configuration']['name']
-				type: output_service['configuration']['type']
-				value: service_inputs['value']
+		output_service = _.findWhere(services, {'name': 'output', 'has_executed': true})
+		if output_service?
+			output_data = output_service['outputs']
+		else
+			output_data = []
 
 		logger.log("Ending processing of routine", routine)
 
