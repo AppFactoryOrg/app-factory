@@ -20,7 +20,7 @@
 								th Name
 								th Description
 								th Type
-								th(width="75")
+								th(width="100")
 						tbody
 							tr(ng-repeat="routine in routines | orderBy: 'type'")
 								td(ng-bind="routine.name")
@@ -29,8 +29,10 @@
 								td(align="right")
 									button.btn.btn-xs.btn-default(ng-click="deleteRoutine(routine)")
 										i.fa.fa-trash
-									button.btn.btn-xs.btn-primary(ng-click="editRoutine(routine)")
+									button.btn.btn-xs.btn-default(ng-click="editRoutine(routine)")
 										i.fa.fa-pencil
+									button.btn.btn-xs.btn-primary(ng-click="configureRoutine(routine)")
+										i.fa.fa-wrench
 							tr(ng-if="!routines.length")
 								td(colspan="99")
 									.text-muted No Routines Yet
