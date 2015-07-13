@@ -1,4 +1,4 @@
-@Application = 
+@Application =
 
 	db: new Mongo.Collection('application')
 
@@ -8,5 +8,6 @@
 
 	new: ->
 		'name': 					null
+		'enabled': 					null
 		'owner_id': 				null
 		'default_environment_id':	null
