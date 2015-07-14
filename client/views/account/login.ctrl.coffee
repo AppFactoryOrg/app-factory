@@ -15,18 +15,18 @@ angular.module('app-factory').controller('AccountLoginCtrl', ['$scope', '$state'
 			$scope.showValidationErrors = false
 
 		$meteor.loginWithPassword(
-			$scope.email, 
+			$scope.email,
 			$scope.password
 		).then( ->
-				console.log('Login successful')
-				$state.go('account.applications')
-			, (err) ->
-				console.error('login error - ', err)
-				toaster.pop(
-					type: 'error'
-					body: 'Those credentials could not be verified. Please check the provided email and password.'
-					showCloseButton: true
-				)
+			console.log('Login successful')
+			$state.go('account.applications')
+		, (error) ->
+			console.error(error)
+			toaster.pop(
+				type: 'error'
+				body: error['reason']
+				showCloseButton: true
 			)
+		)
 
 ])
