@@ -20,6 +20,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 
 		$scope.loading = false
 		$scope.error = false
+		$scope.errorMessage = ''
 		$scope.loadingStartedAt = null
 		$scope.shouldShowLoadingTimeout = false
 
@@ -166,6 +167,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 							$scope.documents = $scope.$meteorCollection -> Document.db.find(filter, paging)
 						.catch (error) ->
 							$scope.error = true
+							$scope.errorMessage = error.reason
 							console.error(error)
 						.finally ->
 							$scope.loading = false

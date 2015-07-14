@@ -6,6 +6,7 @@ Meteor.methods
 
 		application = Application.new()
 		application['name'] = parameters['name']
+		application['enabled'] = true
 		application['owner_id'] = Meteor.userId()
 		application['_id'] = Application.db.insert(application)
 

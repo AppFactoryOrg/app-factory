@@ -92,6 +92,12 @@
 							tooltip-animation="true" 
 							tooltip-placement="bottom"
 						) {{blueprint.status | dictionary:blueprintStatuses}}
+						.app-label.label.label-danger(
+							ng-hide="application.enabled"
+							tooltip="This application is currently disabled. Contact your hosting administrator for more information."
+							tooltip-animation="true" 
+							tooltip-placement="bottom"
+						) Disabled 
 					ul.nav.navbar-top-links.navbar-right
 						li
 							span.text-muted Welcome, {{currentUser.profile.name}}

@@ -1,3 +1,5 @@
+@import "_mixins"
+
 .account-view
 
 	.acccount-header
@@ -45,3 +47,19 @@
 .account-subview
 	width: 400px
 	margin: 30px auto
+
+
++mobile
+	.account-view
+		.acccount-header
+			width: 100%
+			margin: 10px 20px 10px 20px
+
+			.af-description
+				padding-top: 10px
+
+		.account-footer
+			width: 100%
+
+	.account-subview
+		width: 100%

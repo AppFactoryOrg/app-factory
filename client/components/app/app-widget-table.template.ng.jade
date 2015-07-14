@@ -32,6 +32,8 @@
 				.message
 					i.fa.fa-exclamation-triangle 
 					span An error has occured
+					i.fa.fa-exclamation-triangle 
+					div(ng-bind="errorMessage")
 				.action
 					a(ng-click="retry()") Try again
 			.table-wrapper
