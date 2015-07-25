@@ -16,7 +16,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 			templateUrl: 'client/views/account/account.template.html'
 
 		.state 'account.login',
-			url: '/login'
+			url: '/login?email&password'
 			controller: 'AccountLoginCtrl'
 			templateUrl: 'client/views/account/login.template.html'
 
