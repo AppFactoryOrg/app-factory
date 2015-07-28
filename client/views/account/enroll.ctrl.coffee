@@ -5,7 +5,7 @@ angular.module('app-factory').controller('AccountEnrollCtrl', ['$scope', '$state
 
 	$scope.password = ''
 	$scope.confirmPassword = ''
-	
+
 	$scope.showValidationErrors = false
 
 	$scope.submit = ->

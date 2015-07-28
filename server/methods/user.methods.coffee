@@ -1,14 +1,16 @@
 Meteor.methods
-	'User.register': (parameters, role) -> Utils.logErrors ->
+	'User.register': (parameters) -> Utils.logErrors ->
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Email is required') if _.isEmpty(parameters['email'])
+
+		role = parameters['role']
 
 		user =
 			'email': parameters['email']
 			'profile':
 				'name': parameters['name']
-				'application_roles': if role then [role] else []
+				'application_roles': if role? then [role] else []
 
 		user['_id'] = Accounts.createUser(user)
 
@@ -44,7 +46,8 @@ Meteor.methods
 					'profile.application_roles': role
 			)
 		else
-			Meteor.call('User.register', user)
+			parameters['role'] = role
+			Meteor.call('User.register', parameters)
 
 		return
 
