@@ -30,3 +30,10 @@ Meteor.methods
 		Stripe.customers.create(customer_params, onCustomerCreated)
 
 		return promise.wait()
+
+	'Billing.getUserInfo': -> Utils.logErrors ->
+		user_info =
+			'credit_card': null
+			'applications': []
+
+		return user_info

@@ -1,0 +1,48 @@
+.account-billing-view
+	.ibox
+		.ibox-title 
+			h5 Billing
+			.btn-group.pull-right.nav-menu(dropdown="")
+				button.btn.btn-xs.btn-default(dropdown-toggle="")
+					i.fa.fa-bars
+				ul.dropdown-menu
+					li(ui-sref-active="active")
+						a(ui-sref="account.applications")
+							i.fa.fa-angle-right
+							span Applications
+					li(ui-sref-active="active")
+						a(ui-sref="account.billing")
+							i.fa.fa-angle-right
+							span Billing
+					li.divider
+					li
+						a(ng-click="logout()")
+							i.fa.fa-sign-out
+							span Log out
+				
+		.ibox-content
+			.credit-card
+				h6 Credit Card
+				
+				.controls
+					button.btn.btn-xs.btn-default.edit-btn
+						i.fa.fa-pencil
+						span Edit
+				
+				.well.well-sm
+					span.text-muted(ng-hide="billingInfo.credit_card") No credit card on file.
+					.row(ng-show="billingInfo.credit_card")
+						.col-sm-6
+							label Number
+							div(ng-bind="billingInfo.credit_card.number")
+						.col-sm-3
+							label Expiration
+							div(ng-bind="billingInfo.credit_card.expiration")
+						.col-sm-3
+							label CVC
+							div(ng-bind="billingInfo.credit_card.cvc")
+							
+				a.btn.btn-xs.btn-link(href="https://stripe.com/help/security" target="_blank")
+					i.fa.fa-lock
+					span Stored with Stripe. PCI Compliant
+					

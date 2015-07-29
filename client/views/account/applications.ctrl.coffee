@@ -21,6 +21,10 @@ angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '
 		application_id = application['_id']
 		return User.canEditApplication({user, application_id})
 
+	$scope.userIsApplicationOwner = (application) ->
+		user = $rootScope.currentUser
+		return User.isApplicationOwner({user, application})
+
 	$scope.createApplication = ->
 		$modal.open(new GenericModal(
 			title: 'New Application'
