@@ -6,6 +6,10 @@
 			span.af-version(ng-bind="version")
 
 	div(ui-view="")
+	
+	.welcome(ng-if="currentUser")
+		span You are logged in as&nbsp;
+		strong(ng-bind="currentUser.emails[0].address")
 
 	.account-footer
 		a(href="http://app-factory.io" target="_blank") App Factory

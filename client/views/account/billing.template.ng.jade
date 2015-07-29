@@ -21,26 +21,35 @@
 							span Log out
 				
 		.ibox-content
+			.loader(ng-show="loading")
+				i.fa.fa-spin.fa-refresh
+				span Loading...
+				
 			.credit-card
 				h6 Credit Card
 				
 				.controls
-					button.btn.btn-xs.btn-default.edit-btn
+					button.btn.btn-xs.btn-default.edit-btn(ng-click="editCreditCard()")
 						i.fa.fa-pencil
 						span Edit
 				
 				.well.well-sm
 					span.text-muted(ng-hide="billingInfo.credit_card") No credit card on file.
 					.row(ng-show="billingInfo.credit_card")
-						.col-sm-6
+						.col-sm-5
 							label Number
-							div(ng-bind="billingInfo.credit_card.number")
+							div
+								span xxxx xxxx xxxx&nbsp;
+								span(ng-bind="billingInfo.credit_card.last4")
 						.col-sm-3
 							label Expiration
-							div(ng-bind="billingInfo.credit_card.expiration")
-						.col-sm-3
-							label CVC
-							div(ng-bind="billingInfo.credit_card.cvc")
+							div
+								span(ng-bind="billingInfo.credit_card.exp_month")
+								span /
+								span(ng-bind="billingInfo.credit_card.exp_year")
+						.col-sm-4
+							label Type
+							div(ng-bind="billingInfo.credit_card.brand")
 							
 				a.btn.btn-xs.btn-link(href="https://stripe.com/help/security" target="_blank")
 					i.fa.fa-lock
