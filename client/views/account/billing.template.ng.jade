@@ -55,3 +55,25 @@
 					i.fa.fa-lock
 					span Stored with Stripe. PCI Compliant
 					
+			.subscriptions
+				h6 Subscriptions
+				
+				table.table.table-striped.table-condensed
+					thead(ng-show="billingInfo.applications")
+						tr
+							th Application
+							th Plan
+							th Cost
+					tbody(ng-show="billingInfo.applications")
+						tr(ng-repeat="application in billingInfo.applications")
+							td(ng-bind="application.name")
+							td(ng-bind="application.plan.name")
+							td(ng-bind="application.plan.amount")
+						tr
+							td(rowspan="2") Total
+							td(ng-bind="billinInfo.total_amount")
+					tbody(ng-hide="billingInfo.applications")
+						tr
+							td.text-muted No subscriptions.
+						
+					
