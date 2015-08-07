@@ -1,0 +1,33 @@
+.edit-application-subscriptions-modal
+	.modal-header
+		h3.modal-title Edit Subscription
+		
+	.modal-body
+		
+		form.form(novalidate)
+			.row
+				.form-group.col-sm-12.col-md-6
+					label Application
+					.app-name(ng-bind="application.name")
+				.form-group.col-sm-12.col-md-6
+					label Plan
+					select.form-control(ng-model="mainSubscription.plan" ng-options="plan as plan.$name for plan in plans track by plan.id")
+			.row
+				.form-group.col-sm-12.col-md-6
+					label Users
+					input(type="range" ng-model="usersSubscription.quantity" min="0" max="100" step="1")
+				.form-group.col-sm-12.col-md-6
+					label Database
+					input(type="range" ng-model="databaseSubscription.quantity" min="0" max="100" step="1")
+				
+		.total-cost
+			label Est. Cost
+			div
+				span(ng-bind="getTotalCost() | currency")
+				span /mo
+				
+	.modal-footer
+		button.btn.btn-default(ng-click="$dismiss()") Close
+		button.btn.btn-primary(ng-click="submit()") 
+			span Save
+			i.fa.fa-angle-right

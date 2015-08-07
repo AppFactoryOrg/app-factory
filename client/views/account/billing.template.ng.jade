@@ -64,6 +64,7 @@
 							th Application
 							th Plan
 							th Cost
+							th(width="30")
 					tbody(ng-show="billingInfo.applications")
 						tr(ng-repeat="application in billingInfo.applications")
 							td(ng-bind="application.name")
@@ -71,6 +72,9 @@
 							td
 								span(ng-bind="getApplicationPlanCost(application) | currency")
 								span /mo
+							td
+								button.btn.btn-xs.btn-default(ng-click="editApplication(application)")
+									i.fa.fa-pencil
 					tbody(ng-hide="billingInfo.applications")
 						tr
 							td.text-muted No subscriptions.

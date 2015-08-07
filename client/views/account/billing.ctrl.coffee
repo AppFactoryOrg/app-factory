@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$meteor', '$state', '$modal', 'toaster', 'billingInfo', 'EditCreditCardModal', ($scope, $meteor, $state, $modal, toaster, billingInfo, EditCreditCardModal) ->
+angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$meteor', '$state', '$modal', 'toaster', 'billingInfo', 'EditCreditCardModal', 'EditApplicationSubscriptionsModal', ($scope, $meteor, $state, $modal, toaster, billingInfo, EditCreditCardModal, EditApplicationSubscriptionsModal) ->
 
 	$scope.billingInfo = billingInfo
 	$scope.loading = false
@@ -41,6 +41,9 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 					showCloseButton: true
 				)
 
+	$scope.editApplication = (application) ->
+		$modal.open(new EditApplicationSubscriptionsModal({application, billingInfo}))
+
 	$scope.getApplicationPlanName = (application) ->
 		subscription = _.findWhere($scope.billingInfo['subscriptions'], (sub) ->
 			return false unless sub['metadata']['application_id'] is application['_id']
@@ -64,7 +67,7 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 			amount += sub['quantity'] * sub['plan']['amount']
 
 
-		return amount
+		return amount / 100
 
 	$scope.getTotalCost = ->
 		amount = 0
@@ -73,5 +76,5 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 			amount += sub['quantity'] * sub['plan']['amount']
 
 
-		return amount
+		return amount / 100
 ])
