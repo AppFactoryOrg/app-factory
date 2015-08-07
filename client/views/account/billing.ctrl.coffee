@@ -40,4 +40,38 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 					body: "Failed to fetch billing info. #{error}"
 					showCloseButton: true
 				)
+
+	$scope.getApplicationPlanName = (application) ->
+		subscription = _.findWhere($scope.billingInfo['subscriptions'], (sub) ->
+			return false unless sub['metadata']['application_id'] is application['_id']
+			return false unless sub['metadata']['type'] is 'main'
+			return true
+		)
+
+		if subscription?
+			return subscription['plan']['name']
+		else
+			return 'Free'
+
+	$scope.getApplicationPlanCost = (application) ->
+		amount = 0
+
+		subscriptions = _.filter($scope.billingInfo['subscriptions'], (sub) ->
+			return false unless sub['metadata']['application_id'] is application['_id']
+			return true
+		)
+		subscriptions.forEach (sub) ->
+			amount += sub['quantity'] * sub['plan']['amount']
+
+
+		return amount
+
+	$scope.getTotalCost = ->
+		amount = 0
+
+		$scope.billingInfo['subscriptions'].forEach (sub) ->
+			amount += sub['quantity'] * sub['plan']['amount']
+
+
+		return amount
 ])

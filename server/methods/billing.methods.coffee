@@ -43,34 +43,14 @@ Meteor.methods
 		user_info = {}
 		user_info['credit_card'] = Meteor.call('Billing.getCustomerCreditCard', customer_id)
 		user_info['plans'] = Meteor.call('Billing.getCustomerPlans', customer_id)
-		user_info['applications'] = []
+		user_info['applications'] = User.getOwnedApplications(user)
+		user_info['subscriptions'] = []
 
 		subscriptions = Meteor.call('Billing.getCustomerSubscriptions', customer_id)
-		applications = User.getOwnedApplications(user)
-
-		applications.forEach (application) ->
-			application = _.pluck(application, ['_id', 'name'])
-			main_subscription = _.findWhere(subscriptions, (sub) ->
-				return false unless sub['metadata']['application_id'] is application['_id']
-				return false unless sub['metadata']['is_main'] is true
-				return true
-			)
-
-			if main_subscription?
-				application['main_subscription'] = _.pluck(main_subscription, ['id', 'quantity'])
-				application['main_subscription']['plan'] = _.pluck(main_subscription['plan'], ['id', 'name', 'amount'])
-			else
-				application['main_subscription'] = {'id': null, 'quantity': 0}
-				application['main_subscription']['plan'] = {'id': 'free', 'name': 'Free', 'amount': 0}
-
-			application['total_amount'] = 0
-			application['total_amount'] = application['main_subscription']['quantity'] * application['main_subscription']['plan']['amount']
-
-			user_info['applications'].push(application)
-
-		user_info['total_amount'] = 0
-		user_info['applications'].forEach (application) ->
-			user_info['total_amount'] += application['total_amount']
+		subscriptions.forEach (subscription) ->
+			sub = _.pluck(subscription, ['id', 'quantity', 'metadata'])
+			sub['plan'] = _.pluck(main_subscription['plan'], ['id', 'name', 'amount'])
+			user_info['subscriptions'].push(sub)
 
 		return user_info
 

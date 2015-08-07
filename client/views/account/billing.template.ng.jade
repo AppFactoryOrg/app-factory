@@ -67,13 +67,19 @@
 					tbody(ng-show="billingInfo.applications")
 						tr(ng-repeat="application in billingInfo.applications")
 							td(ng-bind="application.name")
-							td(ng-bind="application.plan.name")
-							td(ng-bind="application.plan.amount")
-						tr
-							td(rowspan="2") Total
-							td(ng-bind="billinInfo.total_amount")
+							td(ng-bind="getApplicationPlanName(application)")
+							td
+								span(ng-bind="getApplicationPlanCost(application) | currency")
+								span /mo
 					tbody(ng-hide="billingInfo.applications")
 						tr
 							td.text-muted No subscriptions.
+			
+				.total-cost
+					label Est. Total Cost
+					div
+						span(ng-bind="getTotalCost() | currency")
+						span /mo
 						
+				//- pre {{billingInfo | json}}
 					
