@@ -5,8 +5,9 @@ if Meteor.settings.public.stripe_is_enabled
 
 Meteor.methods
 	'Billing.createCustomer': (user) -> Utils.logErrors ->
-		throw new Meteor.Error('validation', 'User is required') unless user?
 		return unless Meteor.settings.public.stripe_is_enabled
+		throw new Meteor.Error('validation', 'User is required') unless user?
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		promise = new Future
 
@@ -33,6 +34,7 @@ Meteor.methods
 
 	'Billing.getUserInfo': -> Utils.logErrors ->
 		return unless Meteor.settings.public.stripe_is_enabled
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		user = User.db.findOne(Meteor.userId())
 		throw new Meteor.Error('data', 'Cannot find user') unless user?
@@ -55,6 +57,8 @@ Meteor.methods
 		return user_info
 
 	'Billing.getCustomerCreditCard': (customer_id) -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
 		promise = new Future
 
 		onCustomerRetrieved = Meteor.bindEnvironment (error, customer) ->
@@ -70,6 +74,8 @@ Meteor.methods
 		return promise.wait()
 
 	'Billing.getCustomerPlans': (customer_id) -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
 		promise = new Future
 
 		onPlansRetrieved = Meteor.bindEnvironment (error, response) ->
@@ -83,6 +89,8 @@ Meteor.methods
 		return promise.wait()
 
 	'Billing.getCustomerSubscriptions': (customer_id) -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
 		promise = new Future
 
 		onSubscriptionsRetrieved = Meteor.bindEnvironment (error, response) ->
@@ -98,6 +106,7 @@ Meteor.methods
 		return promise.wait()
 
 	'Billing.updateCreditCard': (token) -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Token is required') unless token?
 		return unless Meteor.settings.public.stripe_is_enabled
 
@@ -116,3 +125,8 @@ Meteor.methods
 		Stripe.customers.update(stripe_customer_id, {source: token}, onCustomerUpdated)
 
 		return promise.wait()
+
+	'Billing.updateSubscriptions': ({application, subscriptions}) -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
+		return

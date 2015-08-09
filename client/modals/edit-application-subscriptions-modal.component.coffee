@@ -2,13 +2,14 @@ angular.module('app-factory').factory 'EditApplicationSubscriptionsModal', ->
 	return ({application, billingInfo}) ->
 		templateUrl: 'client/modals/edit-application-subscriptions-modal.template.html'
 		controller: 'EditApplicationSubscriptionsModalCtrl'
+		keyboard: false
+		backdrop: 'static'
 		resolve:
 			'application': -> application
 			'billingInfo': -> billingInfo
 
-angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl', ['$scope', '$filter', '$meteor', '$modalInstance', 'application', 'billingInfo', ($scope, $filter, $meteor, $modalInstance, application, billingInfo) ->
+angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl', ['$scope', '$filter', '$meteor', '$modalInstance', 'toaster', 'application', 'billingInfo', ($scope, $filter, $meteor, $modalInstance, toaster, application, billingInfo) ->
 	$scope.application = application
-	console.log billingInfo
 
 	$scope.plans = _.filter(billingInfo['plans'], (plan) ->
 		return false unless plan['metadata']['type'] is 'main'
@@ -111,4 +112,14 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 	$scope.submit = ->
 		$scope.loading = true
 
+		subscriptions = [$scope.mainSubscription, $scope.usersSubscription, $scope.databaseSubscription]
+		$meteor.call('Billing.updateSubscriptions', {application, subscriptions})
+			.then -> $modalInstance.close()
+			.finally -> $scope.loading = false
+			.catch (error) ->
+				toaster.pop(
+					type: 'error'
+					body: "Could not update subscription. #{error.reason}"
+					showCloseButton: true
+				)
 ])

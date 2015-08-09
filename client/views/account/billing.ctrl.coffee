@@ -42,7 +42,9 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 				)
 
 	$scope.editApplication = (application) ->
-		$modal.open(new EditApplicationSubscriptionsModal({application, billingInfo}))
+		modal = $modal.open(new EditApplicationSubscriptionsModal({application, billingInfo}))
+		modal.result.then ->
+			$scope.refreshBillingInfo()
 
 	$scope.getApplicationPlanName = (application) ->
 		subscription = _.findWhere($scope.billingInfo['subscriptions'], (sub) ->

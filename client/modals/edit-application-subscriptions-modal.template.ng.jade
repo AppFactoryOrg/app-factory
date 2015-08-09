@@ -11,13 +11,18 @@
 					.app-name(ng-bind="application.name")
 				.form-group.col-sm-12.col-md-6
 					label Plan
-					select.form-control(ng-model="mainSubscription.plan" ng-options="plan as plan.$name for plan in plans track by plan.id" ng-change="mainSubscriptionChanged()")
+					select.form-control(
+						ng-model="mainSubscription.plan" 
+						ng-options="plan as plan.$name for plan in plans track by plan.id" 
+						ng-change="mainSubscriptionChanged()"
+						ng-disabled="loading"
+					)
 			.row
 				.form-group.col-sm-12.col-md-6.users-subscription()
 					label Users
 					input(
 						type="range" 
-						ng-disabled="!shouldShowUserScale()"
+						ng-disabled="!shouldShowUserScale() || loading"
 						ng-model="usersSubscription.quantity"
 						min="0" 
 						max="{{getMaxUsersQuantity()}}"
@@ -30,8 +35,8 @@
 					label Database
 					input(
 						type="range" 
-						ng-disabled="!shouldShowDatabaseScale()"
-						ng-model="databaseSubscription.quantity" 
+						ng-disabled="!shouldShowDatabaseScale() || loading"
+						ng-model="databaseSubscription.quantity"
 						min="0" 
 						max="{{getMaxDatabaseQuantity()}}" 
 						step="1"
@@ -50,7 +55,7 @@
 						span /mo
 				
 	.modal-footer
-		button.btn.btn-default(ng-click="$dismiss()") Close
-		button.btn.btn-primary(ng-click="submit()") 
+		button.btn.btn-default(ng-click="$dismiss()" ng-disabled="loading") Close
+		button.btn.btn-primary(ng-click="submit()" ng-disabled="loading") 
 			span Save
-			i.fa.fa-angle-right
+			i.fa(ng-class="{'fa-angle-right': !loading, 'fa-refresh': loading, 'fa-spin': loading}")
