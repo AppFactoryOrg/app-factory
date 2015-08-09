@@ -8,6 +8,7 @@ angular.module('app-factory').factory 'EditApplicationSubscriptionsModal', ->
 
 angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl', ['$scope', '$filter', '$meteor', '$modalInstance', 'application', 'billingInfo', ($scope, $filter, $meteor, $modalInstance, application, billingInfo) ->
 	$scope.application = application
+	console.log billingInfo
 
 	$scope.plans = _.filter(billingInfo['plans'], (plan) ->
 		return false unless plan['metadata']['type'] is 'main'
@@ -19,6 +20,8 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 		'amount': 0
 		'metadata':
 			'type': 'main'
+			'base_users': 3
+			'base_mb': 3
 	$scope.plans.forEach (plan) ->
 		amount = $filter('currency')(plan['amount'] / 100)
 		plan['$name'] = "#{plan.name} - #{amount}/mo"
@@ -60,6 +63,9 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 			'quantity': 0
 			'plan': _.findWhere(billingInfo['plans'], {'id': 'database'})
 
+	$scope.mainSubscriptionChanged = ->
+		$scope.usersSubscription['quantity'] = 0
+		$scope.databaseSubscription['quantity'] = 0
 
 	$scope.getTotalCost = ->
 		amount = 0
@@ -69,6 +75,38 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 			amount += sub['quantity'] * sub['plan']['amount']
 
 		return amount / 100
+
+	$scope.shouldShowUserScale = ->
+		return false if $scope.mainSubscription['plan']['id'] is 'free'
+		return true
+
+	$scope.shouldShowDatabaseScale = ->
+		return false if $scope.mainSubscription['plan']['id'] is 'free'
+		return true
+
+	$scope.getMaxUsersQuantity = ->
+		base_users = Number($scope.mainSubscription['plan']['metadata']['base_users'])
+		max_users = Number($scope.mainSubscription['plan']['metadata']['max_users'])
+		users_per_quantity = Number($scope.usersSubscription['plan']['metadata']['users_per_quantity'])
+		return (max_users-base_users) / users_per_quantity
+
+	$scope.getUsersInPlan = ->
+		base_users = Number($scope.mainSubscription['plan']['metadata']['base_users'])
+		users_per_quantity = Number($scope.usersSubscription['plan']['metadata']['users_per_quantity'])
+		additional_user_quantity = Number($scope.usersSubscription['quantity'])
+		return base_users + (additional_user_quantity * users_per_quantity)
+
+	$scope.getMbInPlan = ->
+		base_mb = Number($scope.mainSubscription['plan']['metadata']['base_mb'])
+		mb_per_quantity = Number($scope.databaseSubscription['plan']['metadata']['mb_per_quantity'])
+		additional_mb_quantity = Number($scope.databaseSubscription['quantity'])
+		return base_mb + (additional_mb_quantity * mb_per_quantity)
+
+	$scope.getMaxDatabaseQuantity = ->
+		base_mb = Number($scope.mainSubscription['plan']['metadata']['base_mb'])
+		max_mb = Number($scope.mainSubscription['plan']['metadata']['max_mb'])
+		mb_per_quantity = Number($scope.databaseSubscription['plan']['metadata']['mb_per_quantity'])
+		return (max_mb-base_mb) / mb_per_quantity
 
 	$scope.submit = ->
 		$scope.loading = true
