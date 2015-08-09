@@ -13,24 +13,41 @@
 					label Plan
 					select.form-control(ng-model="mainSubscription.plan" ng-options="plan as plan.$name for plan in plans track by plan.id" ng-change="mainSubscriptionChanged()")
 			.row
-				.form-group.col-sm-12.col-md-6.users-subscription(ng-if="shouldShowUserScale()")
+				.form-group.col-sm-12.col-md-6.users-subscription()
 					label Users
-					input(type="range" ng-model="usersSubscription.quantity" min="0" max="{{getMaxUsersQuantity()}}" step="1")
+					input(
+						type="range" 
+						ng-disabled="!shouldShowUserScale()"
+						ng-model="usersSubscription.quantity"
+						min="0" 
+						max="{{getMaxUsersQuantity()}}"
+						step="1"
+					)
 					.label
 						span(ng-bind="getUsersInPlan()")
 						span &nbsp;users
-				.form-group.col-sm-12.col-md-6.database-subscription(ng-if="shouldShowDatabaseScale()")
+				.form-group.col-sm-12.col-md-6.database-subscription
 					label Database
-					input(type="range" ng-model="databaseSubscription.quantity" min="0" max="{{getMaxDatabaseQuantity()}}" step="1")
+					input(
+						type="range" 
+						ng-disabled="!shouldShowDatabaseScale()"
+						ng-model="databaseSubscription.quantity" 
+						min="0" 
+						max="{{getMaxDatabaseQuantity()}}" 
+						step="1"
+					)
 					.label
 						span(ng-bind="getMbInPlan() | number")
 						span &nbsp;MB
-				
-		.total-cost
-			label Est. Cost
-			div
-				span(ng-bind="getTotalCost() | currency")
-				span /mo
+		hr/
+		.row
+			.col-sm-8
+			.col-sm-4
+				.total-cost
+					label Est. Cost
+					div
+						span(ng-bind="getTotalCost() | currency")
+						span /mo
 				
 	.modal-footer
 		button.btn.btn-default(ng-click="$dismiss()") Close

@@ -22,6 +22,8 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 			'type': 'main'
 			'base_users': 3
 			'base_mb': 3
+			'max_users': 3
+			'max_db': 3
 	$scope.plans.forEach (plan) ->
 		amount = $filter('currency')(plan['amount'] / 100)
 		plan['$name'] = "#{plan.name} - #{amount}/mo"
@@ -37,9 +39,7 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 	unless $scope.mainSubscription?
 		$scope.mainSubscription =
 			'quantity': 1
-			'plan':
-				'id': 'free'
-				'amount': 0
+			'plan': _.findWhere($scope.plans, {'id': 'free'})
 
 	$scope.usersSubscription = _.findWhere(billingInfo['subscriptions'], (sub) ->
 		return false unless sub['metadata']['application_id'] is application['_id']
