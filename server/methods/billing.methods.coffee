@@ -128,5 +128,14 @@ Meteor.methods
 
 	'Billing.updateSubscriptions': ({application, subscriptions}) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('validation', 'Application not specified') unless application?
+		throw new Meteor.Error('validation', 'Subscriptions not specified') unless _.isArray(subscriptions) and not _.isEmpty(subscriptions)
+
+		billing_info = Meteor.call('Billing.getUserInfo')
+
+		if not billing_info['credit_card']?
+			active_subscriptions = _.filter(subscriptions, (sub) -> parseInt(sub['quantity']) > 0 and sub['plan']['id'] isnt 'free')
+			if not _.isEmpty(active_subscriptions)
+				throw new Meteor.Error('validaiton', 'A valid credit card is required to work with paid plans.')
 
 		return
