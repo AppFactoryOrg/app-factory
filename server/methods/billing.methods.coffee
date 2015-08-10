@@ -126,7 +126,7 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.updateSubscriptions': ({application, subscriptions}) -> Utils.logErrors ->
+	'Billing.updateApplicationSubscriptions': ({application, subscriptions}) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Application not specified') unless application?
 		throw new Meteor.Error('validation', 'Subscriptions not specified') unless _.isArray(subscriptions) and not _.isEmpty(subscriptions)
@@ -134,8 +134,40 @@ Meteor.methods
 		billing_info = Meteor.call('Billing.getUserInfo')
 
 		if not billing_info['credit_card']?
-			active_subscriptions = _.filter(subscriptions, (sub) -> parseInt(sub['quantity']) > 0 and sub['plan']['id'] isnt 'free')
+			active_subscriptions = _.filter(subscriptions, (sub) -> parseInt(sub['quantity']) > 0)
 			if not _.isEmpty(active_subscriptions)
 				throw new Meteor.Error('validaiton', 'A valid credit card is required to work with paid plans.')
+
+		subscription_types = _.map(subscriptions, (sub) -> sub['plan']['metadata']['type'])
+		throw new Meteor.Error('validation', 'Invalid number of subscriptions specified') if subscription_types.length isnt 3
+		throw new Meteor.Error('validation', 'A main subscription was not specified') unless _.contains(subscription_types, 'main')
+		throw new Meteor.Error('validation', 'A user subscription was not specified') unless _.contains(subscription_types, 'users')
+		throw new Meteor.Error('validation', 'A database subscription was not specified') unless _.contains(subscription_types, 'database')
+
+		subscriptions.forEach (sub) ->
+			sub_has_quantity = parseInt(sub['quantity']) > 0
+			matching_sub = _.findWhere(billing_info['subscriptions'], (other_sub) ->
+				return false unless other_sub['metadata']['application_id'] is application['_id']
+				return false unless other_sub['plan']['metadata']['type'] is sub['plan']['metadata']['type']
+				return true
+			)
+
+			# Create new subscription
+			if sub_has_quantity and not matching_sub?
+				return
+
+			# Update existing subscription
+			if sub_has_quantity and matching_sub?
+				return
+
+			# Delete existing subscription
+			if not sub_has_quantity and matching_sub?
+				return
+
+			# Do nothing
+			if not sub_has_quantity and not matching_sub?
+				return
+
+			throw new Meteor.Error('impossible', 'Subscription could not be updated')
 
 		return

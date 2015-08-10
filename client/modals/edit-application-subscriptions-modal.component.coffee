@@ -33,18 +33,18 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 
 	$scope.mainSubscription = _.findWhere(billingInfo['subscriptions'], (sub) ->
 		return false unless sub['metadata']['application_id'] is application['_id']
-		return false unless sub['metadata']['type'] is 'main'
+		return false unless sub['plan']['metadata']['type'] is 'main'
 		return true
 	)
 
 	unless $scope.mainSubscription?
 		$scope.mainSubscription =
-			'quantity': 1
+			'quantity': 0
 			'plan': _.findWhere($scope.plans, {'id': 'free'})
 
 	$scope.usersSubscription = _.findWhere(billingInfo['subscriptions'], (sub) ->
 		return false unless sub['metadata']['application_id'] is application['_id']
-		return false unless sub['metadata']['type'] is 'users'
+		return false unless sub['plan']['metadata']['type'] is 'users'
 		return true
 	)
 
@@ -55,7 +55,7 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 
 	$scope.databaseSubscription = _.findWhere(billingInfo['subscriptions'], (sub) ->
 		return false unless sub['metadata']['application_id'] is application['_id']
-		return false unless sub['metadata']['type'] is 'database'
+		return false unless sub['plan']['metadata']['type'] is 'database'
 		return true
 	)
 
@@ -65,6 +65,11 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 			'plan': _.findWhere(billingInfo['plans'], {'id': 'database'})
 
 	$scope.mainSubscriptionChanged = ->
+		if $scope.mainSubscription['plan']['id'] is 'free'
+			$scope.mainSubscription['quantity'] = 0
+		else
+			$scope.mainSubscription['quantity'] = 1
+
 		$scope.usersSubscription['quantity'] = 0
 		$scope.databaseSubscription['quantity'] = 0
 
@@ -113,7 +118,7 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 		$scope.loading = true
 
 		subscriptions = [$scope.mainSubscription, $scope.usersSubscription, $scope.databaseSubscription]
-		$meteor.call('Billing.updateSubscriptions', {application, subscriptions})
+		$meteor.call('Billing.updateApplicationSubscriptions', {application, subscriptions})
 			.then -> $modalInstance.close()
 			.finally -> $scope.loading = false
 			.catch (error) ->
