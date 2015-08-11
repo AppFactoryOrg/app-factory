@@ -10,28 +10,18 @@ angular.module('app-factory').factory 'EditApplicationSubscriptionsModal', ->
 
 angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl', ['$scope', '$filter', '$meteor', '$modalInstance', 'toaster', 'application', 'billingInfo', ($scope, $filter, $meteor, $modalInstance, toaster, application, billingInfo) ->
 	$scope.application = application
+	$scope.loading = false
 
 	$scope.plans = _.filter(billingInfo['plans'], (plan) ->
 		return false unless plan['metadata']['type'] is 'main'
 		return true
 	)
-	$scope.plans.push
-		'id': 'free'
-		'name': 'Free'
-		'amount': 0
-		'metadata':
-			'type': 'main'
-			'base_users': 3
-			'base_mb': 3
-			'max_users': 3
-			'max_db': 3
+	$scope.plans = _.sortBy($scope.plans, (plan) -> plan['amount'])
 	$scope.plans.forEach (plan) ->
 		amount = $filter('currency')(plan['amount'] / 100)
 		plan['$name'] = "#{plan.name} - #{amount}/mo"
 
-	$scope.loading = false
-
-	$scope.mainSubscription = _.findWhere(billingInfo['subscriptions'], (sub) ->
+	$scope.mainSubscription = _.find(billingInfo['subscriptions'], (sub) ->
 		return false unless sub['metadata']['application_id'] is application['_id']
 		return false unless sub['plan']['metadata']['type'] is 'main'
 		return true
@@ -42,7 +32,7 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 			'quantity': 0
 			'plan': _.findWhere($scope.plans, {'id': 'free'})
 
-	$scope.usersSubscription = _.findWhere(billingInfo['subscriptions'], (sub) ->
+	$scope.usersSubscription = _.find(billingInfo['subscriptions'], (sub) ->
 		return false unless sub['metadata']['application_id'] is application['_id']
 		return false unless sub['plan']['metadata']['type'] is 'users'
 		return true
@@ -53,7 +43,7 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 			'quantity': 0
 			'plan': _.findWhere(billingInfo['plans'], {'id': 'users'})
 
-	$scope.databaseSubscription = _.findWhere(billingInfo['subscriptions'], (sub) ->
+	$scope.databaseSubscription = _.find(billingInfo['subscriptions'], (sub) ->
 		return false unless sub['metadata']['application_id'] is application['_id']
 		return false unless sub['plan']['metadata']['type'] is 'database'
 		return true
@@ -65,11 +55,7 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 			'plan': _.findWhere(billingInfo['plans'], {'id': 'database'})
 
 	$scope.mainSubscriptionChanged = ->
-		if $scope.mainSubscription['plan']['id'] is 'free'
-			$scope.mainSubscription['quantity'] = 0
-		else
-			$scope.mainSubscription['quantity'] = 1
-
+		$scope.mainSubscription['quantity'] = 1
 		$scope.usersSubscription['quantity'] = 0
 		$scope.databaseSubscription['quantity'] = 0
 
@@ -117,8 +103,9 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 	$scope.submit = ->
 		$scope.loading = true
 
+		application_id = application['_id']
 		subscriptions = [$scope.mainSubscription, $scope.usersSubscription, $scope.databaseSubscription]
-		$meteor.call('Billing.updateApplicationSubscriptions', {application, subscriptions})
+		$meteor.call('Billing.updateApplicationSubscriptions', {application_id, subscriptions})
 			.then -> $modalInstance.close()
 			.finally -> $scope.loading = false
 			.catch (error) ->

@@ -81,9 +81,7 @@
 			
 				.total-cost
 					label Est. Total Cost
-					div
+					div(ng-if="billingInfo")
 						span(ng-bind="getTotalCost() | currency")
 						span /mo
-						
-				//- pre {{billingInfo | json}}
 					

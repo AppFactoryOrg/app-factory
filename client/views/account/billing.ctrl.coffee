@@ -1,6 +1,5 @@
-angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$meteor', '$state', '$modal', 'toaster', 'billingInfo', 'EditCreditCardModal', 'EditApplicationSubscriptionsModal', ($scope, $meteor, $state, $modal, toaster, billingInfo, EditCreditCardModal, EditApplicationSubscriptionsModal) ->
+angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$meteor', '$state', '$modal', 'toaster', 'EditCreditCardModal', 'EditApplicationSubscriptionsModal', ($scope, $meteor, $state, $modal, toaster, EditCreditCardModal, EditApplicationSubscriptionsModal) ->
 
-	$scope.billingInfo = billingInfo
 	$scope.loading = false
 
 	$('body').removeClass()
@@ -42,14 +41,15 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 				)
 
 	$scope.editApplication = (application) ->
+		billingInfo = _.cloneDeep($scope.billingInfo)
 		modal = $modal.open(new EditApplicationSubscriptionsModal({application, billingInfo}))
 		modal.result.then ->
 			$scope.refreshBillingInfo()
 
 	$scope.getApplicationPlanName = (application) ->
-		subscription = _.findWhere($scope.billingInfo['subscriptions'], (sub) ->
+		subscription = _.find($scope.billingInfo['subscriptions'], (sub) ->
 			return false unless sub['metadata']['application_id'] is application['_id']
-			return false unless sub['metadata']['type'] is 'main'
+			return false unless sub['plan']['metadata']['type'] is 'main'
 			return true
 		)
 
@@ -79,4 +79,7 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 
 
 		return amount / 100
+
+	# Initialize
+	$scope.refreshBillingInfo()
 ])

@@ -46,17 +46,8 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 			resolve:
 				'currentUser': ['$meteor', ($meteor) ->
 					return $meteor.requireUser()
-				],
-				'billingInfo': ['$meteor', '$q', ($meteor, $q) ->
-					deferred = $q.defer()
-
-					$meteor.call('Billing.getUserInfo')
-						.then (billingInfo) -> deferred.resolve(billingInfo)
-						.catch (error) -> deferred.reject(error)
-
-					return deferred.promise
 				]
-
+				
 		.state 'reset-password',
 			url: '/reset-password/:token'
 			controller: 'AccountResetPasswordCtrl'

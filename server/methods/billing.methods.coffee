@@ -4,10 +4,20 @@ if Meteor.settings.public.stripe_is_enabled
 	Stripe = StripeAPI(Meteor.settings.private.stripe_secret_key)
 
 Meteor.methods
+	'Billing.getCustomerId': -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
+		user = User.db.findOne(Meteor.userId())
+		throw new Meteor.Error('data', 'Cannot find user') unless user?
+
+		customer_id = user['billing_profile']?['stripe_customer_id']
+		throw new Meteor.Error('data', 'User does not have a customer id') unless customer_id?
+
+		return customer_id
+
 	'Billing.createCustomer': (user) -> Utils.logErrors ->
 		return unless Meteor.settings.public.stripe_is_enabled
 		throw new Meteor.Error('validation', 'User is required') unless user?
-		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		promise = new Future
 
@@ -36,22 +46,18 @@ Meteor.methods
 		return unless Meteor.settings.public.stripe_is_enabled
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
-		user = User.db.findOne(Meteor.userId())
-		throw new Meteor.Error('data', 'Cannot find user') unless user?
-
-		customer_id = user['billing_profile']['stripe_customer_id']
-		throw new Meteor.Error('data', 'User does not have a customer id') unless customer_id?
+		customer_id = Meteor.call('Billing.getCustomerId')
 
 		user_info = {}
 		user_info['credit_card'] = Meteor.call('Billing.getCustomerCreditCard', customer_id)
 		user_info['plans'] = Meteor.call('Billing.getCustomerPlans', customer_id)
-		user_info['applications'] = User.getOwnedApplications(user)
+		user_info['applications'] = User.getOwnedApplications(Meteor.user())
 		user_info['subscriptions'] = []
 
 		subscriptions = Meteor.call('Billing.getCustomerSubscriptions', customer_id)
 		subscriptions.forEach (subscription) ->
-			sub = _.pluck(subscription, ['id', 'quantity', 'metadata'])
-			sub['plan'] = _.pluck(main_subscription['plan'], ['id', 'name', 'amount'])
+			sub = _.pick(subscription, ['id', 'quantity', 'metadata'])
+			sub['plan'] = _.pick(subscription['plan'], ['id', 'name', 'amount', 'metadata'])
 			user_info['subscriptions'].push(sub)
 
 		return user_info
@@ -110,11 +116,7 @@ Meteor.methods
 		throw new Meteor.Error('validation', 'Token is required') unless token?
 		return unless Meteor.settings.public.stripe_is_enabled
 
-		user = User.db.findOne(Meteor.userId())
-		throw new Meteor.Error('data', 'Cannot find user') unless user?
-
-		stripe_customer_id = user['billing_profile']['stripe_customer_id']
-		throw new Meteor.Error('data', 'User does not have a stripe id') unless stripe_customer_id?
+		customer_id = Meteor.call('Billing.getCustomerId')
 
 		promise = new Future
 
@@ -122,13 +124,13 @@ Meteor.methods
 			throw new Meteor.Error('third-party', 'We were not able to update your credit card. Please contact support.') if error
 			promise.return()
 
-		Stripe.customers.update(stripe_customer_id, {source: token}, onCustomerUpdated)
+		Stripe.customers.update(customer_id, {source: token}, onCustomerUpdated)
 
 		return promise.wait()
 
-	'Billing.updateApplicationSubscriptions': ({application, subscriptions}) -> Utils.logErrors ->
+	'Billing.updateApplicationSubscriptions': ({application_id, subscriptions}) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
-		throw new Meteor.Error('validation', 'Application not specified') unless application?
+		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscriptions not specified') unless _.isArray(subscriptions) and not _.isEmpty(subscriptions)
 
 		billing_info = Meteor.call('Billing.getUserInfo')
@@ -145,31 +147,70 @@ Meteor.methods
 		throw new Meteor.Error('validation', 'A database subscription was not specified') unless _.contains(subscription_types, 'database')
 
 		subscriptions.forEach (new_subscription) ->
-			old_subscription = _.findWhere(billing_info['subscriptions'], (other_sub) ->
-				return false unless other_sub['metadata']['application_id'] is application['_id']
+			old_subscription = _.find(billing_info['subscriptions'], (other_sub) ->
+				return false unless other_sub['metadata']['application_id'] is application_id
 				return false unless other_sub['plan']['metadata']['type'] is new_subscription['plan']['metadata']['type']
 				return true
 			)
 
-			has_new_sub = parseInt(new_subscription['quantity']) > 0
-			has_old_sub = old_subscription?
+			if old_subscription?
+				different_plan = new_subscription['plan']['id'] isnt old_subscription['plan']['id']
+				different_quantity = new_subscription['quantity'] isnt old_subscription['quantity']
+				return unless different_plan or different_quantity
 
-			# Create new subscription
-			if has_new_sub and not has_old_sub
+				subscription = new_subscription
+				subscription['id'] = old_subscription['id']
+				Meteor.call('Billing.updateSubscription', ({application_id, subscription}))
 				return
-
-			# Update existing subscription
-			if has_new_sub and has_old_sub
+			else
+				subscription = new_subscription
+				Meteor.call('Billing.createSubscription', ({application_id, subscription}))
 				return
-
-			# Delete existing subscription
-			if not has_new_sub and has_old_sub
-				return
-
-			# Do nothing
-			if not has_new_sub and not has_old_sub
-				return
-
-			throw new Meteor.Error('impossible', 'Subscription could not be updated')
 
 		return
+
+	'Billing.createSubscription': ({application_id, subscription}) -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
+		throw new Meteor.Error('validation', 'Subscription not specified') unless subscription?
+
+		customer_id = Meteor.call('Billing.getCustomerId')
+
+		sub_params =
+			'plan': subscription['plan']['id']
+			'quantity': subscription['quantity']
+			'metadata':
+				'application_id': application_id
+
+		promise = new Future
+
+		onSubscriptionCreated = Meteor.bindEnvironment (error, subscription) ->
+			throw new Meteor.Error('third-party', 'We were not able to update billing information. Please contact support.') if error
+			promise.return()
+
+		Stripe.customers.createSubscription(customer_id, sub_params, onSubscriptionCreated)
+
+		return promise.wait()
+
+	'Billing.updateSubscription': ({application_id, subscription}) -> Utils.logErrors ->
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
+		throw new Meteor.Error('validation', 'Subscription not specified') unless subscription?
+
+		customer_id = Meteor.call('Billing.getCustomerId')
+
+		sub_params =
+			'plan': subscription['plan']['id']
+			'quantity': subscription['quantity']
+			'metadata':
+				'application_id': application_id
+
+		promise = new Future
+
+		onSubscriptionUpdated = Meteor.bindEnvironment (error, subscription) ->
+			throw new Meteor.Error('third-party', 'We were not able to update billing information. Please contact support.') if error
+			promise.return()
+
+		Stripe.customers.updateSubscription(customer_id, subscription['id'], sub_params, onSubscriptionUpdated)
+
+		return promise.wait()
