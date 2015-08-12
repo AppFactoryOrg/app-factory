@@ -17,5 +17,5 @@
 					.stat-group
 						.stat-label Database Size
 						.stat-value
-							span(ng-bind="application.metadata.db_size.value / 1024 | number:1")
+							span(ng-bind="application.metadata.db_size.value / 1024 / 1024 | number:2")
 							span &nbsp;MB
