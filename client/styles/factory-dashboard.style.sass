@@ -1,0 +1,20 @@
+@import "_mixins"
+@import "theme/_variables"
+
+.factory-dashboard
+
+	.stat-group
+		font-size: 15px
+		height: 30px
+		clear: both
+
+		.stat-label
+			float: left
+
+		.stat-value
+			+border-radius(2px)
+			float: right
+			text-align: right
+			padding: 2px 8px
+			background-color: lighten($navy, 35%)
+			color: darken($navy, 5%)

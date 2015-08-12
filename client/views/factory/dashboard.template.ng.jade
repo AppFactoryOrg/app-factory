@@ -3,3 +3,19 @@
 		.col-lg-12
 			h2 Dashboard
 			p Placeholder for application monitoring, statistics, events.
+			
+	br/
+	.row.wrapper
+		.col-lg-5
+			.ibox
+				.ibox-title
+					h5.pull-left Statistics
+				.ibox-content
+					.stat-group
+						.stat-label Number of Users
+						.stat-value(ng-bind="application.metadata.user_count.value")
+					.stat-group
+						.stat-label Database Size
+						.stat-value
+							span(ng-bind="application.metadata.db_size.value / 1024 | number:1")
+							span &nbsp;MB

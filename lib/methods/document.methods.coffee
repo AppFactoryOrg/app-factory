@@ -12,7 +12,10 @@ Meteor.methods
 		throw new Error('Cannot find Environment for new Document') unless environment?
 
 		document = Document.new(parameters)
+		document['size'] = JSON.stringify(document).length
 		document['_id'] = Document.db.insert(document)
+
+		Application.updateDbSize(environment['application_id'])
 
 		return document['_id']
 
@@ -23,8 +26,17 @@ Meteor.methods
 		document = Document.db.findOne(parameters['_id'])
 		throw new Error('Cannot find Document') unless document?
 
+		environment = Environment.db.findOne(document['environment_id'])
+		throw new Error('Cannot find Environment for Document') unless environment?
+
 		updates = _.pick(parameters, Document.MUTABLE_PROPERTIES)
+
+		_.assign(document, updates)
+		updates['size'] = JSON.stringify(document).length
+
 		Document.db.update({'_id': document['_id']}, {$set: updates})
+
+		Application.updateDbSize(environment['application_id'])
 
 		return document['_id']
 
@@ -38,12 +50,20 @@ Meteor.methods
 		document = Document.db.findOne(parameters['document_id'])
 		throw new Error('Cannot find Document') unless document?
 
+		environment = Environment.db.findOne(document['environment_id'])
+		throw new Error('Cannot find Environment for Document') unless environment?
+
 		updates = {}
 		parameters['attributes'].forEach (attribute) ->
 			return unless document['data'].hasOwnProperty(attribute['id'])
 			updates["data.#{attribute.id}"] = attribute['value']
 
+		_.assign(document, updates)
+		updates['size'] = JSON.stringify(document).length
+
 		Document.db.update({'_id': document['_id']}, {$set: updates})
+
+		Application.updateDbSize(environment['application_id'])
 
 		return document['_id']
 
@@ -54,6 +74,11 @@ Meteor.methods
 		document = Document.db.findOne(id)
 		throw new Error('Cannot find Document') unless document?
 
+		environment = Environment.db.findOne(document['environment_id'])
+		throw new Error('Cannot find Environment for Document') unless environment?
+
 		Document.db.remove(document['_id'])
+
+		Application.updateDbSize(environment['application_id'])
 
 		return
