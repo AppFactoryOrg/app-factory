@@ -1,6 +1,6 @@
 Future = Npm.require('fibers/future')
 
-if Meteor.settings.public.stripe_is_enabled
+if Meteor.settings.public.billing_is_enabled
 	Stripe = StripeAPI(Meteor.settings.private.stripe_secret_key)
 
 Meteor.methods
@@ -16,7 +16,7 @@ Meteor.methods
 		return customer_id
 
 	'Billing.createCustomer': (user) -> Utils.logErrors ->
-		return unless Meteor.settings.public.stripe_is_enabled
+		return unless Meteor.settings.public.billing_is_enabled
 		throw new Meteor.Error('validation', 'User is required') unless user?
 
 		promise = new Future
@@ -43,7 +43,7 @@ Meteor.methods
 		return promise.wait()
 
 	'Billing.getUserInfo': -> Utils.logErrors ->
-		return unless Meteor.settings.public.stripe_is_enabled
+		return unless Meteor.settings.public.billing_is_enabled
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		customer_id = Meteor.call('Billing.getCustomerId')
@@ -114,7 +114,7 @@ Meteor.methods
 	'Billing.updateCreditCard': (token) -> Utils.logErrors ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Token is required') unless token?
-		return unless Meteor.settings.public.stripe_is_enabled
+		return unless Meteor.settings.public.billing_is_enabled
 
 		customer_id = Meteor.call('Billing.getCustomerId')
 
