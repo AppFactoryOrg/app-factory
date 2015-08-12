@@ -29,7 +29,7 @@ angular.module('app-factory').controller('EditApplicationSubscriptionsModalCtrl'
 
 	unless $scope.mainSubscription?
 		$scope.mainSubscription =
-			'quantity': 0
+			'quantity': 1
 			'plan': _.findWhere($scope.plans, {'id': 'free'})
 
 	$scope.usersSubscription = _.find(billingInfo['subscriptions'], (sub) ->
