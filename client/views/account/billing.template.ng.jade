@@ -10,7 +10,7 @@
 						a(ui-sref="account.applications")
 							i.fa.fa-angle-right
 							span Applications
-					li(ui-sref-active="active")
+					li(ui-sref-active="active" ng-if="shouldShowBilling()")
 						a(ui-sref="account.billing")
 							i.fa.fa-angle-right
 							span Billing

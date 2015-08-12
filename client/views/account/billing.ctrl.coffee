@@ -9,6 +9,9 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 		$meteor.logout()
 		$state.go('account.login')
 
+	$scope.shouldShowBilling = ->
+		return Meteor.settings.public.billing_is_enabled
+
 	$scope.editCreditCard = ->
 		modal = $modal.open(new EditCreditCardModal())
 		modal.result.then (token) ->
