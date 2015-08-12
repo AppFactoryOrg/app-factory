@@ -136,7 +136,7 @@ Meteor.methods
 		billing_info = Meteor.call('Billing.getUserInfo')
 
 		if not billing_info['credit_card']?
-			active_subscriptions = _.filter(subscriptions, (sub) -> parseInt(sub['quantity']) > 0)
+			active_subscriptions = _.filter(subscriptions, (sub) -> parseInt(sub['quantity']) > 0 and sub['plan']['id'] isnt 'free')
 			if not _.isEmpty(active_subscriptions)
 				throw new Meteor.Error('validaiton', 'A valid credit card is required to work with paid plans.')
 
