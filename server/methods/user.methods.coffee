@@ -4,15 +4,19 @@ Meteor.methods
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Email is required') if _.isEmpty(parameters['email'])
 
+		role = parameters['role']
+
 		user =
 			'email': parameters['email']
 			'profile':
 				'name': parameters['name']
-				'application_roles': []
+				'application_roles': if role? then [role] else []
 
 		user['_id'] = Accounts.createUser(user)
 
 		Accounts.sendEnrollmentEmail(user['_id'])
+
+		Meteor.call('Billing.createCustomer', user)
 
 		return
 
@@ -42,15 +46,8 @@ Meteor.methods
 					'profile.application_roles': role
 			)
 		else
-			user =
-				'email': parameters['email']
-				'profile':
-					'name': parameters['name']
-					'application_roles': [role]
-
-			user['_id'] = Accounts.createUser(user)
-
-			Accounts.sendEnrollmentEmail(user['_id'])
+			parameters['role'] = role
+			Meteor.call('User.register', parameters)
 
 		return
 

@@ -57,3 +57,7 @@ window.onerror = (message, file, line_number, column_number, error_object) ->
 			'stack': "#{file} #{line_number}:#{column_number}"
 
 	Utils.logError(error)
+
+Meteor.startup ->
+	if Meteor.settings.public.billing_is_enabled
+		Stripe.setPublishableKey(Meteor.settings.public.stripe_publishable_key)

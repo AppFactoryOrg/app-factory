@@ -1,0 +1,105 @@
+.edit-creditcard-modal
+	form(novalidate name="form" ng-submit="submit()")
+		.modal-header
+			.modal-title Credit Card
+
+		.modal-body
+			.row
+				.form-group.col-sm-9
+					label Number
+					input.form-control(
+						type="text"
+						name="cc_number"
+						required
+						ng-model="creditCard.number"
+						autofocus="true"
+					)
+				.form-group.col-sm-3
+					label CVC
+					input.form-control(
+						type="text"
+						name="cc_cvc"
+						required
+						ng-model="creditCard.cvc"
+					)
+			.row
+				.form-group.col-sm-7
+					label Expires
+					.expiration
+						select.form-control(
+							name="cc_exp_month"
+							required
+							ng-model="creditCard.exp_month"
+						)
+							option(value="01") 01
+							option(value="02") 02
+							option(value="03") 03
+							option(value="04") 04
+							option(value="05") 05
+							option(value="06") 06
+							option(value="07") 07
+							option(value="08") 08
+							option(value="09") 09
+							option(value="10") 10
+							option(value="11") 11
+							option(value="12") 12
+						select.form-control(
+							name="cc_exp_year"
+							required
+							ng-model="creditCard.exp_year"
+						)
+							option(value="2015") 2015
+							option(value="2016") 2016
+							option(value="2017") 2017
+							option(value="2018") 2018
+							option(value="2019") 2019
+							option(value="2020") 2020
+							option(value="2021") 2021
+							option(value="2022") 2022
+							option(value="2023") 2023
+							option(value="2024") 2024
+							option(value="2025") 2025
+							option(value="2026") 2026
+							option(value="2027") 2027
+							option(value="2028") 2028
+							option(value="2029") 2029
+							option(value="2030") 2030
+							option(value="2031") 2031
+							option(value="2032") 2032
+							option(value="2033") 2033
+							option(value="2034") 2034
+							option(value="2035") 2035
+							option(value="2036") 2036
+							option(value="2037") 2037
+							option(value="2038") 2038
+							option(value="2039") 2039
+							option(value="2040") 2040
+						
+				.form-group.col-sm-5
+					label Zip Code
+					input.form-control(
+						type="text"
+						name="cc_zipcode"
+						required
+						ng-model="creditCard.address_zip"
+					)
+			
+			a.btn.btn-xs.btn-link(href="https://stripe.com/help/security" target="_blank")
+				i.fa.fa-lock
+				span Processed with Stripe. PCI Compliant
+		
+			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+				div(ng-show="form.cc_number.$error.required") Number is required.
+				div(ng-show="form.cc_exp_month.$error.required") Expiration Month is required.
+				div(ng-show="form.cc_exp_year.$error.required") Expiration Year is required.
+				div(ng-show="form.cc_cvc.$error.required") CVC is required.
+				div(ng-show="form.cc_zipcode.$error.required") Zip Code is required.
+				
+			.alert.alert-danger(ng-show="errorMessage")
+				div(ng-bind="errorMessage")
+
+		.modal-footer
+			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+			button.btn.btn-success(type="submit") 
+				span Authorize
+				i.fa.fa-chevron-right

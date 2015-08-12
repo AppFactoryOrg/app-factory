@@ -1,0 +1,62 @@
+.edit-application-subscriptions-modal
+	.modal-header
+		h3.modal-title Edit Subscription
+		
+	.modal-body
+		
+		form.form(novalidate)
+			.row
+				.form-group.col-sm-12.col-md-6
+					label Application
+					.app-name(ng-bind="application.name")
+				.form-group.col-sm-12.col-md-6
+					label Plan
+					select.form-control(
+						ng-model="mainSubscription.plan" 
+						ng-options="plan as plan.$name for plan in plans track by plan.id" 
+						ng-change="mainSubscriptionChanged()"
+						ng-disabled="loading"
+					)
+			.row
+				.form-group.col-sm-12.col-md-6.users-subscription()
+					label Users
+					input(
+						type="range" 
+						ng-disabled="!shouldShowUserScale() || loading"
+						ng-model="usersSubscription.quantity"
+						min="0" 
+						max="{{getMaxUsersQuantity()}}"
+						step="1"
+					)
+					.label
+						span(ng-bind="getUsersInPlan()")
+						span &nbsp;users
+				.form-group.col-sm-12.col-md-6.database-subscription
+					label Database
+					input(
+						type="range" 
+						ng-disabled="!shouldShowDatabaseScale() || loading"
+						ng-model="databaseSubscription.quantity"
+						min="0" 
+						max="{{getMaxDatabaseQuantity()}}" 
+						step="1"
+					)
+					.label
+						span(ng-bind="getMbInPlan() | number")
+						span &nbsp;MB
+		hr/
+		.row
+			.col-sm-8
+			.col-sm-4
+				.total-cost
+					label Est. Cost
+					div
+						span(ng-bind="getTotalCost() | currency")
+						span /mo
+				
+	.modal-footer
+		.text-muted.pull-left Subscription changes are immediate and prorated.
+		button.btn.btn-default(ng-click="$dismiss()" ng-disabled="loading") Close
+		button.btn.btn-primary(ng-click="submit()" ng-disabled="loading") 
+			span Save
+			i.fa(ng-class="{'fa-angle-right': !loading, 'fa-refresh': loading, 'fa-spin': loading}")

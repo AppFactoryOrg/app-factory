@@ -1,0 +1,58 @@
+@import "_mixins"
+
+.account-billing-view
+	width: 500px
+	margin: 30px auto
+	position: relative
+
+	+mobile
+		width: 100%
+
+	h6
+		font-size: 20px
+		font-weight: 300
+		letter-spacing: 0.1px
+
+	.ibox-content
+		position: relative
+
+	.loader
+		position: absolute
+		top: 0
+		bottom: 0
+		left: 0
+		right: 0
+		background-color: rgba(white, 0.8)
+		text-align: center
+		padding-top: 50px
+		z-index: 2
+
+	.credit-card
+		position: relative
+		margin-bottom: 20px
+
+		.btn-link
+			color: lighten(grey, 13%)
+
+		.well
+			margin-bottom: 10px
+
+		.controls
+			position: absolute
+			top: 0px
+			right: 0px
+
+	.subscriptions
+		margin-top: 20px
+
+		.total-cost
+			text-align: right
+
+			label
+				font-size: 15px
+				font-weight: 300
+
+			div
+				font-size: 22px
+				color: darken(lime, 15%)
+				letter-spacing: 0.5px

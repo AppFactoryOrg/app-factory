@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('AccountLoginCtrl', ['$scope', '$state', '$meteor', 'toaster', ($scope, $state, $meteor, toaster) ->
+angular.module('app-factory').controller('AccountLoginCtrl', ['$scope', '$state', '$stateParams', '$timeout', '$meteor', 'toaster', ($scope, $state, $stateParams, $timeout, $meteor, toaster) ->
 
 	$scope.email = ''
 	$scope.password = ''
@@ -28,5 +28,11 @@ angular.module('app-factory').controller('AccountLoginCtrl', ['$scope', '$state'
 				showCloseButton: true
 			)
 		)
+
+	# Auto login
+	if $stateParams.email? and $stateParams.password?
+		$scope.email = $stateParams.email
+		$scope.password = $stateParams.password
+		$timeout -> $scope.submit()
 
 ])

@@ -1,11 +1,25 @@
 .account-applications-view
-	button.btn.btn-xs.btn-primary.pull-right.logout(type="button" ng-click="logout()") 
-		span Log out
-		i.fa.fa-sign-out
-		
 	.ibox
 		.ibox-title 
-			h5 My Applications
+			h5 Applications
+			.btn-group.pull-right.nav-menu(dropdown="")
+				button.btn.btn-xs.btn-default(dropdown-toggle="")
+					i.fa.fa-bars
+				ul.dropdown-menu
+					li(ui-sref-active="active")
+						a(ui-sref="account.applications")
+							i.fa.fa-angle-right
+							span Applications
+					li(ui-sref-active="active" ng-if="shouldShowBilling()")
+						a(ui-sref="account.billing")
+							i.fa.fa-angle-right
+							span Billing
+					li.divider
+					li
+						a(ng-click="logout()")
+							i.fa.fa-sign-out
+							span Log out
+				
 		.ibox-content
 			.application-summary.well(ng-repeat="application in applications")
 				.name {{application.name}}
@@ -34,6 +48,7 @@
 						
 
 				i.icon.fa.fa-gear
+				i.owner.fa.fa-user(ng-show="userIsApplicationOwner(application)" tooltip="You are the owner of this application.")
 
 			.clearfix
 				button.btn.btn-success.pull-right(type="button" ng-click="createApplication()") 

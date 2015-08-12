@@ -16,7 +16,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 			templateUrl: 'client/views/account/account.template.html'
 
 		.state 'account.login',
-			url: '/login'
+			url: '/login?email&password'
 			controller: 'AccountLoginCtrl'
 			templateUrl: 'client/views/account/login.template.html'
 
@@ -39,6 +39,15 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 					return $meteor.requireUser()
 				]
 
+		.state 'account.billing',
+			url: '/billing'
+			controller: 'AccountBillingCtrl'
+			templateUrl: 'client/views/account/billing.template.html'
+			resolve:
+				'currentUser': ['$meteor', ($meteor) ->
+					return $meteor.requireUser()
+				]
+				
 		.state 'reset-password',
 			url: '/reset-password/:token'
 			controller: 'AccountResetPasswordCtrl'
