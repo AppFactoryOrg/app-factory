@@ -36,6 +36,8 @@ Meteor.methods
 					'can_edit': true
 		)
 
+		Application.updateUserCount(application['_id'])
+
 		return application['_id']
 
 	'Application.update': (parameters) -> Utils.logErrors ->

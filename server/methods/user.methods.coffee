@@ -49,6 +49,8 @@ Meteor.methods
 			parameters['role'] = role
 			Meteor.call('User.register', parameters)
 
+		Application.updateUserCount(parameters['application_id'])
+
 		return
 
 	'User.revoke': (parameters) -> Utils.logErrors ->
@@ -69,5 +71,7 @@ Meteor.methods
 			$pull:
 				'profile.application_roles': {'application_id': application['_id']}
 		)
+
+		Application.updateUserCount(parameters['application_id'])
 
 		return
