@@ -6,10 +6,20 @@
 		
 		form.form(novalidate)
 			.row
-				.form-group.col-sm-12.col-md-6
+				.form-group.col-sm-12.col-md-8
 					label Application
 					.app-name(ng-bind="application.name")
-				.form-group.col-sm-12.col-md-6
+				.form-group.col-sm-12.col-md-4
+					label Usage
+					.text-muted
+						span(ng-bind="application.metadata.user_count.value")
+						span &nbsp;Users
+					.text-muted
+						span(ng-bind="application.metadata.db_size.value / 1024 / 1024 | number:2")
+						span &nbsp;MB Database
+			hr/
+			.row
+				.form-group.col-sm-12.col-md-7
 					label Plan
 					select.form-control(
 						ng-model="mainSubscription.plan" 
@@ -18,7 +28,7 @@
 						ng-disabled="loading"
 					)
 			.row
-				.form-group.col-sm-12.col-md-6.users-subscription()
+				.form-group.col-sm-12.col-md-6.users-subscription
 					label Users
 					input(
 						type="range" 
