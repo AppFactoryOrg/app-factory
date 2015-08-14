@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$meteor', '$modal', 'documentSchema', 'EditAttributeModal', 'EditActionModal', ($scope, $state, $meteor, $modal, documentSchema, EditAttributeModal, EditActionModal) ->
+angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$meteor', '$modal', 'toaster', 'documentSchema', 'EditAttributeModal', 'EditActionModal', ($scope, $state, $meteor, $modal, toaster, documentSchema, EditAttributeModal, EditActionModal) ->
 
 	$scope.originalDocumentSchema = documentSchema
 	$scope.documentSchema = documentSchema
@@ -22,15 +22,30 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.saveDocumentSchema = ->
 		documentSchema = angular.copy($scope.documentSchema)
-		$meteor.call('DocumentSchema.update', documentSchema).then ->
-			$scope.editMode = false
-			$scope.documentSchema = documentSchema
-			$scope.originalDocumentSchema = documentSchema
+		$meteor.call('DocumentSchema.update', documentSchema)
+			.then ->
+				$scope.editMode = false
+				$scope.documentSchema = documentSchema
+				$scope.originalDocumentSchema = documentSchema
+			.catch (error) ->
+				console.error(error)
+				toaster.pop(
+					type: 'error'
+					body: "Could not update Document: #{error.reason}"
+					showCloseButton: true
+				)
 
 	$scope.deleteDocumentSchema = ->
 		return unless confirm('Are you sure you want to delete this document? Application data may be lost.')
-		$meteor.call('DocumentSchema.delete', $scope.documentSchema['_id']).then ->
-			$state.go('factory.dashboard')
+		$meteor.call('DocumentSchema.delete', $scope.documentSchema['_id'])
+			.then -> $state.go('factory.dashboard')
+			.catch (error) ->
+				console.error(error)
+				toaster.pop(
+					type: 'error'
+					body: "Could not delete Document: #{error.reason}"
+					showCloseButton: true
+				)
 
 	$scope.newAttribute = ->
 		$modal.open(new EditAttributeModal()).result.then (parameters) ->
@@ -44,6 +59,10 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 	$scope.deleteAttribute = (attribute) ->
 		return unless confirm('Are you sure you want to delete this attribute? Application data may be lost.')
 		Utils.removeFromArray(attribute, $scope.documentSchema.attributes)
+
+	$scope.canAddAttribute = ->
+		return false unless $scope.documentSchema['attributes'].length < Config['MAX_ATTRIBUTES_COUNT']
+		return true
 
 	$scope.getPrimaryAttributeName = ->
 		attribute = _.find($scope.documentSchema['attributes'], {'id': $scope.documentSchema['primary_attribute_id']})
