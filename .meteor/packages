@@ -23,3 +23,7 @@ ecwyne:mathjs
 force-ssl
 mrgalaxy:stripe
 meteorhacks:aggregate
+meteorhacks:kadira
+kadira:debug
+meteorhacks:kadira-profiler
+meteorhacks:zones

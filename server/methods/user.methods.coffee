@@ -1,5 +1,5 @@
 Meteor.methods
-	'User.register': (parameters) -> Utils.logErrors ->
+	'User.register': (parameters) ->
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Email is required') if _.isEmpty(parameters['email'])
@@ -20,7 +20,7 @@ Meteor.methods
 
 		return
 
-	'User.invite': (parameters) -> Utils.logErrors ->
+	'User.invite': (parameters) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
@@ -53,7 +53,7 @@ Meteor.methods
 
 		return
 
-	'User.revoke': (parameters) -> Utils.logErrors ->
+	'User.revoke': (parameters) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'User not specified') if _.isEmpty(parameters['user_id'])

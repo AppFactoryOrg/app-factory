@@ -4,7 +4,7 @@ if Meteor.settings.public.billing_is_enabled
 	Stripe = StripeAPI(Meteor.settings.private.stripe_secret_key)
 
 Meteor.methods
-	'Billing.getCustomerId': -> Utils.logErrors ->
+	'Billing.getCustomerId': ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		user = User.db.findOne(Meteor.userId())
@@ -15,7 +15,7 @@ Meteor.methods
 
 		return customer_id
 
-	'Billing.createCustomer': (user) -> Utils.logErrors ->
+	'Billing.createCustomer': (user) ->
 		return unless Meteor.settings.public.billing_is_enabled
 		throw new Meteor.Error('validation', 'User is required') unless user?
 
@@ -42,7 +42,7 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.getUserInfo': -> Utils.logErrors ->
+	'Billing.getUserInfo': ->
 		return unless Meteor.settings.public.billing_is_enabled
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
@@ -62,7 +62,7 @@ Meteor.methods
 
 		return user_info
 
-	'Billing.getCustomerCreditCard': (customer_id) -> Utils.logErrors ->
+	'Billing.getCustomerCreditCard': (customer_id) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		promise = new Future
@@ -79,7 +79,7 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.getCustomerPlans': (customer_id) -> Utils.logErrors ->
+	'Billing.getCustomerPlans': (customer_id) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		promise = new Future
@@ -94,7 +94,7 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.getCustomerSubscriptions': (customer_id) -> Utils.logErrors ->
+	'Billing.getCustomerSubscriptions': (customer_id) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		promise = new Future
@@ -111,7 +111,7 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.updateCreditCard': (token) -> Utils.logErrors ->
+	'Billing.updateCreditCard': (token) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Token is required') unless token?
 		return unless Meteor.settings.public.billing_is_enabled
@@ -128,7 +128,7 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.updateApplicationSubscriptions': ({application_id, subscriptions}) -> Utils.logErrors ->
+	'Billing.updateApplicationSubscriptions': ({application_id, subscriptions}) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscriptions not specified') unless _.isArray(subscriptions) and not _.isEmpty(subscriptions)
@@ -169,7 +169,7 @@ Meteor.methods
 
 		return
 
-	'Billing.createSubscription': ({application_id, subscription}) -> Utils.logErrors ->
+	'Billing.createSubscription': ({application_id, subscription}) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscription not specified') unless subscription?
@@ -192,7 +192,7 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.updateSubscription': ({application_id, subscription}) -> Utils.logErrors ->
+	'Billing.updateSubscription': ({application_id, subscription}) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscription not specified') unless subscription?
