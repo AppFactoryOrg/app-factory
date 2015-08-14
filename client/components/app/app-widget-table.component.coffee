@@ -78,6 +78,13 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			modal = $modal.open(new EditDocumentModal({documentSchema}))
 			modal.result.then (document) ->
 				$meteor.call('Document.create', document)
+					.catch (error) ->
+						console.error(error)
+						toaster.pop(
+							type: 'error'
+							body: "Could not create document: #{error.reason}"
+							showCloseButton: true
+						)
 
 		$scope.viewDocument = (document) ->
 			documentSchema = $scope.documentSchema
@@ -88,6 +95,13 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			modal = $modal.open(new EditDocumentModal({document, documentSchema}))
 			modal.result.then (document) ->
 				$meteor.call('Document.update', document)
+					.catch (error) ->
+						console.error(error)
+						toaster.pop(
+							type: 'error'
+							body: "Could not update document: #{error.reason}"
+							showCloseButton: true
+						)
 
 		$scope.deleteDocument = (document) ->
 			return unless confirm('Are you sure you want to delete this record? This action cannot be undone.')

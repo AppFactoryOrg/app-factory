@@ -45,6 +45,7 @@ angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalSta
 angular.module('app-factory').factory('$exceptionHandler', ->
 	return (exception, cause) ->
 		exception.message += " (caused by #{cause})"
+		console.error(exception)
 		throw exception
 )
 
