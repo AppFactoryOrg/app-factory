@@ -1,5 +1,5 @@
 Meteor.methods
-	'DocumentSchema.create': (parameters) -> Utils.logErrors ->
+	'DocumentSchema.create': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -17,7 +17,7 @@ Meteor.methods
 
 		return documentSchema['_id']
 
-	'DocumentSchema.update': (parameters) -> Utils.logErrors ->
+	'DocumentSchema.update': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 
@@ -29,7 +29,7 @@ Meteor.methods
 
 		return documentSchema['_id']
 
-	'DocumentSchema.delete': (id) -> Utils.logErrors ->
+	'DocumentSchema.delete': (id) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Id is required') if _.isEmpty(id) and _.isString(id)
 

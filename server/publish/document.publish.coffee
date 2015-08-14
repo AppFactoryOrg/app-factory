@@ -1,7 +1,7 @@
 Meteor.publish 'Document', (document_id) ->
 	return Document.db.find('_id': document_id)
 
-Meteor.publishComposite 'Documents', (filter, paging) -> Utils.logErrors ->
+Meteor.publishComposite 'Documents', (filter, paging) ->
 	throw new Error('Filter parameter is required') unless filter?
 	throw new Error('Filter parameter requires environment_id attribute') unless filter['environment_id']?
 	throw new Error('Filter parameter requires document_schema_id attribute') unless filter['document_schema_id']?

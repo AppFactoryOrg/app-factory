@@ -43,20 +43,10 @@ angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalSta
 ])
 
 angular.module('app-factory').factory('$exceptionHandler', ->
-	return (error, cause) ->
-		console.error(error)
-		Utils.logError(error)
+	return (exception, cause) ->
+		exception.message += " (caused by #{cause})"
+		throw exception
 )
-
-window.onerror = (message, file, line_number, column_number, error_object) ->
-	if error_object?
-		error = error_object
-	else
-		error =
-			'message': message
-			'stack': "#{file} #{line_number}:#{column_number}"
-
-	Utils.logError(error)
 
 Meteor.startup ->
 	if Meteor.settings.public.billing_is_enabled

@@ -1,5 +1,5 @@
 Meteor.methods
-	'Application.create': (parameters) -> Utils.logErrors ->
+	'Application.create': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
@@ -40,7 +40,7 @@ Meteor.methods
 
 		return application['_id']
 
-	'Application.update': (parameters) -> Utils.logErrors ->
+	'Application.update': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
 
