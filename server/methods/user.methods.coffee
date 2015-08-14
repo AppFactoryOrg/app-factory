@@ -26,6 +26,7 @@ Meteor.methods
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Email is required') if _.isEmpty(parameters['email'])
 		throw new Meteor.Error('validation', 'Application not specified') if _.isEmpty(parameters['application_id'])
+		throw new Meteor.Error('limits', 'Application user limit reached') unless Meteor.call('Limits.canInviteUser', parameters['application_id'])
 
 		application = Application.db.findOne(parameters['application_id'])
 		throw new Meteor.Error('data', 'Application could not be found') unless application?

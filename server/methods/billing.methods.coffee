@@ -132,19 +132,48 @@ Meteor.methods
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscriptions not specified') unless _.isArray(subscriptions) and not _.isEmpty(subscriptions)
+		throw new Meteor.Error('validation', 'Invalid number of subscriptions specified') if subscriptions.length isnt 3
 
 		billing_info = Meteor.call('Billing.getUserInfo')
+
+		subscriptions.forEach (sub) ->
+			plan = _.findWhere(billing_info['plans'], {'id': sub['plan']['id']})
+			throw new Meteor.Error('validation', 'Cannot find Plan for Subscription') unless plan?
+			sub['plan'] = plan
+
+		application = Application.db.findOne(application_id)
+		throw new Meteor.Error('validation', 'Cannot find Application') unless application?
 
 		if not billing_info['credit_card']?
 			active_subscriptions = _.filter(subscriptions, (sub) -> parseInt(sub['quantity']) > 0 and sub['plan']['id'] isnt 'free')
 			if not _.isEmpty(active_subscriptions)
 				throw new Meteor.Error('validaiton', 'A valid credit card is required to work with paid plans.')
 
-		subscription_types = _.map(subscriptions, (sub) -> sub['plan']['metadata']['type'])
-		throw new Meteor.Error('validation', 'Invalid number of subscriptions specified') if subscription_types.length isnt 3
-		throw new Meteor.Error('validation', 'A main subscription was not specified') unless _.contains(subscription_types, 'main')
-		throw new Meteor.Error('validation', 'A user subscription was not specified') unless _.contains(subscription_types, 'users')
-		throw new Meteor.Error('validation', 'A database subscription was not specified') unless _.contains(subscription_types, 'database')
+		main_subscription = _.find(subscriptions, (sub) -> sub['plan']['metadata']['type'] is 'main')
+		throw new Meteor.Error('validation', 'A main subscription was not specified') unless main_subscription?
+
+		user_subscription = _.find(subscriptions, (sub) -> sub['plan']['metadata']['type'] is 'users')
+		throw new Meteor.Error('validation', 'A user subscription was not specified') unless user_subscription?
+
+		database_subscription = _.find(subscriptions, (sub) -> sub['plan']['metadata']['type'] is 'database')
+		throw new Meteor.Error('validation', 'A database subscription was not specified') unless database_subscription?
+
+		if Meteor.settings.public.application_limits.should_enforce
+			base_users = parseInt(main_subscription['plan']['metadata']['base_users'])
+			users_per_quantity = parseInt(user_subscription['plan']['metadata']['users_per_quantity'])
+			additional_user_quantity = parseInt(user_subscription['quantity'])
+			max_users = base_users + (additional_user_quantity * users_per_quantity)
+
+			if application['metadata']['user_count']['value'] > max_users
+				throw new Meteor.Error('validation', 'Application has more users than the subscription allows')
+
+			base_mb = parseInt(main_subscription['plan']['metadata']['base_mb'])
+			mb_per_quantity = parseInt(database_subscription['plan']['metadata']['mb_per_quantity'])
+			additional_mb_quantity = parseInt(database_subscription['quantity'])
+			max_db = base_mb + (additional_mb_quantity * mb_per_quantity)
+
+			if application['metadata']['db_size']['value'] > (max_db*1024*1024)
+				throw new Meteor.Error('validation', 'Application uses more database MB than the subscription allows')
 
 		subscriptions.forEach (new_subscription) ->
 			old_subscription = _.find(billing_info['subscriptions'], (other_sub) ->
@@ -166,6 +195,14 @@ Meteor.methods
 				subscription = new_subscription
 				Meteor.call('Billing.createSubscription', ({application_id, subscription}))
 				return
+
+		if Meteor.settings.public.application_limits.should_enforce
+			Application.db.update(application_id, {
+				$set: {
+					'limits.max_users': max_users
+					'limits.max_db': max_db
+				}
+			})
 
 		return
 
@@ -194,6 +231,7 @@ Meteor.methods
 
 	'Billing.updateSubscription': ({application_id, subscription}) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscription not specified') unless subscription?
 

@@ -7,17 +7,29 @@
 	]
 
 	new: ->
-		'name': 					null
-		'enabled': 					null
-		'owner_id': 				null
-		'default_environment_id':	null
-		'metadata':
-			'user_count':
-				'value': 0
-				'updated_on': null
-			'db_size':
-				'value': 0
-				'updated_on': null
+		application =
+			'name': 					null
+			'enabled': 					null
+			'owner_id': 				null
+			'default_environment_id':	null
+			'metadata':
+				'user_count':
+					'value': 0
+					'updated_on': null
+				'db_size':
+					'value': 0
+					'updated_on': null
+			'limits':
+				'should_enforce': false
+				'max_users': null
+				'max_db': null
+
+		if Meteor.settings.public.application_limits.should_enforce
+			application['limits']['should_enforce'] = true
+			application['limits']['max_users'] = Meteor.settings.public.application_limits.default_max_users
+			application['limits']['max_db'] = Meteor.settings.public.application_limits.default_max_db
+
+		return application
 
 	updateUserCount: (application_id) ->
 		return unless Meteor.isServer

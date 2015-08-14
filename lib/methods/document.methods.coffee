@@ -13,6 +13,8 @@ Meteor.methods
 
 		document = Document.new(parameters)
 		document['size'] = JSON.stringify(document).length
+		throw new Meteor.Error('limits', 'Application database limit reached') unless Meteor.call('Limits.canCreateDocument', environment['application_id'], document)
+
 		document['_id'] = Document.db.insert(document)
 
 		Application.updateDbSize(environment['application_id'])
@@ -30,6 +32,7 @@ Meteor.methods
 		throw new Error('Cannot find Environment for Document') unless environment?
 
 		updates = _.pick(parameters, Document.MUTABLE_PROPERTIES)
+		throw new Meteor.Error('limits', 'Application database limit reached') unless Meteor.call('Limits.canUpdateDocument', environment['application_id'], document, updates)
 
 		_.assign(document, updates)
 		updates['size'] = JSON.stringify(document).length
@@ -57,6 +60,8 @@ Meteor.methods
 		parameters['attributes'].forEach (attribute) ->
 			return unless document['data'].hasOwnProperty(attribute['id'])
 			updates["data.#{attribute.id}"] = attribute['value']
+
+		throw new Meteor.Error('limits', 'Application database limit reached') unless Meteor.call('Limits.canUpdateDocument', environment['application_id'], document, updates)
 
 		_.assign(document, updates)
 		updates['size'] = JSON.stringify(document).length
