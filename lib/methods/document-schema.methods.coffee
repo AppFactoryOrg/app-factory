@@ -20,6 +20,7 @@ Meteor.methods
 	'DocumentSchema.update': (parameters) ->
 		throw new Error('Unauthorized') unless Meteor.user()?
 		throw new Error('Parameters object is required') unless parameters?
+		throw new Meteor.Error('validation', 'Document has too many attributes') if parameters['attributes'].length > Config['MAX_ATTRIBUTES_COUNT']
 
 		documentSchema = DocumentSchema.db.findOne(parameters['_id'])
 		throw new Error('Cannot find Document') unless documentSchema?

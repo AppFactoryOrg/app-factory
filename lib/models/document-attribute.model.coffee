@@ -6,18 +6,33 @@
 			component: 'text'
 			icon: 'fa-font'
 			operators: {'is', 'contains'}
+			isValid: (value) ->
+				return true if value is null
+				return 'is not the proper data type' unless _.isString(value)
+				return 'is too long' if value.length > Config['MAX_TEXT_LENGTH']
+				return true
 
 		'Number':
 			value: 150
 			component: 'number'
 			icon: 'fa-calculator'
 			operators: {'=', '>', '>=', '<', '<=', 'between'}
+			isValid: (value) ->
+				return true if value is null
+				return 'is not the proper data type' unless _.isNumber(value)
+				return 'is too long' if value.length > Config['MAX_NUMBER_LENGTH']
+				return true
 
 		'Date':
 			value: 200
 			component: 'date'
 			icon: 'fa-calendar'
 			operators: {'on', 'before', 'after', 'between'}
+			isValid: (value) ->
+				return true if value is null
+				return 'is not the proper data type' unless _.isNumber(value)
+				return 'is too long' if value.length > Config['MAX_DATE_LENGTH']
+				return true
 
 		'Option':
 			value: 250
@@ -26,6 +41,11 @@
 			operators: {'is'}
 			configuration:
 				'options': []
+			isValid: (value) ->
+				return true if value is null
+				return 'is not the proper data type' unless _.isNumber(value)
+				return 'is too long' if value.length > Config['MAX_OPTION_LENGTH']
+				return true
 
 		'Document':
 			value: 300
@@ -35,6 +55,11 @@
 			operators: {'is'}
 			configuration:
 				'document_schema_id': null
+			isValid: (value) ->
+				return true if value is null
+				return 'is not the proper data type' unless _.isString(value)
+				return 'is too long' if value.length > Config['MAX_DOCUMENT_ID_LENGTH']
+				return true
 
 		'Collection':
 			value: 400
@@ -44,12 +69,22 @@
 			operators: {'contains'}
 			configuration:
 				'document_schema_id': null
+			isValid: (value) ->
+				return true if value is null
+				return 'is not the proper data type' unless _.isArray(value)
+				return 'has too many items' if value.length > Config['MAX_COLLECTION_LENGTH']
+				return true
 
 		'User':
 			value: 500
 			component: 'User'
 			operators: {'is'}
 			icon: 'fa-user'
+			isValid: (value) ->
+				return true if value is null
+				return 'is not the proper data type' unless _.isString(value)
+				return 'is too long' if value.length > Config['MAX_USER_ID_LENGTH']
+				return true
 
 	VALUE_TYPE:
 		'Input':			{value: 100,	icon: 'fa-edit'}
@@ -144,3 +179,7 @@
 						return value_a is value_b
 
 		return false
+
+	validate: (attribute, attribute_value) ->
+		data_type =  DocumentAttribute.getDataType(attribute['data_type'])
+		return data_type.isValid(attribute_value)

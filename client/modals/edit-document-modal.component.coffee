@@ -8,9 +8,9 @@ angular.module('app-factory').factory 'EditDocumentModal', ->
 			'document': -> document
 			'documentSchema': -> documentSchema
 
-angular.module('app-factory').controller('EditDocumentCtrl', ['$scope', '$rootScope', '$modalInstance', 'document', 'documentSchema', ($scope, $rootScope, $modalInstance, document, documentSchema) ->
+angular.module('app-factory').controller('EditDocumentCtrl', ['$scope', '$rootScope', '$modalInstance', 'toaster', 'document', 'documentSchema', ($scope, $rootScope, $modalInstance, toaster, document, documentSchema) ->
 	$scope.documentSchema = documentSchema
-	
+
 	if document?
 		$scope.document = angular.copy(document)
 	else
@@ -21,6 +21,14 @@ angular.module('app-factory').controller('EditDocumentCtrl', ['$scope', '$rootSc
 			'data': {}
 
 	$scope.submit = ->
-		$modalInstance.close($scope.document)
-
+		try
+			Document.validate($scope.document, $scope.documentSchema)
+			$modalInstance.close($scope.document)
+		catch error
+			message = if error.reason? then error.reason else error.message
+			toaster.pop(
+				type: 'error'
+				body: "#{message}"
+				showCloseButton: true
+			)
 ])

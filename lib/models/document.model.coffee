@@ -47,3 +47,12 @@
 		'environment_id': parameters['environment_id']
 		'created_on': Date.now()
 		'created_by': Meteor.userId()
+
+	validate: (document, document_schema) ->
+		_.each(document['data'], (attribute_value, attribute_id) ->
+			attribute = _.findWhere(document_schema['attributes'], {'id': attribute_id})
+			throw new Meteor.Error('validation', 'Document has an invalid attribute') unless attribute?
+
+			result = DocumentAttribute.validate(attribute, attribute_value)
+			throw new Meteor.Error('validation', "#{attribute.name} #{result}") if result isnt true
+		)

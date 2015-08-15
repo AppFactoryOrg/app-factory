@@ -5,14 +5,16 @@ Meteor.methods
 		throw new Error('Parameter "document_schema_id" is required') if _.isEmpty(parameters['document_schema_id'])
 		throw new Error('Parameter "environment_id" is required') if _.isEmpty(parameters['environment_id'])
 
-		documentSchema = DocumentSchema.db.findOne(parameters['document_schema_id'])
-		throw new Error('Cannot find DocumentSchema for new Document') unless documentSchema?
+		document_schema = DocumentSchema.db.findOne(parameters['document_schema_id'])
+		throw new Error('Cannot find DocumentSchema for new Document') unless document_schema?
 
 		environment = Environment.db.findOne(parameters['environment_id'])
 		throw new Error('Cannot find Environment for new Document') unless environment?
 
 		document = Document.new(parameters)
 		document['size'] = JSON.stringify(document).length
+
+		Document.validate(document, document_schema)
 		throw new Meteor.Error('limits', 'Application database limit reached') unless Meteor.call('Limits.canCreateDocument', environment['application_id'], document)
 
 		document['_id'] = Document.db.insert(document)
@@ -28,10 +30,15 @@ Meteor.methods
 		document = Document.db.findOne(parameters['_id'])
 		throw new Error('Cannot find Document') unless document?
 
+		document_schema = DocumentSchema.db.findOne(document['document_schema_id'])
+		throw new Error('Cannot find DocumentSchema for new Document') unless document_schema?
+
 		environment = Environment.db.findOne(document['environment_id'])
 		throw new Error('Cannot find Environment for Document') unless environment?
 
 		updates = _.pick(parameters, Document.MUTABLE_PROPERTIES)
+
+		Document.validate(updates, document_schema)
 		throw new Meteor.Error('limits', 'Application database limit reached') unless Meteor.call('Limits.canUpdateDocument', environment['application_id'], document, updates)
 
 		_.assign(document, updates)
@@ -53,14 +60,18 @@ Meteor.methods
 		document = Document.db.findOne(parameters['document_id'])
 		throw new Error('Cannot find Document') unless document?
 
+		document_schema = DocumentSchema.db.findOne(document['document_schema_id'])
+		throw new Error('Cannot find DocumentSchema for new Document') unless document_schema?
+
 		environment = Environment.db.findOne(document['environment_id'])
 		throw new Error('Cannot find Environment for Document') unless environment?
 
-		updates = {}
+		updates = {'data': {}}
 		parameters['attributes'].forEach (attribute) ->
 			return unless document['data'].hasOwnProperty(attribute['id'])
-			updates["data.#{attribute.id}"] = attribute['value']
+			updates['data'][attribute.id] = attribute['value']
 
+		Document.validate(updates, document_schema)
 		throw new Meteor.Error('limits', 'Application database limit reached') unless Meteor.call('Limits.canUpdateDocument', environment['application_id'], document, updates)
 
 		_.assign(document, updates)

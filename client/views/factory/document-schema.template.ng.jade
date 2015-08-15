@@ -49,7 +49,8 @@
 								button.btn.btn-xs.btn-primary(ng-click="editAttribute(attribute)")
 									i.fa.fa-pencil
 					.text-muted.text-center(ng-hide="documentSchema.attributes.length") No Attributes
-					button.btn.btn-xs.btn-success.add-attribute(ng-click="newAttribute()" ng-show="editMode")
+					.text-muted(ng-show="!canAddAttribute() && editMode") Attribute limit reached.
+					button.btn.btn-xs.btn-success.add-attribute(ng-click="newAttribute()" ng-show="editMode" ng-disabled="!canAddAttribute()")
 						i.fa.fa-plus
 						span Add Attribute
 
