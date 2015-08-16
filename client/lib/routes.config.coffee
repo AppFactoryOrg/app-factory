@@ -88,7 +88,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 
 					user_id = $rootScope.currentUser['_id']
 					application_id = environment['application_id']
-					throw new Error("User is not authorized to edit that application") unless User.canEditApplication(user_id, application_id)
+					throw new Error("User is not authorized to edit that application") unless User.canAccessApplication(user_id, application_id, true)
 
 					$meteor.subscribe('Application', application_id)
 						.catch (error) -> deferred.reject(error)

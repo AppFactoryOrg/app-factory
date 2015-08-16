@@ -1,8 +1,8 @@
 Meteor.methods
 	'Application.create': (parameters) ->
-		throw new Error('Unauthorized') unless Meteor.user()?
-		throw new Error('Parameters object is required') unless parameters?
-		throw new Error('Parameter "name" is required') if _.isEmpty(parameters['name'])
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('validation', 'Parameters object is required') unless parameters?
+		throw new Meteor.Error('validation', 'Parameter "name" is required') if _.isEmpty(parameters['name'])
 
 		application = Application.new()
 		application['name'] = parameters['name']
@@ -41,11 +41,12 @@ Meteor.methods
 		return application['_id']
 
 	'Application.update': (parameters) ->
-		throw new Error('Unauthorized') unless Meteor.user()?
-		throw new Error('Parameters object is required') unless parameters?
+		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(Meteor.userId(), parameters['_id'], true)
+		throw new Meteor.Error('validation', 'Parameters object is required') unless parameters?
 
 		application = Application.db.findOne(parameters['_id'])
-		throw new Error('Cannot find Application') unless application?
+		throw new Meteor.Error('validation', 'Cannot find Application') unless application?
 
 		updates = _.pick(parameters, Application.MUTABLE_PROPERTIES)
 		Application.db.update({'_id': application['_id']}, {$set: updates})

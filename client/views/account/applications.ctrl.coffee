@@ -22,7 +22,7 @@ angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '
 	$scope.userCanEditApplication = (application) ->
 		user_id = $rootScope.currentUser['_id']
 		application_id = application['_id']
-		return User.canEditApplication(user_id, application_id)
+		return User.canAccessApplication(user_id, application_id, true)
 
 	$scope.userIsApplicationOwner = (application) ->
 		user = $rootScope.currentUser

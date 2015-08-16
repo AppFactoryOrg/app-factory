@@ -22,14 +22,15 @@ Meteor.methods
 
 	'User.invite': (parameters) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(Meteor.userId(), parameters['application_id'], true)
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'Name is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Email is required') if _.isEmpty(parameters['email'])
 		throw new Meteor.Error('validation', 'Application not specified') if _.isEmpty(parameters['application_id'])
-		throw new Meteor.Error('limits', 'Application user limit reached') unless Meteor.call('Limits.canInviteUser', parameters['application_id'])
+		throw new Meteor.Error('limits', 'Application user limit reached') unless Limits.canInviteUser(parameters['application_id'])
 
 		application = Application.db.findOne(parameters['application_id'])
-		throw new Meteor.Error('data', 'Application could not be found') unless application?
+		throw new Meteor.Error('validation', 'Application could not be found') unless application?
 
 		user = User.db.findOne({'emails.address': parameters['email']})
 
@@ -56,16 +57,17 @@ Meteor.methods
 
 	'User.revoke': (parameters) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(Meteor.userId(), parameters['application_id'], true)
 		throw new Meteor.Error('validation', 'Parameters are required') unless parameters?
 		throw new Meteor.Error('validation', 'User not specified') if _.isEmpty(parameters['user_id'])
 		throw new Meteor.Error('validation', 'Application not specified') if _.isEmpty(parameters['application_id'])
 		throw new Meteor.Error('logic', 'Cannot revoke your own user') if parameters['user_id'] is Meteor.userId()
 
 		application = Application.db.findOne(parameters['application_id'])
-		throw new Meteor.Error('data', 'Application could not be found') unless application?
+		throw new Meteor.Error('validation', 'Application could not be found') unless application?
 
 		user = User.db.findOne(parameters['user_id'])
-		throw new Meteor.Error('data', 'User could not be found') unless user?
+		throw new Meteor.Error('validation', 'User could not be found') unless user?
 		throw new Meteor.Error('logic', 'Cannot revoke the application\'s owner') if User.isApplicationOwner({user, application})
 
 		User.db.update(user['_id'],

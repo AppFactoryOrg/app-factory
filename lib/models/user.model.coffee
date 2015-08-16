@@ -6,47 +6,50 @@
 		'Owner': 	{value: 'owner'}
 		'User': 	{value: 'user'}
 
-	canAccessApplication: (user_id, application_id) ->
+	canAccessApplication: (user_id, application_id, can_edit) ->
 		return false unless user_id? and application_id?
 		user = User.db.findOne(user_id)
 		return false unless user?
-		return true if _.some(user['profile']['application_roles'], {'application_id': application_id})
+		role_params = {}
+		role_params['application_id'] = application_id
+		role_params['can_edit'] = true if can_edit
+		return true if @hasApplicationRole(user, role_params)
 		return false
 
-	canAccessEnvironment: (user_id, environment_id) ->
+	canAccessEnvironment: (user_id, environment_id, can_edit) ->
 		return false unless user_id? and environment_id?
 		user = User.db.findOne(user_id)
 		return false unless user?
 		environment = Environment.db.findOne(environment_id)
 		return false unless environment?
-		return true if _.some(user['profile']['application_roles'], {'application_id': environment['application_id']})
+		role_params = {}
+		role_params['application_id'] = environment['application_id']
+		role_params['can_edit'] = true if can_edit
+		return true if @hasApplicationRole(user, role_params)
 		return false
 
-	canAccessBlueprint: (user_id, blueprint_id) ->
+	canAccessBlueprint: (user_id, blueprint_id, can_edit) ->
 		return false unless user_id? and blueprint_id?
 		user = User.db.findOne(user_id)
 		return false unless user?
 		blueprint = Blueprint.db.findOne(blueprint_id)
 		return false unless blueprint?
-		return true if _.some(user['profile']['application_roles'], {'application_id': blueprint['application_id']})
+		role_params = {}
+		role_params['application_id'] = blueprint['application_id']
+		role_params['can_edit'] = true if can_edit
+		return true if @hasApplicationRole(user, role_params)
 		return false
 
-	canEditApplication: (user_id, application_id) ->
-		return false unless user_id? and application_id?
-		user = User.db.findOne(user_id)
-		return false unless user?
-		return true if _.some(user['profile']['application_roles'], {'application_id': application_id, 'can_edit': true})
-		return false
-
-	hasApplicationRole: ({user, application, role}) ->
-		return false unless user? and application? and role?
-		application_id = application['_id']
-		return _.some(user['profile']['application_roles'], {application_id, role})
+	hasApplicationRole: (user, parameters) ->
+		return false unless user? and parameters?
+		return _.some(user['profile']['application_roles'], parameters)
 
 	isApplicationOwner: ({user, application}) ->
 		return false unless user? and application?
-		role = User.ROLE['Owner'].value
-		return @hasApplicationRole({user, application, role})
+		role_params = {}
+		role_params['application_id'] = application['_id']
+		role_params['role'] = User.ROLE['Owner'].value
+		return @hasApplicationRole(user, role_params)
 
 	getOwnedApplications: (user)->
 		owned_application_ids = _.pluck(_.filter(user['profile']['application_roles'], {'role': User.ROLE['Owner'].value}), 'application_id')

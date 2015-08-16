@@ -1,5 +1,6 @@
-Meteor.methods
-	'Limits.canInviteUser': (application_id) ->
+@Limits =
+	canInviteUser: (application_id) ->
+		return true unless Meteor.settings.public.application_limits.should_enforce
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 
 		application = Application.db.findOne(application_id)
@@ -13,7 +14,8 @@ Meteor.methods
 		else
 			return false
 
-	'Limits.canCreateDocument': (application_id, document) ->
+	canCreateDocument: (application_id, document) ->
+		return true unless Meteor.settings.public.application_limits.should_enforce
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Document not specified') unless document?
 
@@ -29,7 +31,8 @@ Meteor.methods
 		else
 			return false
 
-	'Limits.canUpdateDocument': (application_id, document, updates) ->
+	canUpdateDocument: (application_id, document, updates) ->
+		return true unless Meteor.settings.public.application_limits.should_enforce
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Document not specified') unless document?
 		throw new Meteor.Error('validation', 'Updates not specified') unless updates?
