@@ -10,6 +10,8 @@ Meteor.publish 'User', ({user_id}) ->
 	return User.db.find(filters, {fields})
 
 Meteor.publish 'Users', ({application_id}) ->
+	throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(@userId, application_id)
+
 	filters =
 		'profile.application_roles.application_id': application_id
 

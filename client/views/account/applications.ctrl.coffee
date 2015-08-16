@@ -20,9 +20,9 @@ angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '
 		return Meteor.settings.public.billing_is_enabled
 
 	$scope.userCanEditApplication = (application) ->
-		user = $rootScope.currentUser
+		user_id = $rootScope.currentUser['_id']
 		application_id = application['_id']
-		return User.canEditApplication({user, application_id})
+		return User.canEditApplication(user_id, application_id)
 
 	$scope.userIsApplicationOwner = (application) ->
 		user = $rootScope.currentUser

@@ -6,8 +6,35 @@
 		'Owner': 	{value: 'owner'}
 		'User': 	{value: 'user'}
 
-	canEditApplication: ({user, application_id}) ->
-		return false unless user? and application_id?
+	canAccessApplication: (user_id, application_id) ->
+		return false unless user_id? and application_id?
+		user = User.db.findOne(user_id)
+		return false unless user?
+		return true if _.some(user['profile']['application_roles'], {'application_id': application_id})
+		return false
+
+	canAccessEnvironment: (user_id, environment_id) ->
+		return false unless user_id? and environment_id?
+		user = User.db.findOne(user_id)
+		return false unless user?
+		environment = Environment.db.findOne(environment_id)
+		return false unless environment?
+		return true if _.some(user['profile']['application_roles'], {'application_id': environment['application_id']})
+		return false
+
+	canAccessBlueprint: (user_id, blueprint_id) ->
+		return false unless user_id? and blueprint_id?
+		user = User.db.findOne(user_id)
+		return false unless user?
+		blueprint = Blueprint.db.findOne(blueprint_id)
+		return false unless blueprint?
+		return true if _.some(user['profile']['application_roles'], {'application_id': blueprint['application_id']})
+		return false
+
+	canEditApplication: (user_id, application_id) ->
+		return false unless user_id? and application_id?
+		user = User.db.findOne(user_id)
+		return false unless user?
 		return true if _.some(user['profile']['application_roles'], {'application_id': application_id, 'can_edit': true})
 		return false
 

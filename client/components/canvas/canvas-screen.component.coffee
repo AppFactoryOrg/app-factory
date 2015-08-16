@@ -9,9 +9,9 @@ angular.module('app-factory').directive('afCanvasScreen', ['$meteor', '$compile'
 			index = $scope.screenSchema['$rootWidgets'].indexOf(widget) unless index?
 			name = _.findWhere(ScreenWidget.TYPE, 'value': widget['type']).component
 			childTemplate = "
-				<af-canvas-widget-#{name} 
+				<af-canvas-widget-#{name}
 					data-widget-id='#{widget.id}'
-					screen-schema='screenSchema' 
+					screen-schema='screenSchema'
 					edit-mode='editMode'
 					widget='screenSchema.$rootWidgets[#{index}]'>
 				</af-canvas-widget-#{name}>
@@ -52,7 +52,7 @@ angular.module('app-factory').directive('afCanvasScreen', ['$meteor', '$compile'
 
 		# Initialize
 		$scope.initializeRootWidgets()
-		
+
 		$scope.$watch('screenSchema', (oldSchema, newSchema) ->
 			return unless oldSchema isnt newSchema
 			$scope.initializeRootWidgets()

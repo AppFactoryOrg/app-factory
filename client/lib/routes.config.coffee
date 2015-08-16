@@ -47,7 +47,7 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 				'currentUser': ['$meteor', ($meteor) ->
 					return $meteor.requireUser()
 				]
-				
+
 		.state 'reset-password',
 			url: '/reset-password/:token'
 			controller: 'AccountResetPasswordCtrl'
@@ -75,23 +75,27 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 				'environment': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) ->
 					deferred = $q.defer()
 					environment_id = $stateParams.environment_id
-					$meteor.subscribe('Environment', {environment_id}).then ->
-						environment = Environment.db.findOne(environment_id)
-						deferred.resolve(environment) if environment?
-						deferred.reject('Environment could not be found') unless environment?
+					$meteor.subscribe('Environment', environment_id)
+						.catch (error) -> deferred.reject(error)
+						.then ->
+							environment = Environment.db.findOne(environment_id)
+							deferred.resolve(environment) if environment?
+							deferred.reject('Environment could not be found') unless environment?
 					return deferred.promise
 				]
 				'application': ['$meteor', '$rootScope', '$q', 'environment', ($meteor, $rootScope, $q, environment) ->
 					deferred = $q.defer()
 
-					user = $rootScope.currentUser
+					user_id = $rootScope.currentUser['_id']
 					application_id = environment['application_id']
-					throw new Error("User is not authorized to edit that application") unless User.canEditApplication({user, application_id})
+					throw new Error("User is not authorized to edit that application") unless User.canEditApplication(user_id, application_id)
 
-					$meteor.subscribe('Application', application_id).then ->
-						application = Application.db.findOne(application_id)
-						deferred.resolve(application) if application?
-						deferred.reject('Application could not be found') unless application?
+					$meteor.subscribe('Application', application_id)
+						.catch (error) -> deferred.reject(error)
+						.then ->
+							application = Application.db.findOne(application_id)
+							deferred.resolve(application) if application?
+							deferred.reject('Application could not be found') unless application?
 					return deferred.promise
 				]
 				'blueprint': ['$meteor', '$q', 'environment', ($meteor, $q, environment) ->
@@ -99,10 +103,12 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 					blueprint_id = environment['blueprint_id']
 					$q.all([
 						$meteor.subscribe('Blueprint', {blueprint_id})
-						$meteor.subscribe('DocumentSchema', {blueprint_id})
-						$meteor.subscribe('ScreenSchema', {blueprint_id})
+						$meteor.subscribe('DocumentSchemas', {blueprint_id})
+						$meteor.subscribe('ScreenSchemas', {blueprint_id})
 						$meteor.subscribe('Routines', {blueprint_id})
-					]).then ->
+					])
+					.catch (error) -> deferred.reject(error)
+					.then ->
 						blueprint = Blueprint.db.findOne(blueprint_id)
 						deferred.resolve(blueprint) if blueprint?
 						deferred.reject('Blueprint could not be found') unless blueprint?
@@ -117,32 +123,11 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 			url: '/document/:document_schema_id',
 			templateUrl: 'client/views/factory/document-schema.template.html'
 			controller: 'DocumentSchemaCtrl',
-			resolve:
-				'documentSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) ->
-					deferred = $q.defer()
-					document_schema_id = $stateParams.document_schema_id
-					$meteor.subscribe('DocumentSchema', {document_schema_id}).then ->
-						documentSchema = DocumentSchema.db.findOne(document_schema_id)
-						deferred.resolve(documentSchema) if documentSchema?
-						deferred.reject('Document could not be found') unless documentSchema?
-					return deferred.promise
-				]
 
 		.state 'factory.screen',
 			url: '/screen/:screen_schema_id',
 			templateUrl: 'client/views/factory/screen-schema.template.html'
 			controller: 'ScreenSchemaCtrl',
-			resolve:
-				'screenSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) ->
-					deferred = $q.defer()
-					screen_schema_id = $stateParams.screen_schema_id
-					$meteor.subscribe('ScreenSchema', {screen_schema_id}).then ->
-						screenSchema = ScreenSchema.db.findOne(screen_schema_id)
-						ScreenSchema.buildWidgetHierarchy(screenSchema)
-						deferred.resolve(screenSchema) if screenSchema?
-						deferred.reject('ScreenSchema could not be found') unless screenSchema?
-					return deferred.promise
-				]
 
 		.state 'factory.routines',
 			url: '/routines'
@@ -183,20 +168,28 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 			'environment': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) ->
 				deferred = $q.defer()
 				environment_id = $stateParams.environment_id
-				$meteor.subscribe('Environment', {environment_id}).then ->
-					environment = Environment.db.findOne(environment_id)
-					deferred.resolve(environment) if environment?
-					deferred.reject('Environment could not be found') unless environment?
+				$meteor.subscribe('Environment', environment_id)
+					.catch (error) -> deferred.reject(error)
+					.then ->
+						environment = Environment.db.findOne(environment_id)
+						deferred.resolve(environment) if environment?
+						deferred.reject('Environment could not be found') unless environment?
 				return deferred.promise
 			]
-			'application': ['$meteor', '$q', 'environment', ($meteor, $q, environment) ->
+			'application': ['$meteor', '$q', '$rootScope', 'environment', ($meteor, $q, $rootScope, environment) ->
 				deferred = $q.defer()
+
+				user = $rootScope.currentUser
 				application_id = environment['application_id']
-				$meteor.subscribe('Application', application_id).then ->
-					application = Application.db.findOne(application_id)
-					deferred.reject('Application could not be found') unless application?
-					deferred.reject('Application is disabled. Contact your hosting administrator for more information.') unless application['enabled'] is true
-					deferred.resolve(application) if application?
+				throw new Error("User is not authorized to access that application") unless User.canAccessApplication(user, application_id)
+
+				$meteor.subscribe('Application', application_id)
+					.catch (error) -> deferred.reject(error)
+					.then ->
+						application = Application.db.findOne(application_id)
+						deferred.reject('Application could not be found') unless application?
+						deferred.reject('Application is disabled. Contact your hosting administrator for more information.') unless application['enabled'] is true
+						deferred.resolve(application) if application?
 				return deferred.promise
 			]
 			'blueprint': ['$meteor', '$q', 'environment', ($meteor, $q, environment) ->
@@ -204,10 +197,12 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 				blueprint_id = environment['blueprint_id']
 				$q.all([
 					$meteor.subscribe('Blueprint', {blueprint_id})
-					$meteor.subscribe('DocumentSchema', {blueprint_id})
-					$meteor.subscribe('ScreenSchema', {blueprint_id})
+					$meteor.subscribe('DocumentSchemas', {blueprint_id})
+					$meteor.subscribe('ScreenSchemas', {blueprint_id})
 					$meteor.subscribe('Routines', {blueprint_id})
-				]).then ->
+				])
+				.catch (error) -> deferred.reject(error)
+				.then ->
 					blueprint = Blueprint.db.findOne(blueprint_id)
 					deferred.resolve(blueprint) if blueprint?
 					deferred.reject('Blueprint could not be found') unless blueprint?
@@ -218,15 +213,4 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 		url: '/screen/:screen_schema_id'
 		templateUrl: 'client/views/application/screen.template.html'
 		controller: 'ApplicationScreenCtrl'
-		resolve:
-			'screenSchema': ['$meteor', '$q', '$stateParams', ($meteor, $q, $stateParams) ->
-				deferred = $q.defer()
-				screen_schema_id = $stateParams.screen_schema_id
-				$meteor.subscribe('ScreenSchema', {screen_schema_id}).then ->
-					screenSchema = ScreenSchema.db.findOne(screen_schema_id)
-					ScreenSchema.buildWidgetHierarchy(screenSchema)
-					deferred.resolve(screenSchema) if screenSchema?
-					deferred.reject('ScreenSchema could not be found') unless screenSchema?
-				return deferred.promise
-			]
 ])

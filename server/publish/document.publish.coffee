@@ -1,4 +1,7 @@
 Meteor.publish 'Document', (document_id) ->
+	document = Document.db.findOne(document_id)
+	throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessEnvironment(@userId, document['environment_id'])
+
 	return Document.db.find('_id': document_id)
 
 Meteor.publishComposite 'Documents', (filter, paging) ->
@@ -12,6 +15,7 @@ Meteor.publishComposite 'Documents', (filter, paging) ->
 	application = Application.db.findOne(environment['application_id'])
 	throw new Meteor.Error('data', 'Could not find application for Document publishing.') unless application?
 	throw new Meteor.Error('limitation', 'Could not publish Documents because the application is disabled.') if application['enabled'] is false
+	throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(@userId, application['_id'])
 
 	documentSchema = DocumentSchema.db.findOne(filter['document_schema_id'])
 	childDocumentAttributeIds = _.pluck(_.filter(documentSchema['attributes'], {'data_type': DocumentAttribute.DATA_TYPE['Document'].value}), 'id')

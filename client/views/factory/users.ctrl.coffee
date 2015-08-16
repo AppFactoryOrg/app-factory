@@ -1,7 +1,13 @@
 angular.module('app-factory').controller('FactoryUsersCtrl', ['$scope', '$rootScope', '$modal', '$meteor', 'toaster', 'InviteUserModal', ($scope, $rootScope, $modal, $meteor, toaster, InviteUserModal) ->
 
-	$scope.$meteorSubscribe('Users', {'application_id': $scope.application['_id']}).then ->
-		$scope.users = $scope.$meteorCollection -> User.db.find()
+	$scope.$meteorSubscribe('Users', {'application_id': $scope.application['_id']})
+		.then -> $scope.users = $scope.$meteorCollection -> User.db.find()
+		.catch (error) ->
+			toaster.pop(
+				type: 'error'
+				body: "Could not retrieve users. #{error.reason}"
+				showCloseButton: true
+			)
 
 	$scope.newUser = ->
 		$modal.open(new InviteUserModal()).result.then (parameters) ->
