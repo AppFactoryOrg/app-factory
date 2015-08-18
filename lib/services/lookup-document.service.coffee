@@ -37,7 +37,7 @@ RoutineService.registerTemplate
 
 	describeConfiguration: (service) -> ""
 
-	execute: ({service, service_inputs}) ->
+	execute: ({service, service_inputs, environment_id}) ->
 		throw new Meteor.Error('validation', "Lookup Document service does not have any inputs") unless service_inputs?
 
 		reference = service_inputs['reference']?['value']
@@ -50,6 +50,7 @@ RoutineService.registerTemplate
 
 			if _.isString(document_id) and not _.isEmpty(document_id)
 				document = Document.db.findOne(document_id)
+				throw new Meteor.Error('security', 'Document is not in the same Environment') if document? and document['environment_id'] isnt environment_id
 
 		return [
 			{node: 'out'}
