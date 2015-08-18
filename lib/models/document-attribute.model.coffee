@@ -43,7 +43,7 @@
 				'options': []
 			isValid: (value) ->
 				return true if value is null
-				return 'is not the proper data type' unless _.isNumber(value)
+				return 'is not the proper data type' unless _.isString(value)
 				return 'is too long' if value.length > Config['MAX_OPTION_LENGTH']
 				return true
 

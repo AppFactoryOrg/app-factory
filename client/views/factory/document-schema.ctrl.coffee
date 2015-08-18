@@ -1,7 +1,6 @@
-angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$meteor', '$modal', 'toaster', 'documentSchema', 'EditAttributeModal', 'EditActionModal', ($scope, $state, $meteor, $modal, toaster, documentSchema, EditAttributeModal, EditActionModal) ->
+angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$stateParams', '$meteor', '$modal', 'toaster', 'EditAttributeModal', 'EditActionModal', ($scope, $state, $stateParams, $meteor, $modal, toaster, EditAttributeModal, EditActionModal) ->
 
-	$scope.originalDocumentSchema = documentSchema
-	$scope.documentSchema = documentSchema
+	$scope.documentSchema = DocumentSchema.db.findOne($stateParams.document_schema_id)
 	$scope.attributeDataTypes = Utils.mapToArray(DocumentAttribute.DATA_TYPE)
 	$scope.editMode = false
 	$scope.sortableOptionsAttributes =
@@ -13,12 +12,12 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 
 	$scope.startEditDocumentSchema = ->
 		$scope.editMode = true
-		$scope.documentSchema = _.clone($scope.documentSchema)
+		$scope.documentSchema = _.cloneDeep($scope.documentSchema)
 
 	$scope.cancelEditDocumentSchema = ->
 		return unless confirm('Are you sure you want to cancel? Unsaved changes will be lost.')
 		$scope.editMode = false
-		$scope.documentSchema = $scope.originalDocumentSchema
+		$scope.documentSchema = DocumentSchema.db.findOne($stateParams.document_schema_id)
 
 	$scope.saveDocumentSchema = ->
 		documentSchema = angular.copy($scope.documentSchema)
@@ -26,7 +25,6 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			.then ->
 				$scope.editMode = false
 				$scope.documentSchema = documentSchema
-				$scope.originalDocumentSchema = documentSchema
 			.catch (error) ->
 				console.error(error)
 				toaster.pop(

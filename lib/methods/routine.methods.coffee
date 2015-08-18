@@ -1,6 +1,7 @@
 Meteor.methods
 	'Routine.create': (parameters) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessBlueprint(Meteor.userId(), parameters['blueprint_id'], true)
 		throw new Meteor.Error('validation', 'Parameters object is required') unless parameters?
 		throw new Meteor.Error('validation', 'Parameter "name" is required') if _.isEmpty(parameters['name'])
 		throw new Meteor.Error('validation', 'Parameter "type" is required') unless _.isNumber(parameters['type'])
@@ -17,6 +18,7 @@ Meteor.methods
 
 	'Routine.update': (parameters) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessBlueprint(Meteor.userId(), parameters['blueprint_id'], true)
 		throw new Meteor.Error('validation', 'Parameters object is required') unless parameters?
 
 		routine = Routine.db.findOne(parameters['_id'])
@@ -30,6 +32,10 @@ Meteor.methods
 	'Routine.delete': (id) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Id is required') if _.isEmpty(id) and _.isString(id)
+
+		routine = Routine.db.findOne(id)
+		throw new Meteor.Error('data', 'Cannot find Routine') unless routine?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessBlueprint(Meteor.userId(), routine['blueprint_id'], true)
 
 		Routine.db.remove(id)
 

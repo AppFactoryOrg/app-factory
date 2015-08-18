@@ -1,6 +1,3 @@
-Meteor.publish 'ScreenSchema', ({screen_schema_id, blueprint_id}) ->
-	# TODO: Check user's permissions
-	if screen_schema_id
-		return ScreenSchema.db.find('_id': screen_schema_id)
-	else
-		return ScreenSchema.db.find('blueprint_id': blueprint_id)
+Meteor.publish 'ScreenSchemas', ({blueprint_id}) ->
+	throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessBlueprint(@userId, blueprint_id)
+	return ScreenSchema.db.find('blueprint_id': blueprint_id)

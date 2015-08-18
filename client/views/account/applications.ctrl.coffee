@@ -1,4 +1,4 @@
-angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '$rootScope', '$meteor', '$state', '$modal', 'GenericModal', ($scope, $rootScope, $meteor, $state, $modal, GenericModal) ->
+angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '$rootScope', '$meteor', '$state', '$modal', 'toaster', 'GenericModal', ($scope, $rootScope, $meteor, $state, $modal, toaster, GenericModal) ->
 
 	$meteor.autorun($scope, ->
 		currentUser = $scope.getReactively('currentUser')
@@ -20,9 +20,9 @@ angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '
 		return Meteor.settings.public.billing_is_enabled
 
 	$scope.userCanEditApplication = (application) ->
-		user = $rootScope.currentUser
+		user_id = $rootScope.currentUser['_id']
 		application_id = application['_id']
-		return User.canEditApplication({user, application_id})
+		return User.canAccessApplication(user_id, application_id, true)
 
 	$scope.userIsApplicationOwner = (application) ->
 		user = $rootScope.currentUser
@@ -37,5 +37,10 @@ angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '
 			]
 		)).result.then (application) ->
 			$meteor.call('Application.create', application)
-
+				.catch (error) ->
+					toaster.pop(
+						type: 'error'
+						body: "Could not create Application: #{error.reason}"
+						showCloseButton: true
+					)
 ])

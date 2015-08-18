@@ -46,15 +46,13 @@ Meteor.methods
 		return unless Meteor.settings.public.billing_is_enabled
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
-		customer_id = Meteor.call('Billing.getCustomerId')
-
 		user_info = {}
-		user_info['credit_card'] = Meteor.call('Billing.getCustomerCreditCard', customer_id)
-		user_info['plans'] = Meteor.call('Billing.getCustomerPlans', customer_id)
+		user_info['credit_card'] = Meteor.call('Billing.getCustomerCreditCard')
+		user_info['plans'] = Meteor.call('Billing.getCustomerPlans')
 		user_info['applications'] = User.getOwnedApplications(Meteor.user())
 		user_info['subscriptions'] = []
 
-		subscriptions = Meteor.call('Billing.getCustomerSubscriptions', customer_id)
+		subscriptions = Meteor.call('Billing.getCustomerSubscriptions')
 		subscriptions.forEach (subscription) ->
 			sub = _.pick(subscription, ['id', 'quantity', 'metadata'])
 			sub['plan'] = _.pick(subscription['plan'], ['id', 'name', 'amount', 'metadata'])
@@ -64,6 +62,8 @@ Meteor.methods
 
 	'Billing.getCustomerCreditCard': (customer_id) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
+		customer_id = Meteor.call('Billing.getCustomerId')
 
 		promise = new Future
 
@@ -79,8 +79,10 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.getCustomerPlans': (customer_id) ->
+	'Billing.getCustomerPlans': ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
+		customer_id = Meteor.call('Billing.getCustomerId')
 
 		promise = new Future
 
@@ -94,8 +96,10 @@ Meteor.methods
 
 		return promise.wait()
 
-	'Billing.getCustomerSubscriptions': (customer_id) ->
+	'Billing.getCustomerSubscriptions': ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+
+		customer_id = Meteor.call('Billing.getCustomerId')
 
 		promise = new Future
 
@@ -130,6 +134,7 @@ Meteor.methods
 
 	'Billing.updateApplicationSubscriptions': ({application_id, subscriptions}) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(Meteor.userId(), application_id, true)
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscriptions not specified') unless _.isArray(subscriptions) and not _.isEmpty(subscriptions)
 		throw new Meteor.Error('validation', 'Invalid number of subscriptions specified') if subscriptions.length isnt 3
@@ -208,6 +213,7 @@ Meteor.methods
 
 	'Billing.createSubscription': ({application_id, subscription}) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(Meteor.userId(), application_id, true)
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscription not specified') unless subscription?
 
@@ -231,7 +237,7 @@ Meteor.methods
 
 	'Billing.updateSubscription': ({application_id, subscription}) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
-
+		throw new Meteor.Error('security', 'Unauthorized') unless User.canAccessApplication(Meteor.userId(), application_id, true)
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?
 		throw new Meteor.Error('validation', 'Subscription not specified') unless subscription?
 
