@@ -5,7 +5,7 @@ angular.module('app-factory').directive('afAttributeDocumentInput', ['$modal', '
 	scope:
 		'key': 		'='
 		'object': 	'='
-		'config':	'='	
+		'config':	'='
 	link: ($scope) ->
 
 		$scope.documentDisplayName = ''
@@ -26,6 +26,7 @@ angular.module('app-factory').directive('afAttributeDocumentInput', ['$modal', '
 
 		$scope.loadDocument = ->
 			documentId = $scope.object[$scope.key]
+			return unless documentId?
 			DocumentUtils.getPrimaryAttributeValue(documentId)
 				.then (value) ->
 					$scope.documentDisplayName = value
