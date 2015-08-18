@@ -1,4 +1,15 @@
 @Limits =
+	canCreateApplication: (user) ->
+		return true unless Meteor.settings.public.application_limits.should_enforce
+
+		max_applications = Meteor.settings.public.application_limits.max_applications
+		owner_applications = User.getOwnedApplicationIds(user)
+
+		if owner_applications.length >= max_applications
+			return false
+		else
+			return true
+
 	canInviteUser: (application_id) ->
 		return true unless Meteor.settings.public.application_limits.should_enforce
 		throw new Meteor.Error('validation', 'Application not specified') unless application_id?

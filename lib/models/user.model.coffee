@@ -51,7 +51,10 @@
 		role_params['role'] = User.ROLE['Owner'].value
 		return @hasApplicationRole(user, role_params)
 
+	getOwnedApplicationIds: (user) ->
+		return _.pluck(_.filter(user['profile']['application_roles'], {'role': User.ROLE['Owner'].value}), 'application_id')
+
 	getOwnedApplications: (user)->
-		owned_application_ids = _.pluck(_.filter(user['profile']['application_roles'], {'role': User.ROLE['Owner'].value}), 'application_id')
+		owned_application_ids = User.getOwnedApplicationIds(user)
 		applications = Application.db.find({'_id': {$in: owned_application_ids}}).fetch()
 		return applications

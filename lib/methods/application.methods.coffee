@@ -1,6 +1,7 @@
 Meteor.methods
 	'Application.create': (parameters) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
+		throw new Meteor.Error('limits', 'Application limit reached') unless Limits.canCreateApplication(Meteor.user())
 		throw new Meteor.Error('validation', 'Parameters object is required') unless parameters?
 		throw new Meteor.Error('validation', 'Parameter "name" is required') if _.isEmpty(parameters['name'])
 
