@@ -28,7 +28,7 @@ RoutineService.registerTemplate
 
 	describeConfiguration: (service) -> ""
 
-	execute: ({service, service_inputs}) ->
+	execute: ({service, service_inputs, environment_id}) ->
 		throw new Meteor.Error('validation', "Delete Document service does not have any inputs") unless service_inputs?
 
 		reference = service_inputs['reference']?['value']
@@ -39,7 +39,11 @@ RoutineService.registerTemplate
 			else if reference.hasOwnProperty('_id')
 				document_id = reference['_id']
 
-		throw new Meteor.Error('validation', "Delete Document service was given an invalid document reference.") if _.isEmpty(document_id)
+		throw new Meteor.Error('validation', "Delete Document service was given an invalid document reference") if _.isEmpty(document_id)
+
+		document = Document.db.findOne(document_id)
+		throw new Meteor.Error('validation', "Delete Document service cannot find document") unless document?
+		throw new Meteor.Error('security', 'Document is not in the same Environment') if document['environment_id'] isnt environment_id
 
 		Meteor.call('Document.delete', document_id)
 

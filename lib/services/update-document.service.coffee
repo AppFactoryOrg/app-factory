@@ -51,6 +51,10 @@ RoutineService.registerTemplate
 
 		throw new Meteor.Error('validation', "Update Document service was given an invalid document reference.") if _.isEmpty(document_id)
 
+		document = Document.db.findOne(document_id)
+		throw new Meteor.Error('validation', "Update Document service cannot find document") unless document?
+		throw new Meteor.Error('security', 'Document is not in the same Environment') if document['environment_id'] isnt environment_id
+
 		attributes = []
 		service_inputs['updates'].forEach (update) ->
 			update_content = update['value']
