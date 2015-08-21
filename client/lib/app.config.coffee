@@ -7,6 +7,7 @@ angular.module('app-factory', [
 	'textAngular'
 	'ngDragDrop'
 	'panhandler'
+	'ui.gravatar'
 ])
 
 angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->

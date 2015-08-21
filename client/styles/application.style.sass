@@ -1,32 +1,53 @@
+@import "theme/_variables.sass"
 @import "_mixins"
 
 .application
 
 	#top-nav
-		li > a
+		.navbar-nav > li > a
 			padding: 15px
 
 		.navbar-header
 			padding-left: 12px
 			font-size: 18px
 
-		.user-avatar
-			+border-radius(40px)
+		input.search
+			+border-radius(12px)
 			display: inline-block
-			margin: 0px 10px 0 10px
-			width: 30px
-			height: 30px
-			border: 1px solid #ddd
-			background-color: white
-			text-align: center
-			overflow: hidden
+			width: 140px
+			height: 26px
+			margin-right: 15px
+			font-size: 13px
 			position: relative
-			top: 10px
+			top: 1px
 
-			i.fa-user
-				padding: 3px 0 0 0
-				font-size: 27px
-				color: rgba(#4e97d4, 0.3)
+		i.add-document
+			+no-select
+			font-size: 32px
+			color: $blue
+			position: relative
+			top: 9px
+			display: inline-block
+			cursor: pointer
+
+			&:hover
+				color: lighten($blue, 5%)
+			&:active
+				color: darken($blue, 1%)
+
+		.user-avatar
+			display: inline-block
+
+			img
+				+border-radius(40px)
+				display: inline-block
+				margin: 0px 10px 0 10px
+				width: 30px
+				height: 30px
+				border: 1px solid #ddd
+				position: relative
+				top: 1px
+				cursor: pointer
 
 	#main-content
 		margin-top: 30px

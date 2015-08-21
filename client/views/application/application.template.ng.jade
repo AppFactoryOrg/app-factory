@@ -6,31 +6,42 @@
 					ul.nav.navbar-nav
 						li.navbar-header
 							a
-								i.fa.fa-cube
 								span(ng-bind="application.name")
-						li(ng-repeat="navigationItem in blueprint.layout.navigation_items" ui-sref-active="active")
-							a(
-								ng-if="navigationItem.type===NAVIGATION_SCREEN_TYPE"
-								ui-sref="application.screen({'screen_schema_id':navigationItem.screen_schema_id})"
-							)
-								span(ng-bind="navigationItem.name")
-							a(
-								ng-if="navigationItem.type===NAVIGATION_LINK_TYPE"
-								ng-href="{{navigationItem.url}}"
-								target="_blank"
-							)
-								span(ng-bind="navigationItem.name")
-
+						li(ui-sref-active="active")
+							a(ui-sref="application.documents")
+								i.fa.fa-files-o
+								span Documents
+						li(ui-sref-active="active")
+							a(ui-sref="application.reports")
+								i.fa.fa-bar-chart
+								span Reports
+						li(ui-sref-active="active")
+							a(ui-sref="application.actions")
+								i.fa.fa-cogs
+								span Actions
+						li(ui-sref-active="active")
+							a(ui-sref="application.messages")
+								i.fa.fa-envelope-o
+								span Messages
+								.badge.badge-primary 3
+										
 					ul.nav.navbar-top-links.navbar-right
 						li
-							span.text-muted Welcome, {{currentUser.profile.name}}
-							.user-avatar
-								i.fa.fa-user
-						li
-							a(ng-click="logout()")
-								span Log out
-								i.fa.fa-sign-out
-			
+							input.form-control.search(type="text" placeholder="Search")
+							i.fa.fa-plus-circle.add-document
+							.user-avatar(dropdown="")
+								img(gravatar-src-once="currentUser.emails[0].address" dropdown-toggle="")
+								ul.dropdown-menu
+									li
+										a(ui-sref="account.applications")
+											i.fa.fa-user
+											span Account
+									li.divider
+									li
+										a(ng-click="logout()")
+											i.fa.fa-sign-out
+											span Log Out
+
 			#main-content.container
 				div(ui-view="")
 
