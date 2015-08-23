@@ -24,6 +24,7 @@
 					'type': 100
 					'document_schema_id': null
 					'collection': null
+					'attributes': null
 
 		'Content':
 			value: 250

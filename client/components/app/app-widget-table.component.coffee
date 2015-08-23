@@ -156,6 +156,15 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 		$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
 
+		if $scope.widget['configuration']['attributes']?
+			$scope.attributes = []
+			$scope.widget['configuration']['attributes'].forEach (attribute_id) ->
+				attribute = _.findWhere($scope.documentSchema['attributes'], {'id': attribute_id})
+				return unless attribute?
+				$scope.attributes.push(attribute)
+		else
+			$scope.attributes = $scope.documentSchema['attributes']
+
 		switch dataSource['type']
 			when ScreenWidget.DATA_SOURCE_TYPE['Database'].value
 				$meteor.autorun($scope, ->

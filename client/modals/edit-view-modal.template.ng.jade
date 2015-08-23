@@ -14,6 +14,21 @@
 						ng-model="view.widget.name"
 						autofocus="true"
 					)
+				.form-group.col-sm-12
+					label Columns
+					.attribute-items#sort-bounds-columns(as-sortable="sortableOptionsAttributes" ng-model="attributes")
+						.attribute-item(ng-repeat="attribute in attributes" as-sortable-item)
+							.summary
+								i.fa.data-type(ng-class="attribute.data_type | dictionary:attributeDataTypes:'icon'")
+								span(ng-bind="attribute.name")
+							.controls
+								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle type="button")
+									i.fa.fa-arrows
+								button.btn.btn-xs.btn-primary.column-toggle(ng-show="attribute.$selected" ng-click="deselectAttribute(attribute)" type="button")
+									i.fa.fa-check
+								button.btn.btn-xs.btn-default.column-toggle(ng-hide="attribute.$selected" ng-click="selectAttribute(attribute)" type="button")
+									i.fa.fa-square-o
+							
 			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
 				div(ng-show="form.name.$error.required") Name is required.
 		.modal-footer

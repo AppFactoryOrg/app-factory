@@ -54,28 +54,6 @@
 					button.btn.btn-xs.btn-success.add-attribute(ng-click="newAttribute()" ng-show="editMode" ng-disabled="!canAddAttribute()")
 						i.fa.fa-plus
 						span Add Attribute
-					
-		.col-lg-4
-			.ibox
-				.ibox-title
-					h5.pull-left Actions
-				.ibox-content.factory-layout
-					.attribute-items#sort-bounds-actions(as-sortable="sortableOptionsActions" ng-model="documentSchema.actions")
-						.attribute-item(ng-repeat="action in documentSchema.actions" as-sortable-item)
-							.summary
-								i.fa.fa-gear
-								span(ng-bind="action.name")
-							.controls(ng-show="editMode")
-								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
-									i.fa.fa-arrows
-								button.btn.btn-xs.btn-default(ng-click="deleteAction(action)")
-									i.fa.fa-trash
-								button.btn.btn-xs.btn-primary(ng-click="editAction(action)")
-									i.fa.fa-pencil
-					.text-muted.text-center(ng-hide="documentSchema.actions.length") No Actions
-					button.btn.btn-xs.btn-success.add-action(ng-click="newAction()" ng-show="editMode")
-						i.fa.fa-plus
-						span Add Action
 		
 		.col-lg-4
 			.ibox
@@ -97,10 +75,32 @@
 					.text-muted.text-center(ng-hide="documentSchema.views.length") No Views
 					button.btn.btn-xs.btn-success.add-view(ng-click="newView()" ng-show="editMode")
 						i.fa.fa-plus
-						span Add View
+						span Add View	
+		
+		.col-lg-4
+			.ibox
+				.ibox-title
+					h5.pull-left Actions
+				.ibox-content.factory-layout
+					.attribute-items#sort-bounds-actions(as-sortable="sortableOptionsActions" ng-model="documentSchema.actions")
+						.attribute-item(ng-repeat="action in documentSchema.actions" as-sortable-item)
+							.summary
+								i.fa.fa-gear
+								span(ng-bind="action.name")
+							.controls(ng-show="editMode")
+								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
+									i.fa.fa-arrows
+								button.btn.btn-xs.btn-default(ng-click="deleteAction(action)")
+									i.fa.fa-trash
+								button.btn.btn-xs.btn-primary(ng-click="editAction(action)")
+									i.fa.fa-pencil
+					.text-muted.text-center(ng-hide="documentSchema.actions.length") No Actions
+					button.btn.btn-xs.btn-success.add-action(ng-click="newAction()" ng-show="editMode")
+						i.fa.fa-plus
+						span Add Action
 
 	.row.wrapper
-		.col-lg-12
+		.col-lg-6
 			.ibox
 				.ibox-title
 					h5 Options

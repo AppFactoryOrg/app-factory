@@ -10,6 +10,7 @@
 					a(ng-click="selectView(view)")
 						i.fa.fa-list
 						span(ng-bind="view.widget.name")
+	
 	.widget(ng-if="selectedView")
 		af-app-widget-table(widget="selectedView.widget")
 
