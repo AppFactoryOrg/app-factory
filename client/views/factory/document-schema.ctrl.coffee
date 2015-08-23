@@ -1,10 +1,13 @@
-angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$stateParams', '$meteor', '$modal', 'toaster', 'EditAttributeModal', 'EditActionModal', ($scope, $state, $stateParams, $meteor, $modal, toaster, EditAttributeModal, EditActionModal) ->
+angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$state', '$stateParams', '$meteor', '$modal', 'toaster', 'EditAttributeModal', 'EditViewModal', 'EditActionModal', ($scope, $state, $stateParams, $meteor, $modal, toaster, EditAttributeModal, EditViewModal, EditActionModal) ->
 
 	$scope.documentSchema = DocumentSchema.db.findOne($stateParams.document_schema_id)
 	$scope.attributeDataTypes = Utils.mapToArray(DocumentAttribute.DATA_TYPE)
 	$scope.editMode = false
 	$scope.sortableOptionsAttributes =
 		containment: '#sort-bounds-attributes'
+		containerPositioning: 'relative'
+	$scope.sortableOptionsViews =
+		containment: '#sort-bounds-views'
 		containerPositioning: 'relative'
 	$scope.sortableOptionsActions =
 		containment: '#sort-bounds-actions'
@@ -76,6 +79,19 @@ angular.module('app-factory').controller('DocumentSchemaCtrl', ['$scope', '$stat
 			_.assign(action, parameters)
 
 	$scope.deleteAction = (action) ->
-		return unless confirm('Are you sure you want to delete this action? Application data may be lost.')
+		return unless confirm('Are you sure you want to delete this action?')
 		Utils.removeFromArray(action, $scope.documentSchema.actions)
+
+	$scope.newView = ->
+		$modal.open(new EditViewModal(null, $scope.documentSchema)).result.then (parameters) ->
+			view = DocumentView.new(parameters)
+			$scope.documentSchema.views.push(view)
+
+	$scope.editView = (view) ->
+		$modal.open(new EditViewModal(view, $scope.documentSchema)).result.then (parameters) ->
+			_.assign(view, parameters)
+
+	$scope.deleteView = (view) ->
+		return unless confirm('Are you sure you want to delete this view?')
+		Utils.removeFromArray(view, $scope.documentSchema.views)
 ])

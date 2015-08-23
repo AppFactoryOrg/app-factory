@@ -1,7 +1,7 @@
 .app-widget.app-widget-table
 	.ibox
 		.ibox-title.header
-			h5(ng-bind="::widget.name")
+			h5(ng-bind="::widget.name" ng-show="shouldShowName()")
 			.controls
 				.filter-options(ng-show="shouldShowFilterOptions()")
 					button.btn.btn-xs.btn-link(ng-click="toggleFilterPanel()" ng-disabled="loading")
@@ -17,7 +17,7 @@
 						sort="sort"
 						options="sortOptions"
 					)
-				button.add-document.btn.btn-xs.btn-primary(ng-click="addDocument()" ng-disabled="loading" ng-show="shouldShowCreateButton()")
+				button.add-document.btn.btn-xs.btn-success(ng-click="addDocument()" ng-disabled="loading" ng-show="shouldShowCreateButton()")
 					i.fa.fa-plus
 					span Create&nbsp;
 					span(ng-bind="::documentSchema.name")

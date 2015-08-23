@@ -213,4 +213,14 @@ angular.module('app-factory').config(['$urlRouterProvider', '$stateProvider', '$
 		url: '/screen/:screen_schema_id'
 		templateUrl: 'client/views/application/screen.template.html'
 		controller: 'ApplicationScreenCtrl'
+
+	.state 'application.documents',
+		url: '/documents'
+		templateUrl: 'client/views/application/documents.template.html'
+		controller: 'ApplicationDocumentsCtrl'
+
+	.state 'application.document-view',
+		url: '/document-view/:document_schema_id'
+		templateUrl: 'client/views/application/document-view.template.html'
+		controller: 'ApplicationDocumentViewCtrl'
 ])

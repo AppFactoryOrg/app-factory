@@ -7,7 +7,7 @@
 						li.navbar-header
 							a
 								span(ng-bind="application.name")
-						li(ui-sref-active="active")
+						li(ui-sref-active="active" dropdown="")
 							a(ui-sref="application.documents")
 								i.fa.fa-files-o
 								span Documents
@@ -16,7 +16,7 @@
 								i.fa.fa-bar-chart
 								span Reports
 						li(ui-sref-active="active")
-							a(ui-sref="application.actions")
+							a(ui-sref="application.routines")
 								i.fa.fa-cogs
 								span Actions
 						li(ui-sref-active="active")

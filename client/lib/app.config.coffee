@@ -15,6 +15,13 @@ angular.module('app-factory').config(['datepickerConfig', (datepickerConfig) ->
 	datepickerConfig.showWeeks = false
 ])
 
+angular.module('app-factory').config(['gravatarServiceProvider', (gravatarServiceProvider) ->
+	gravatarServiceProvider.defaults =
+		"size": 100
+		"default": 'mm'
+])
+
+
 angular.module('app-factory').run(['$rootScope', '$state', 'toaster', '$modalStack', ($rootScope, $state, toaster, $modalStack) ->
 
 	$rootScope.version = 'v1.0.2'

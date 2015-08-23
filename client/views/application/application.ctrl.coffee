@@ -18,8 +18,6 @@ angular.module('app-factory').controller('ApplicationCtrl', ['$scope', '$rootSco
 	$('body').addClass('top-navigation')
 
 	if $state.current.name is 'application'
-		screen_schema_id = blueprint['layout']['home_screen_schema_id']
-		if screen_schema_id?
-			$state.go("application.screen", {screen_schema_id})
+		$state.go('application.documents')
 
 ])

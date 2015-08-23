@@ -30,8 +30,9 @@
 						i.fa.fa-close
 						span Cancel
 	br/
+	
 	.row.wrapper
-		.col-lg-5
+		.col-lg-4
 			.ibox
 				.ibox-title
 					h5.pull-left Attributes
@@ -53,26 +54,8 @@
 					button.btn.btn-xs.btn-success.add-attribute(ng-click="newAttribute()" ng-show="editMode" ng-disabled="!canAddAttribute()")
 						i.fa.fa-plus
 						span Add Attribute
-
-		.col-lg-7
-			.ibox
-				.ibox-title
-					h5 Options
-				.ibox-content
-					.document-schema-options
-						.document-schema-option(ng-switch="editMode")
-							label Primary Attribute
-							select.form-control(
-								ng-switch-when="true"
-								ng-model="documentSchema.primary_attribute_id"
-								ng-options="attribute.id as attribute.name for attribute in documentSchema.attributes"
-							)
-							div.form-control-static.text-muted(ng-switch-when="false")
-								span(ng-bind="getPrimaryAttributeName()")
-								span(ng-hide="getPrimaryAttributeName()") (none)
-
-	.row.wrapper
-		.col-lg-5
+					
+		.col-lg-4
 			.ibox
 				.ibox-title
 					h5.pull-left Actions
@@ -93,5 +76,43 @@
 					button.btn.btn-xs.btn-success.add-action(ng-click="newAction()" ng-show="editMode")
 						i.fa.fa-plus
 						span Add Action
+		
+		.col-lg-4
+			.ibox
+				.ibox-title
+					h5.pull-left Views
+				.ibox-content.factory-layout
+					.attribute-items#sort-bounds-views(as-sortable="sortableOptionsViews" ng-model="documentSchema.views")
+						.attribute-item(ng-repeat="view in documentSchema.views" as-sortable-item)
+							.summary
+								i.fa.fa-list
+								span(ng-bind="view.widget.name")
+							.controls(ng-show="editMode")
+								button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle)
+									i.fa.fa-arrows
+								button.btn.btn-xs.btn-default(ng-click="deleteView(view)")
+									i.fa.fa-trash
+								button.btn.btn-xs.btn-primary(ng-click="editView(view)")
+									i.fa.fa-pencil
+					.text-muted.text-center(ng-hide="documentSchema.views.length") No Views
+					button.btn.btn-xs.btn-success.add-view(ng-click="newView()" ng-show="editMode")
+						i.fa.fa-plus
+						span Add View
 
-		.col-lg-7
+	.row.wrapper
+		.col-lg-12
+			.ibox
+				.ibox-title
+					h5 Options
+				.ibox-content
+					.document-schema-options.row
+						.col-md-4.document-schema-option(ng-switch="editMode")
+							label Primary Attribute
+							select.form-control(
+								ng-switch-when="true"
+								ng-model="documentSchema.primary_attribute_id"
+								ng-options="attribute.id as attribute.name for attribute in documentSchema.attributes"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								span(ng-bind="getPrimaryAttributeName()")
+								span(ng-hide="getPrimaryAttributeName()") (none)

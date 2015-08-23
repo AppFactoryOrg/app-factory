@@ -1,0 +1,18 @@
+.application-document-view
+	.title(ng-show="views.length")
+		h5(ng-bind="::documentSchema.name")
+		.view-switch(dropdown="")
+			.btn.btn-xs.btn-default(dropdown-toggle="")
+				span(ng-bind="selectedView.widget.name")
+				i.fa.fa-angle-down
+			ul.dropdown-menu
+				li(ng-repeat="view in documentSchema.views")
+					a(ng-click="selectView(view)")
+						i.fa.fa-list
+						span(ng-bind="view.widget.name")
+	.widget(ng-if="selectedView")
+		af-app-widget-table(widget="selectedView.widget")
+
+	.alert.alert-warning(ng-hide="views.length")
+		i.fa.fa-warning
+		span No applicable views found.

@@ -29,41 +29,46 @@
 								i.fa.fa-plus
 								span New
 
-				li(ui-sref-active="active")
-					a(ng-click="screensExpanded=!screensExpanded")
-						i.fa.fa-list-alt
-						span.nav-label Screens
-						span.fa.pull-right(ng-class="{'fa-angle-down': !screensExpanded, 'fa-angle-right': screensExpanded}")
-					ul.nav.nav-second-level(collapse="!screensExpanded")
-						li(ng-repeat="screenSchema in screenSchemas" ng-class="{'active': screenSchemaIsSelected(screenSchema)}")
-							a(ui-sref="factory.screen({ screen_schema_id: screenSchema['_id'] })")
-								i.fa.fa-list-alt
-								span {{screenSchema.name}}
-								span.fa.pull-right(ng-class="{'fa-caret-right': screenSchemaIsSelected(screenSchema)}")
-						li(ng-if="blueprintIsEditable()")
-							a(ng-click="createScreenSchema()")
-								i.fa.fa-plus
-								span New
+				//- li(ui-sref-active="active")
+				//- 	a(ng-click="screensExpanded=!screensExpanded")
+				//- 		i.fa.fa-list-alt
+				//- 		span.nav-label Screens
+				//- 		span.fa.pull-right(ng-class="{'fa-angle-down': !screensExpanded, 'fa-angle-right': screensExpanded}")
+				//- 	ul.nav.nav-second-level(collapse="!screensExpanded")
+				//- 		li(ng-repeat="screenSchema in screenSchemas" ng-class="{'active': screenSchemaIsSelected(screenSchema)}")
+				//- 			a(ui-sref="factory.screen({ screen_schema_id: screenSchema['_id'] })")
+				//- 				i.fa.fa-list-alt
+				//- 				span {{screenSchema.name}}
+				//- 				span.fa.pull-right(ng-class="{'fa-caret-right': screenSchemaIsSelected(screenSchema)}")
+				//- 		li(ng-if="blueprintIsEditable()")
+				//- 			a(ng-click="createScreenSchema()")
+				//- 				i.fa.fa-plus
+				//- 				span New
 
+				li(ui-sref-active="active")
+					a(ui-sref="factory.reports")
+						i.fa.fa-bar-chart
+						span.nav-label Reports
+				
 				li(ui-sref-active="active")
 					a(ui-sref="factory.routines")
 						i.fa.fa-gears
-						span.nav-label Routines
-
+						span.nav-label Actions
+						
 				li(ui-sref-active="active")
-					a(ui-sref="factory.layout")
-						i.fa.fa-desktop
-						span.nav-label Layout
+					a(ui-sref="factory.users")
+						i.fa.fa-users
+						span.nav-label Users
+
+				//- li(ui-sref-active="active")
+				//- 	a(ui-sref="factory.layout")
+				//- 		i.fa.fa-desktop
+				//- 		span.nav-label Layout
 
 				li(ui-sref-active="active")
 					a(ui-sref="factory.theme")
 						i.fa.fa-paint-brush
 						span.nav-label Theme
-
-				li(ui-sref-active="active")
-					a(ui-sref="factory.users")
-						i.fa.fa-users
-						span.nav-label Users
 
 				li(ui-sref-active="active")
 					a(ui-sref="factory.settings")

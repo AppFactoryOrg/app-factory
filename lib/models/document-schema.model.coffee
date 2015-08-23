@@ -7,6 +7,7 @@
 		'description'
 		'attributes'
 		'actions'
+		'views'
 		'primary_attribute_id'
 	]
 
@@ -15,6 +16,7 @@
 		'description':				null
 		'attributes':				[]
 		'actions':					[]
+		'views':					[]
 		'primary_attribute_id': 	null
 		'blueprint_id': 			null
 

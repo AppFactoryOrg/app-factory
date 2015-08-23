@@ -4,13 +4,12 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 	replace: true
 	scope:
 		'widget': 			'='
-	controller: 'CommonAppWidgetCtrl'
-	link: ($scope, $element) ->
+	controller: ['$scope', ($scope) ->
 
-		INITIAL_LIMIT = 20
-		LOADING_TIMEOUT = 3000
+		$scope.INITIAL_LIMIT = 20
+		$scope.LOADING_TIMEOUT = 3000
 
-		$scope.limit = INITIAL_LIMIT
+		$scope.limit = $scope.INITIAL_LIMIT
 		$scope.sort = {'created_on': -1}
 		$scope.filter = {}
 
@@ -28,6 +27,10 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			orderChanged: -> $scope.collectionWasReordered()
 
 		$scope.documents = []
+
+		$scope.shouldShowName = ->
+			return true if $scope.widget['configuration']['show_name']
+			return false
 
 		$scope.shouldShowFilterOptions = ->
 			return false if $scope.filterableAttributes?.length is 0
@@ -135,10 +138,10 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			switch $scope.widget['configuration']['data_source']['type']
 				when ScreenWidget.DATA_SOURCE_TYPE['Database'].value
 					$scope.loading = false
-					if $scope.limit is INITIAL_LIMIT
-						$scope.limit = INITIAL_LIMIT+1
+					if $scope.limit is $scope.INITIAL_LIMIT
+						$scope.limit = $scope.INITIAL_LIMIT+1
 					else
-						$scope.limit = INITIAL_LIMIT
+						$scope.limit = $scope.INITIAL_LIMIT
 
 		$scope.collectionWasReordered = ->
 			console.warn 'refreshing collection'
@@ -174,7 +177,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 						$timeout(->
 							if $scope.loading is true and $scope.loadingStartedAt is startedAt
 								$scope.shouldShowLoadingTimeout = true
-						, LOADING_TIMEOUT)
+						, $scope.LOADING_TIMEOUT)
 
 					$scope.$meteorSubscribe('Documents', filter, paging)
 						.then ->
@@ -207,7 +210,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 					$timeout(->
 						if $scope.loading is true and $scope.loadingStartedAt is startedAt
 							$scope.shouldShowLoadingTimeout = true
-					, LOADING_TIMEOUT)
+					, $scope.LOADING_TIMEOUT)
 
 					$scope.$meteorSubscribe('Documents', filter)
 						.then ->
@@ -224,17 +227,18 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 						.finally ->
 							$scope.loading = false
 				)
-
+	]
+	link: ($scope, $element) ->
 		$scope.$on('SORT_UPDATED', (event, sort) ->
 			$scope.sort = sort
-			$scope.limit = INITIAL_LIMIT
+			$scope.limit = $scope.INITIAL_LIMIT
 			$('.table-scroll', $element).scrollTop(0)
 			event.stopPropagation()
 		)
 
 		$scope.$on('FILTER_UPDATED', (event, filter) ->
 			$scope.filter = filter
-			$scope.limit = INITIAL_LIMIT
+			$scope.limit = $scope.INITIAL_LIMIT
 			$('.table-scroll', $element).scrollTop(0)
 			event.stopPropagation()
 		)

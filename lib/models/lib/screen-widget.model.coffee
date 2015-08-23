@@ -13,6 +13,7 @@
 			component: 'table'
 			icon: 'fa-table'
 			configuration:
+				'show_name': true
 				'show_filter_options': true
 				'show_sort_options': true
 				'show_create_button': true

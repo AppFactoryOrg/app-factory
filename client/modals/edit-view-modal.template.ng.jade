@@ -1,0 +1,23 @@
+.edit-view-modal
+	form(novalidate name="form" ng-submit="submit()")
+		.modal-header
+			.modal-title Configure View
+
+		.modal-body
+			.row
+				.form-group.col-sm-12
+					label Name
+					input.form-control(
+						type="text"
+						name="name"
+						required
+						ng-model="view.widget.name"
+						autofocus="true"
+					)
+			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+				div(ng-show="form.name.$error.required") Name is required.
+		.modal-footer
+			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
+			button.btn.btn-primary(type="submit") 
+				span Save
+				i.fa.fa-chevron-right

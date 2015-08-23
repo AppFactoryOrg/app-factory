@@ -1,0 +1,16 @@
+.application-documents
+    .ibox
+        .ibox-title
+            h5 Documents
+        .ibox-content
+            table.table.table-hover.table-striped.table-condensed
+                thead
+                    tr
+                        th Name
+                        th Description
+                        th(width="50")
+                tbody
+                    tr(ng-repeat="documentSchema in documentSchemas" ng-click="goToDocument(documentSchema)")
+                        td(ng-bind="::documentSchema.name")
+                        td(ng-bind="::documentSchema.description")
+                        td
