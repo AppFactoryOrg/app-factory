@@ -58,7 +58,9 @@
 										document="document"
 									)
 								td.controls(width="120")
-									.pull-right(ng-show="document.$showButtons")
+									.pull-right(ng-if="document.$showButtons")
+										button.btn.btn-xs.btn-default(ng-click="viewDocument(document)")
+											i.fa.fa-search
 										span.dropdown(dropdown)
 											button.btn.btn-xs.btn-default(ng-if="documentSchema.actions.length" dropdown-toggle)
 												i.fa.fa-gear
@@ -67,8 +69,6 @@
 													a(ng-click="executeAction(action, document)")
 														i.fa.fa-angle-double-right
 														span(ng-bind="::action.name")
-										button.btn.btn-xs.btn-default(ng-click="viewDocument(document)")
-											i.fa.fa-search
 										button.btn.btn-xs.btn-default.sorting-handle(as-sortable-item-handle ng-show="shouldAllowReordering()")
 											i.fa.fa-arrows
 										button.btn.btn-xs.btn-default(ng-click="deleteDocument(document)" ng-show="shouldShowEditButtons()")
