@@ -19,7 +19,7 @@
 						span.nav-label Documents
 						span.fa.pull-right(ng-class="{'fa-angle-down': !documentsExpanded, 'fa-angle-right': documentsExpanded}")
 					ul.nav.nav-second-level(collapse="!documentsExpanded")
-						li(ng-repeat="documentSchema in documentSchemas" ng-class="{'active': documentSchemaIsSelected(documentSchema)}")
+						li(ng-repeat="documentSchema in documentSchemas | orderBy:'name'" ng-class="{'active': documentSchemaIsSelected(documentSchema)}")
 							a(ui-sref="factory.document({ document_schema_id: documentSchema['_id'] })")
 								i.fa.fa-file-o
 								span {{documentSchema.name}}

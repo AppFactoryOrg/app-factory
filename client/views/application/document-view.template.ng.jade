@@ -1,18 +1,22 @@
 .application-document-view
-	.title(ng-show="views.length")
+	.title(ng-show="selectedView")
 		h5(ng-bind="::documentSchema.name")
 		.view-switch(dropdown="")
 			.btn.btn-xs.btn-default(dropdown-toggle="")
 				span(ng-bind="selectedView.widget.name")
 				i.fa.fa-angle-down
 			ul.dropdown-menu
+				li.dropdown-header Views
 				li(ng-repeat="view in documentSchema.views")
 					a(ng-click="selectView(view)")
-						i.fa.fa-list
 						span(ng-bind="view.widget.name")
 	
 	.widget(ng-if="selectedView")
 		af-app-widget-table(widget="selectedView.widget")
+			
+	.loading-indicator(ng-show="loading")
+		i.fa.fa-spin.fa-refresh
+		span Loading...
 
 	.alert.alert-warning(ng-hide="views.length")
 		i.fa.fa-warning

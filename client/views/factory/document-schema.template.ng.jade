@@ -106,7 +106,7 @@
 					h5 Options
 				.ibox-content
 					.document-schema-options.row
-						.col-md-4.document-schema-option(ng-switch="editMode")
+						.col-md-8.document-schema-option(ng-switch="editMode")
 							label Primary Attribute
 							select.form-control(
 								ng-switch-when="true"
@@ -116,3 +116,14 @@
 							div.form-control-static.text-muted(ng-switch-when="false")
 								span(ng-bind="getPrimaryAttributeName()")
 								span(ng-hide="getPrimaryAttributeName()") (none)
+						.col-md-4.document-schema-option(ng-switch="editMode")
+							label Abbreviation
+							input.form-control(
+								ng-switch-when="true"
+								type="text"
+								ng-model="documentSchema.abbreviation"
+								maxlength="2"
+							)
+							div.form-control-static.text-muted(ng-switch-when="false")
+								span(ng-bind="documentSchema.abbreviation")
+								span(ng-hide="documentSchema.abbreviation") (none)

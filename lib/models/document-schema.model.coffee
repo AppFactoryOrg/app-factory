@@ -4,6 +4,7 @@
 
 	MUTABLE_PROPERTIES: [
 		'name'
+		'abbreviation'
 		'description'
 		'attributes'
 		'actions'
@@ -13,6 +14,7 @@
 
 	new: ->
 		'name': 					null
+		'abbreviation':				null
 		'description':				null
 		'attributes':				[]
 		'actions':					[]

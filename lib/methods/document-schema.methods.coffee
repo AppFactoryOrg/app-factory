@@ -12,6 +12,7 @@ Meteor.methods
 
 		documentSchema = DocumentSchema.new()
 		documentSchema['name'] = parameters['name']
+		documentSchema['abbreviation'] = parameters['name'].substring(0, 2).toUpperCase()
 		documentSchema['description'] = parameters['description']
 		documentSchema['blueprint_id'] = blueprint['_id']
 		documentSchema['_id'] = DocumentSchema.db.insert(documentSchema)
