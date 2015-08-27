@@ -14,7 +14,7 @@
 						ng-model="view.widget.name"
 						autofocus="true"
 					)
-				.form-group.col-sm-12
+				.form-group.col-sm-12.col-md-6
 					label Columns
 					.attribute-items#sort-bounds-columns(as-sortable="sortableOptionsAttributes" ng-model="attributes")
 						.attribute-item(ng-repeat="attribute in attributes" as-sortable-item)
@@ -28,6 +28,9 @@
 									i.fa.fa-check
 								button.btn.btn-xs.btn-default.column-toggle(ng-hide="attribute.$selected" ng-click="selectAttribute(attribute)" type="button")
 									i.fa.fa-square-o
+				.form-group.col-sm-12.col-md-6
+					label Filters
+					af-attribute-filters(filter="filter" attributes="attributes")
 							
 			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
 				div(ng-show="form.name.$error.required") Name is required.

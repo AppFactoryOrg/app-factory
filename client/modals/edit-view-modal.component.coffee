@@ -4,11 +4,12 @@ angular.module('app-factory').factory 'EditViewModal', ->
 		controller: 'EditViewModalCtrl'
 		keyboard: false
 		backdrop: 'static'
+		windowClass: 'edit-view-modal-container'
 		resolve:
 			'view': -> view
 			'documentSchema': -> documentSchema
 
-angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootScope', '$modalInstance', '$meteor', 'view', 'documentSchema', ($scope, $rootScope, $modalInstance, $meteor, view, documentSchema) ->
+angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootScope', '$modalInstance', '$meteor', '$compile', 'view', 'documentSchema', ($scope, $rootScope, $modalInstance, $meteor, $compile, view, documentSchema) ->
 
 	$scope.documentSchema = _.cloneDeep(documentSchema)
 	$scope.showValidationErrors = false
@@ -25,6 +26,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			$scope.showValidationErrors = false
 
 		$scope.view['widget']['configuration']['attributes'] = _.pluck(_.filter($scope.attributes, {'$selected': true}), 'id')
+		$scope.view['filter'] = JSON.stringify($scope.filter)
 		$modalInstance.close($scope.view)
 
 	$scope.selectAttribute = (attribute) ->
@@ -47,6 +49,9 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 		$scope.documentSchema['attributes'].forEach (attribute) ->
 			return if _.contains($scope.view['widget']['configuration']['attributes'], attribute['id'])
 			$scope.attributes.push(attribute)
+
+		$scope.filter = JSON.parse($scope.view.filter)
+
 	else
 		widget = ScreenWidget.new({type: ScreenWidget.TYPE['Table'].value})
 		widget['name'] = ''
@@ -55,8 +60,12 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 		widget['configuration']['data_source']['document_schema_id'] = $scope.documentSchema['_id']
 		widget['configuration']['data_source']['attributes'] = []
 
-		$scope.view = {'widget': widget}
+		$scope.view =
+			'widget': widget
+			'filter': {}
+
 		$scope.attributes = $scope.documentSchema['attributes']
 		$scope.attributes.forEach (attribute) -> attribute.$selected = true
 
+		$scope.filter = {}
 ]
