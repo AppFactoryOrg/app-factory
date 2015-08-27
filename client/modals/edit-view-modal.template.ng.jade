@@ -34,7 +34,7 @@
 					label 
 						i.fa.fa-filter
 						span Filter
-					af-attribute-filters(filter="filter" attributes="attributes")
+					af-attribute-filters(filter="view.filter" attributes="attributes")
 						
 					.sort-options
 						label 
@@ -42,11 +42,11 @@
 							span Sort
 						.sort-entry
 							select.form-control.input-sm.value(
-								ng-model="view.sort.value"
+								ng-model="sort.value"
 								ng-options="option.value as option.attribute.name for option in sortOptions"
 							)
 							select.form-control.input-sm.direction(
-								ng-model="view.sort.direction"
+								ng-model="sort.direction"
 								ng-options="direction.value as direction.name for direction in sortDirections"
 							)
 							

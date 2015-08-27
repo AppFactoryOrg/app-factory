@@ -29,6 +29,13 @@ Meteor.methods
 		throw new Meteor.Error('validation', 'Cannot find Document') unless documentSchema?
 
 		updates = _.pick(parameters, DocumentSchema.MUTABLE_PROPERTIES)
+
+		# Stringify view filter and sort presets, because Mongo can't handle . or $ in keys
+		if updates['views']?
+			updates['views'].forEach (view) ->
+				view['filter'] = JSON.stringify(view['filter'])
+				view['sort'] = JSON.stringify(view['sort'])
+
 		DocumentSchema.db.update({'_id': documentSchema['_id']}, {$set: updates})
 
 		return documentSchema['_id']

@@ -12,7 +12,11 @@
 						span(ng-bind="view.widget.name")
 	
 	.widget(ng-if="selectedView")
-		af-app-widget-table(widget="selectedView.widget")
+		af-app-widget-table(
+			widget="selectedView.widget"
+			filter-preset="selectedView.filter"
+			sort-preset="selectedView.sort"
+		)
 			
 	.loading-indicator(ng-show="loading")
 		i.fa.fa-spin.fa-refresh

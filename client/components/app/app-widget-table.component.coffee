@@ -4,14 +4,24 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 	replace: true
 	scope:
 		'widget': 			'='
+		'filterPreset':		'='
+		'sortPreset':		'='
 	controller: ['$scope', ($scope) ->
 
 		$scope.INITIAL_LIMIT = 20
 		$scope.LOADING_TIMEOUT = 3000
 
 		$scope.limit = $scope.INITIAL_LIMIT
-		$scope.sort = {'created_on': -1}
-		$scope.filter = {}
+
+		if $scope.filterPreset?
+			$scope.filter = _.cloneDeep($scope.filterPreset)
+		else
+			$scope.filter = {}
+
+		if $scope.sortPreset? and not _.isEmpty($scope.sortPreset)
+			$scope.sort = _.cloneDeep($scope.sortPreset)
+		else
+			$scope.sort = {'created_on': -1}
 
 		$scope.lastLimit = null
 		$scope.lastSort = null
@@ -68,6 +78,14 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.shouldShowTooMuchDataWarning = ->
 			return false if $scope.loading
 			return true if $scope.documents.length >= Config['MAX_TABLE_RECORDS']
+			return false
+
+		$scope.hasActiveFilter = ->
+			return true if not _.isEmpty($scope.filter)
+			return false
+
+		$scope.hasActiveSort = ->
+			return true if not _.isEqual($scope.sort, {'created_on': -1})
 			return false
 
 		$scope.toggleSortPanel = ->
@@ -173,7 +191,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 					filter = $scope.getReactively('filter')
 
 					paging = {limit, sort}
-					_.assign(filter, {
+					filter = _.assign(_.cloneDeep(filter), {
 						'environment_id': $rootScope.environment['_id']
 						'document_schema_id': $scope.documentSchema['_id']
 					})

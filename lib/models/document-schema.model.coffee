@@ -1,6 +1,14 @@
 @DocumentSchema =
 
-	db: new Mongo.Collection('document-schema')
+	db: new Mongo.Collection('document-schema',
+		transform: (document_schema) ->
+			document_schema.views?.forEach (view) ->
+				if _.isString(view['filter'])
+					try view['filter'] = JSON.parse(view['filter'])
+					try view['sort'] = JSON.parse(view['sort'])
+
+			return document_schema
+	)
 
 	MUTABLE_PROPERTIES: [
 		'name'

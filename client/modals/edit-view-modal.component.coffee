@@ -19,6 +19,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 		containerPositioning: 'relative'
 	$scope.sortDirections = [{name: 'Asc', value: 1},{name: 'Desc', value: -1}]
 	$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
+	$scope.sort = {value: 'created_on', direction: -1}
 
 	$scope.submit = ->
 		if $scope.form.name.$invalid
@@ -28,7 +29,9 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			$scope.showValidationErrors = false
 
 		$scope.view['widget']['configuration']['attributes'] = _.pluck(_.filter($scope.attributes, {'$selected': true}), 'id')
-		$scope.view['filter'] = JSON.stringify($scope.filter)
+		$scope.view['sort'] = {}
+		$scope.view['sort'][$scope.sort.value] = $scope.sort.direction
+
 		$modalInstance.close($scope.view)
 
 	$scope.selectAttribute = (attribute) ->
@@ -52,7 +55,9 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			return if _.contains($scope.view['widget']['configuration']['attributes'], attribute['id'])
 			$scope.attributes.push(attribute)
 
-		$scope.filter = JSON.parse($scope.view.filter)
+		if $scope.view.sort? and not _.isEmpty($scope.view.sort)
+			$scope.sort.value = _.keys($scope.view.sort)[0]
+			$scope.sort.direction = _.values($scope.view.sort)[0]
 
 	else
 		widget = ScreenWidget.new({type: ScreenWidget.TYPE['Table'].value})
@@ -65,10 +70,8 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 		$scope.view =
 			'widget': widget
 			'filter': {}
-			'sort': {}
+			'sort': {'created_on': -1}
 
 		$scope.attributes = $scope.documentSchema['attributes']
 		$scope.attributes.forEach (attribute) -> attribute.$selected = true
-
-		$scope.filter = {}
 ]
