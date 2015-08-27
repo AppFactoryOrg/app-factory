@@ -4,3 +4,4 @@
 		'id':				Meteor.uuid()
 		'widget':			parameters['widget']
 		'filter':			parameters['filter']
+		'sort':				parameters['sort']

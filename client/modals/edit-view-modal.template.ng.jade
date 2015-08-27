@@ -15,7 +15,9 @@
 						autofocus="true"
 					)
 				.form-group.col-sm-12.col-md-6
-					label Columns
+					label
+						i.fa.fa-columns 
+						span Columns
 					.attribute-items#sort-bounds-columns(as-sortable="sortableOptionsAttributes" ng-model="attributes")
 						.attribute-item(ng-repeat="attribute in attributes" as-sortable-item)
 							.summary
@@ -29,11 +31,28 @@
 								button.btn.btn-xs.btn-default.column-toggle(ng-hide="attribute.$selected" ng-click="selectAttribute(attribute)" type="button")
 									i.fa.fa-square-o
 				.form-group.col-sm-12.col-md-6
-					label Filters
+					label 
+						i.fa.fa-filter
+						span Filter
 					af-attribute-filters(filter="filter" attributes="attributes")
+						
+					.sort-options
+						label 
+							i.fa.fa-sort-amount-asc
+							span Sort
+						.sort-entry
+							select.form-control.input-sm.value(
+								ng-model="view.sort.value"
+								ng-options="option.value as option.attribute.name for option in sortOptions"
+							)
+							select.form-control.input-sm.direction(
+								ng-model="view.sort.direction"
+								ng-options="direction.value as direction.name for direction in sortDirections"
+							)
 							
-			.alert.alert-warning(ng-show="showValidationErrors && form.$invalid")
+			.alert.alert-warning(ng-show="showValidationErrors")
 				div(ng-show="form.name.$error.required") Name is required.
+				
 		.modal-footer
 			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
 			button.btn.btn-primary(type="submit") 

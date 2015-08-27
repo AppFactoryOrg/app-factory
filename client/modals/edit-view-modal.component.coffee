@@ -17,9 +17,11 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 	$scope.sortableOptionsAttributes =
 		containment: '#sort-bounds-columns'
 		containerPositioning: 'relative'
+	$scope.sortDirections = [{name: 'Asc', value: 1},{name: 'Desc', value: -1}]
+	$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 
 	$scope.submit = ->
-		if $scope.form.$invalid
+		if $scope.form.name.$invalid
 			$scope.showValidationErrors = true
 			return
 		else
@@ -63,6 +65,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 		$scope.view =
 			'widget': widget
 			'filter': {}
+			'sort': {}
 
 		$scope.attributes = $scope.documentSchema['attributes']
 		$scope.attributes.forEach (attribute) -> attribute.$selected = true
