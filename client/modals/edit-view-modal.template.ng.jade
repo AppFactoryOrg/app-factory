@@ -14,8 +14,10 @@
 						ng-model="view.widget.name"
 						autofocus="true"
 					)
-				.form-group.col-sm-12.col-md-6
-					label
+					
+			tabset
+				tab
+					tab-heading
 						i.fa.fa-columns 
 						span Columns
 					.attribute-items#sort-bounds-columns(as-sortable="sortableOptionsAttributes" ng-model="attributes")
@@ -30,16 +32,16 @@
 									i.fa.fa-check
 								button.btn.btn-xs.btn-default.column-toggle(ng-hide="attribute.$selected" ng-click="selectAttribute(attribute)" type="button")
 									i.fa.fa-square-o
-				.form-group.col-sm-12.col-md-6
-					label 
+				tab
+					tab-heading
 						i.fa.fa-filter
 						span Filter
 					af-attribute-filters(filter="view.filter" attributes="attributes")
-						
+				tab
+					tab-heading
+						i.fa.fa-sort-amount-asc
+						span Sort
 					.sort-options
-						label 
-							i.fa.fa-sort-amount-asc
-							span Sort
 						.sort-entry
 							select.form-control.input-sm.value(
 								ng-model="sort.value"
