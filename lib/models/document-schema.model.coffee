@@ -6,6 +6,7 @@
 				if _.isString(view['filter'])
 					try view['filter'] = JSON.parse(view['filter'])
 					try view['sort'] = JSON.parse(view['sort'])
+					try view['limit'] = JSON.parse(view['limit'])
 
 			return document_schema
 	)

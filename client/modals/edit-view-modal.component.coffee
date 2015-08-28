@@ -71,6 +71,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			'widget': widget
 			'filter': {}
 			'sort': {'created_on': -1}
+			'limit': {}
 
 		$scope.attributes = $scope.documentSchema['attributes']
 		$scope.attributes.forEach (attribute) -> attribute.$selected = true
