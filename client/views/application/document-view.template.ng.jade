@@ -14,8 +14,7 @@
 	.widget(ng-if="selectedView")
 		af-app-widget-table(
 			widget="selectedView.widget"
-			filter-preset="selectedView.filter"
-			sort-preset="selectedView.sort"
+			view="selectedView"
 		)
 			
 	.loading-indicator(ng-show="loading")

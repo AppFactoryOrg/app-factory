@@ -4,24 +4,13 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 	replace: true
 	scope:
 		'widget': 			'='
-		'filterPreset':		'='
-		'sortPreset':		'='
+		'view':				'='
 	controller: ['$scope', ($scope) ->
 
 		$scope.INITIAL_LIMIT = 20
 		$scope.LOADING_TIMEOUT = 3000
 
 		$scope.limit = $scope.INITIAL_LIMIT
-
-		if $scope.filterPreset?
-			$scope.filter = _.cloneDeep($scope.filterPreset)
-		else
-			$scope.filter = {}
-
-		if $scope.sortPreset? and not _.isEmpty($scope.sortPreset)
-			$scope.sort = _.cloneDeep($scope.sortPreset)
-		else
-			$scope.sort = {'created_on': -1}
 
 		$scope.lastLimit = null
 		$scope.lastSort = null
@@ -174,6 +163,17 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 		$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
 
+		if $scope.view?
+			if $scope.view['filter']?
+				$scope.filter = _.cloneDeep($scope.view['filter'])
+			else
+				$scope.filter = {}
+
+			if $scope.view['sort']? and not _.isEmpty($scope.view['sort'])
+				$scope.sort = _.cloneDeep($scope.view['sort'])
+			else
+				$scope.sort = {'created_on': -1}
+
 		if $scope.widget['configuration']['attributes']?
 			$scope.attributes = []
 			$scope.widget['configuration']['attributes'].forEach (attribute_id) ->
@@ -195,6 +195,9 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 						'environment_id': $rootScope.environment['_id']
 						'document_schema_id': $scope.documentSchema['_id']
 					})
+
+					if $scope.view? and not _.isEmpty($scope.view['limits'])
+						filter['$and'] = $scope.view['limits']
 
 					unless _.isEqual(limit, $scope.lastLimit) and _.isEqual(sort, $scope.lastSort) and _.isEqual(filter, $scope.lastFilter)
 						startedAt = Date.now()
