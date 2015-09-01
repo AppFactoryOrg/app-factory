@@ -5,6 +5,7 @@ angular.module('app-factory').directive('afAttributeDateFilter', [() ->
 	scope:
 		'attribute': 	'='
 		'filterValue': 	'='
+		'displayOnly':	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"

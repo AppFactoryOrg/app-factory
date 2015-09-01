@@ -5,6 +5,7 @@
 			ng-options="operatorOption for operatorOption in operatorOptions"
 			ng-model="operator"
 			ng-change="updateFilterValue()"
+			ng-disabled="displayOnly"
 		)
 		.value1
 			.input-group.input-group-sm
@@ -14,8 +15,9 @@
 					ng-change="updateFilterValue()"
 					datepicker-popup="{{calendarFormat}}"
 					is-open="calendar1IsOpen" 
+					ng-disabled="displayOnly"
 				)
-				.input-group-btn
+				.input-group-btn(ng-if="!displayOnly")
 					button.btn.btn-default(ng-click="openCalendar1($event)" type="button")
 						i.fa.fa-calendar
 		.value2(ng-show="shouldShowValue2()")
@@ -26,8 +28,9 @@
 					ng-change="updateFilterValue()"
 					datepicker-popup="{{calendarFormat}}"
 					is-open="calendar2IsOpen" 
+					ng-disabled="displayOnly"
 				)
-				.input-group-btn
+				.input-group-btn(ng-if="!displayOnly")
 					button.btn.btn-default(ng-click="openCalendar2($event)" type="button")
 						i.fa.fa-calendar
 	button.btn.btn-xs.btn-link.close(type="button" ng-click="clear()" ng-show="hasValue()")

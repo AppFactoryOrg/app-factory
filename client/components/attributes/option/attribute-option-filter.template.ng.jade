@@ -5,11 +5,13 @@
 			ng-options="operatorOption for operatorOption in operatorOptions"
 			ng-model="operator"
 			ng-change="updateFilterValue()"
+			ng-disabled="displayOnly"
 		)
 		select.form-control.input-sm.value(
 			ng-options="option.id as option.name for option in options"
 			ng-model="value"
 			ng-change="updateFilterValue()"
+			ng-disabled="displayOnly"
 		)
 	button.btn.btn-xs.btn-link.close(type="button" ng-click="clear()" ng-show="hasValue()")
 		i.fa.fa-close

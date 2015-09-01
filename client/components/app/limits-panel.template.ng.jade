@@ -1,0 +1,10 @@
+.limits-panel(ng-show="isOpen")
+	.limits(ng-if="parsedLimits")
+		af-attribute-filter(
+			ng-repeat="limit in parsedLimits"
+			filter="limit.value"
+			attribute="limit.attribute"
+			display-only="true"
+		)
+
+.limits-panel-backdrop(ng-show="isOpen" ng-click="close()")

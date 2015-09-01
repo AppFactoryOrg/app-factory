@@ -4,6 +4,7 @@ angular.module('app-factory').directive('afAttributeFilter', ['$compile', '$time
 	scope:
 		'filter':		'='
 		'attribute': 	'='
+		'displayOnly': 	'='
 	link: ($scope, $element) ->
 		attributesEl = $('.filter', $element)
 
@@ -15,7 +16,8 @@ angular.module('app-factory').directive('afAttributeFilter', ['$compile', '$time
 			childTemplate = "
 				<af-attribute-#{name}-filter
 					attribute='attribute'
-					filter-value='filter'>
+					filter-value='filter'
+					display-only='displayOnly'>
 				</af-attribute-#{name}-filter>
 			"
 			attributesEl.append(childTemplate)

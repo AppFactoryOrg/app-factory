@@ -3,6 +3,13 @@
 		.ibox-title.header
 			h5(ng-bind="::widget.name" ng-show="shouldShowName()")
 			.controls
+				.limits-indicator(ng-show="shouldShowLimitsIndicator()")
+					button.btn.btn-xs.btn-link(ng-click="toggleLimitsIndicatorPanel()" ng-disabled="loading")
+						i.fa.fa-lock
+					af-limits-panel(
+						limits="view.limits"
+						attributes="filterableAttributes"
+					)
 				.filter-options(ng-show="shouldShowFilterOptions()")
 					button.btn.btn-xs.btn-link(ng-click="toggleFilterPanel()" ng-disabled="loading" ng-class="{'active': hasActiveFilter()}")
 						i.fa.fa-filter

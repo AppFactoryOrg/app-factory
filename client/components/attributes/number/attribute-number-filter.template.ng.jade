@@ -5,18 +5,21 @@
 			ng-options="operatorOption for operatorOption in operatorOptions"
 			ng-model="operator"
 			ng-change="updateFilterValue()"
+			ng-disabled="displayOnly"
 		)
 			option
 		input.form-control.input-sm.value1(
 			type="number" 
 			ng-model="value1"
 			ng-change="updateFilterValue()"
+			ng-disabled="displayOnly"
 		)
 		input.form-control.input-sm.value2(
 			ng-show="shouldShowValue2()"
 			type="number" 
 			ng-model="value2"
 			ng-change="updateFilterValue()"
+			ng-disabled="displayOnly"
 		)
 	button.btn.btn-xs.btn-link.close(type="button" ng-click="clear()" ng-show="hasValue()")
 		i.fa.fa-close

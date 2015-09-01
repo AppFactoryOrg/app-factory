@@ -5,6 +5,7 @@ angular.module('app-factory').directive('afAttributeUserFilter', ['$modal', 'Sel
 	scope:
 		'attribute': 	'='
 		'filterValue': 	'='
+		'displayOnly':	'='
 	link: ($scope) ->
 
 		key = "data.#{$scope.attribute['id']}"

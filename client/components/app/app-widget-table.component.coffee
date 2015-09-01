@@ -31,6 +31,11 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return true if $scope.widget['configuration']['show_name']
 			return false
 
+		$scope.shouldShowLimitsIndicator = ->
+			return false unless $scope.view?
+			return true if not _.isEmpty($scope.view['limits'])
+			return false
+
 		$scope.shouldShowFilterOptions = ->
 			return false if $scope.filterableAttributes?.length is 0
 			return true if $scope.widget['configuration']['show_filter_options']
@@ -76,6 +81,9 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		$scope.hasActiveSort = ->
 			return true if not _.isEqual($scope.sort, {'created_on': -1})
 			return false
+
+		$scope.toggleLimitsIndicatorPanel = ->
+			$scope.$broadcast('TOGGLE_LIMITS_PANEL')
 
 		$scope.toggleSortPanel = ->
 			$scope.$broadcast('TOGGLE_SORT_PANEL')
