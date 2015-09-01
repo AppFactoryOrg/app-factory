@@ -35,7 +35,7 @@ Meteor.methods
 			updates['views'].forEach (view) ->
 				view['filter'] = JSON.stringify(view['filter'])
 				view['sort'] = JSON.stringify(view['sort'])
-				view['limit'] = JSON.stringify(view['limit'])
+				view['limits'] = JSON.stringify(view['limits'])
 
 		DocumentSchema.db.update({'_id': documentSchema['_id']}, {$set: updates})
 

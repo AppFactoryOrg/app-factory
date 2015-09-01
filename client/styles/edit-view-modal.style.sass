@@ -7,7 +7,7 @@
 		.column-toggle
 			width: 24px
 
-	.attribute-filters
+	.filter-list
 		width: 70%
 
 	.sort-options
@@ -22,3 +22,38 @@
 			.direction
 				float: right
 				width: 30%
+
+	.limit-list
+		width: 72%
+
+	.add-limit
+		width: 70%
+		margin-top: 10px
+		position: relative
+		height: 90px
+
+		.limit-attribute-select
+			position: absolute
+			top: 20px
+			left: 0px
+			width: 140px
+			z-index: 2
+
+		.attribute-filter-container
+			position: relative
+			top: 10px
+			left: 0px
+			z-index: 1
+
+			.operator
+
+			.control-label
+				visibility: hidden
+
+			button.close
+				display: none
+
+		.add-limit-btn
+			position: absolute
+			top: 55px
+			right: -15px

@@ -1,5 +1,5 @@
 .edit-view-modal
-	form(novalidate name="form" ng-submit="submit()")
+	form(novalidate name="form")
 		.modal-header
 			.modal-title Configure View
 
@@ -36,7 +36,12 @@
 					tab-heading
 						i.fa.fa-filter
 						span Filter
-					af-attribute-filters(filter="view.filter" attributes="attributes")
+					.filter-list
+						af-attribute-filter(
+							ng-repeat="attribute in filterAttributes"
+							filter="view.filter" 
+							attribute="attribute"
+						)
 				tab
 					tab-heading
 						i.fa.fa-sort-amount-asc
@@ -55,12 +60,33 @@
 					tab-heading
 						i.fa.fa-lock
 						span Limit
+					.limit-list
+						af-attribute-filter(
+							ng-repeat="limit in limits" 
+							filter="limit.value" 
+							attribute="limit.attribute"
+						)
+					hr(ng-if="limits.length")/
+					.add-limit
+						label Add Limit
+						.add-limit-form.clearfix
+							select.form-control.input-sm.limit-attribute-select(
+								ng-model="newLimit.attribute"
+								ng-options="attribute as attribute.name for attribute in filterAttributes"
+							)
+							af-attribute-filter(
+								ng-if="newLimit.attribute"
+								filter="newLimit.value"
+								attribute="newLimit.attribute"
+							)
+							button.btn.btn-sm.btn-success.add-limit-btn(ng-if="newLimit.attribute" ng-click="addNewLimit()")
+								i.fa.fa-plus
 					
 			.alert.alert-warning(ng-show="showValidationErrors")
 				div(ng-show="form.name.$error.required") Name is required.
 				
 		.modal-footer
 			button.btn.btn-default(type="button" ng-click="$dismiss()") Cancel
-			button.btn.btn-primary(type="submit") 
+			button.btn.btn-primary(type="button" ng-click="submit()") 
 				span Save
 				i.fa.fa-chevron-right

@@ -1,6 +1,10 @@
 .filter-panel(ng-show="isOpen")
 	.filters(ng-if="value")
-		af-attribute-filters(filter="value" attributes="attributes")
+		af-attribute-filter(
+			ng-repeat="attribute in attributes"
+			filter="value"
+			attribute="attribute"
+		)
 	.buttons
 		button.btn.btn-xs.btn-primary(ng-click="update()")
 			span Update

@@ -5,4 +5,4 @@
 		'widget':			parameters['widget']
 		'filter':			parameters['filter']
 		'sort':				parameters['sort']
-		'limit':			parameters['limit']
+		'limits':			parameters['limits']

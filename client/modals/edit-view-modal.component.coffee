@@ -20,6 +20,9 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 	$scope.sortDirections = [{name: 'Asc', value: 1},{name: 'Desc', value: -1}]
 	$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 	$scope.sort = {value: 'created_on', direction: -1}
+	$scope.filterAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
+	$scope.newLimit = {attribute: null, value: {}}
+	$scope.limits = []
 
 	$scope.submit = ->
 		if $scope.form.name.$invalid
@@ -30,7 +33,8 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 
 		$scope.view['widget']['configuration']['attributes'] = _.pluck(_.filter($scope.attributes, {'$selected': true}), 'id')
 		$scope.view['sort'] = {}
-		$scope.view['sort'][$scope.sort.value] = $scope.sort.direction
+		$scope.view['sort'][$scope.sort['value']] = $scope.sort['direction']
+		$scope.view['limits'] = _.pluck($scope.limits, 'value')
 
 		$modalInstance.close($scope.view)
 
@@ -39,6 +43,18 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 
 	$scope.deselectAttribute = (attribute) ->
 		attribute.$selected = false
+
+	$scope.addNewLimit = ->
+		$scope.limits.push($scope.newLimit)
+		$scope.newLimit = {attribute: null, value: {}}
+
+	$scope.$watch('limits', (limits) ->
+		toRemove = []
+		limits.forEach (limit) ->
+			toRemove.push(limit) if _.isEmpty(limit.value)
+		toRemove.forEach (limit) ->
+			Utils.removeFromArray(limit, limits)
+	, true)
 
 	# Initialize
 	if view?
@@ -55,9 +71,18 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			return if _.contains($scope.view['widget']['configuration']['attributes'], attribute['id'])
 			$scope.attributes.push(attribute)
 
-		if $scope.view.sort? and not _.isEmpty($scope.view.sort)
-			$scope.sort.value = _.keys($scope.view.sort)[0]
-			$scope.sort.direction = _.values($scope.view.sort)[0]
+		if $scope.view.sort? and not _.isEmpty($scope.view['sort'])
+			$scope.sort.value = _.keys($scope.view['sort'])[0]
+			$scope.sort.direction = _.values($scope.view['sort'])[0]
+
+		$scope.view['limits'].forEach (limit) ->
+			filter = _.keys(limit)[0]
+			attribute_id = filter.replace('data.', '')
+			attribute = _.findWhere($scope.filterAttributes, {'id': attribute_id})
+			return unless attribute?
+			$scope.limits.push
+				'attribute': attribute
+				'value': limit
 
 	else
 		widget = ScreenWidget.new({type: ScreenWidget.TYPE['Table'].value})
@@ -71,7 +96,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			'widget': widget
 			'filter': {}
 			'sort': {'created_on': -1}
-			'limit': {}
+			'limits': []
 
 		$scope.attributes = $scope.documentSchema['attributes']
 		$scope.attributes.forEach (attribute) -> attribute.$selected = true
