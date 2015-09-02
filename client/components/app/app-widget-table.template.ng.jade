@@ -85,10 +85,7 @@
 										button.btn.btn-xs.btn-primary(ng-click="editDocument(document)" ng-show="shouldShowEditButtons()")
 											i.fa.fa-pencil
 									
-						tbody(ng-hide="documents.length")
-							tr
-								td(colspan="99")
-									.text-muted No Data
+					.text-muted.text-center(ng-hide="documents.length") No Data
 
 					.load-more(ng-show="shouldShowMoreLink()")
 						a(ng-click="loadMore()")

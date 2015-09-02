@@ -9,9 +9,8 @@ angular.module('app-factory').directive('afLimitsPanel', [ ->
 		$scope.isOpen = false
 		$scope.parsedLimits = []
 		$scope.limits.forEach (limit) ->
-			filter = _.keys(limit)[0]
-			attribute_id = filter.replace('data.', '')
-			attribute = _.findWhere($scope.attributes, {'id': attribute_id})
+			data_key = _.keys(limit)[0]
+			attribute = _.find($scope.attributes, (attribute) -> DocumentAttribute.getDataKey(attribute) is data_key)
 			return unless attribute?
 			$scope.parsedLimits.push
 				'attribute': attribute

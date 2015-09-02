@@ -8,7 +8,7 @@ angular.module('app-factory').directive('afAttributeDocumentFilter', ['$modal', 
 		'displayOnly':	'='
 	link: ($scope) ->
 
-		key = "data.#{$scope.attribute['id']}"
+		key = DocumentAttribute.getDataKey($scope.attribute)
 		operators = DocumentAttribute.DATA_TYPE['Document'].operators
 
 		$scope.operatorOptions = _.values(operators)

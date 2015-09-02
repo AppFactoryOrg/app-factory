@@ -8,7 +8,7 @@ angular.module('app-factory').directive('afAttributeOptionFilter', [() ->
 		'displayOnly':	'='
 	link: ($scope) ->
 
-		key = "data.#{$scope.attribute['id']}"
+		key = DocumentAttribute.getDataKey($scope.attribute)
 		operators = DocumentAttribute.DATA_TYPE['Option'].operators
 
 		$scope.options = _.filter($scope.attribute['configuration']['options'], 'active': true)

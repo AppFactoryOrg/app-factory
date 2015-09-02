@@ -45,7 +45,12 @@
 
 	getFilterableAttributes: (documentSchema) ->
 		attributes = []
+
 		for attribute in documentSchema['attributes']
 			if attribute['value_type'] is DocumentAttribute.VALUE_TYPE['Input'].value
 				attributes.push(attribute)
+
+		attributes.push(DocumentAttribute.getCreatedOnAsAttribute())
+		attributes.push(DocumentAttribute.getCreatedByAsAttribute())
+
 		return attributes

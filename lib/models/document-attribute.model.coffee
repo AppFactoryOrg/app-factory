@@ -96,6 +96,7 @@
 
 		'id':				Meteor.uuid()
 		'name':				parameters['name']
+		'data_key':			null
 		'data_type':		parameters['data_type']
 		'value_type':		parameters['value_type']
 		'default_value':	parameters['default_value']
@@ -105,6 +106,26 @@
 	getDataType: (value) ->
 		data_type = _.find(DocumentAttribute.DATA_TYPE, {value})
 		return data_type
+
+	getDataKey: (attribute) ->
+		if attribute['data_key']?
+			return attribute['data_key']
+		else
+			return "data.#{attribute['id']}"
+
+	getCreatedByAsAttribute: ->
+		'id': 'created_by'
+		'name': 'Created By'
+		'data_key': 'created_by'
+		'data_type': DocumentAttribute.DATA_TYPE['User'].value
+		'value_type': DocumentAttribute.VALUE_TYPE['Input'].value
+
+	getCreatedOnAsAttribute: ->
+		'id': 'created_on'
+		'name': 'Created On'
+		'data_key': 'created_on'
+		'data_type': DocumentAttribute.DATA_TYPE['Date'].value
+		'value_type': DocumentAttribute.VALUE_TYPE['Input'].value
 
 	hasDefaultValue: (attribute) ->
 		return false unless attribute?

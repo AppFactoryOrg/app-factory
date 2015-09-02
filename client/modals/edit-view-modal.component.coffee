@@ -76,9 +76,8 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			$scope.sort.direction = _.values($scope.view['sort'])[0]
 
 		$scope.view['limits'].forEach (limit) ->
-			filter = _.keys(limit)[0]
-			attribute_id = filter.replace('data.', '')
-			attribute = _.findWhere($scope.filterAttributes, {'id': attribute_id})
+			data_key = _.keys(limit)[0]
+			attribute = _.find($scope.filterAttributes, (attribute) -> DocumentAttribute.getDataKey(attribute) is data_key)
 			return unless attribute?
 			$scope.limits.push
 				'attribute': attribute
