@@ -8,14 +8,14 @@
 						i.fa.fa-lock
 					af-limits-panel(
 						limits="view.limits"
-						attributes="filterableAttributes"
+						attributes="allAttributes"
 					)
 				.filter-options(ng-show="shouldShowFilterOptions()")
 					button.btn.btn-xs.btn-link(ng-click="toggleFilterPanel()" ng-disabled="loading" ng-class="{'active': hasActiveFilter()}")
 						i.fa.fa-filter
 					af-filter-panel(
 						filter="filter"
-						attributes="filterableAttributes"
+						attributes="allAttributes"
 					)
 				.sort-options(ng-show="shouldShowSortOptions()")
 					button.btn.btn-xs.btn-link(ng-click="toggleSortPanel()" ng-disabled="loading" ng-class="{'active': hasActiveSort()}")

@@ -37,7 +37,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 			return false
 
 		$scope.shouldShowFilterOptions = ->
-			return false if $scope.filterableAttributes?.length is 0
+			return false if $scope.allAttributes?.length is 0
 			return true if $scope.widget['configuration']['show_filter_options']
 			return false
 
@@ -169,7 +169,7 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		dataSource = $scope.widget['configuration']['data_source']
 		$scope.documentSchema = DocumentSchema.db.findOne(dataSource['document_schema_id'])
 		$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
-		$scope.filterableAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
+		$scope.allAttributes = DocumentSchema.getAllAttributes($scope.documentSchema)
 
 		if $scope.view?
 			if $scope.view['filter']?
@@ -185,11 +185,11 @@ angular.module('app-factory').directive('afAppWidgetTable', ['$rootScope', '$mod
 		if $scope.widget['configuration']['attributes']?
 			$scope.attributes = []
 			$scope.widget['configuration']['attributes'].forEach (attribute_id) ->
-				attribute = _.findWhere($scope.documentSchema['attributes'], {'id': attribute_id})
+				attribute = _.findWhere($scope.allAttributes, {'id': attribute_id})
 				return unless attribute?
 				$scope.attributes.push(attribute)
 		else
-			$scope.attributes = $scope.documentSchema['attributes']
+			$scope.attributes = $scope.allAttributes
 
 		switch dataSource['type']
 			when ScreenWidget.DATA_SOURCE_TYPE['Database'].value

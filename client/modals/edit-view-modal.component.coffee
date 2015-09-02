@@ -20,7 +20,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 	$scope.sortDirections = [{name: 'Asc', value: 1},{name: 'Desc', value: -1}]
 	$scope.sortOptions = DocumentSchema.getSortOptions($scope.documentSchema)
 	$scope.sort = {value: 'created_on', direction: -1}
-	$scope.filterAttributes = DocumentSchema.getFilterableAttributes($scope.documentSchema)
+	$scope.allAttributes = DocumentSchema.getAllAttributes($scope.documentSchema)
 	$scope.newLimit = {attribute: null, value: {}}
 	$scope.limits = []
 
@@ -62,12 +62,12 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 
 		$scope.attributes = []
 		$scope.view['widget']['configuration']['attributes'].forEach (attribute_id) ->
-			attribute = _.findWhere($scope.documentSchema['attributes'], {'id': attribute_id})
-			return unless attribute
+			attribute = _.findWhere($scope.allAttributes, {'id': attribute_id})
+			return unless attribute?
 			attribute.$selected = true
 			$scope.attributes.push(attribute)
 
-		$scope.documentSchema['attributes'].forEach (attribute) ->
+		$scope.allAttributes.forEach (attribute) ->
 			return if _.contains($scope.view['widget']['configuration']['attributes'], attribute['id'])
 			$scope.attributes.push(attribute)
 
@@ -77,7 +77,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 
 		$scope.view['limits'].forEach (limit) ->
 			data_key = _.keys(limit)[0]
-			attribute = _.find($scope.filterAttributes, (attribute) -> DocumentAttribute.getDataKey(attribute) is data_key)
+			attribute = _.find($scope.allAttributes, (attribute) -> DocumentAttribute.getDataKey(attribute) is data_key)
 			return unless attribute?
 			$scope.limits.push
 				'attribute': attribute
@@ -97,6 +97,7 @@ angular.module('app-factory').controller 'EditViewModalCtrl', ['$scope', '$rootS
 			'sort': {'created_on': -1}
 			'limits': []
 
-		$scope.attributes = $scope.documentSchema['attributes']
-		$scope.attributes.forEach (attribute) -> attribute.$selected = true
+		$scope.attributes = _.cloneDeep($scope.allAttributes)
+		$scope.attributes.forEach (attribute) ->
+			attribute.$selected = attribute['id'] isnt 'created_by' and attribute['id'] isnt 'created_on'
 ]

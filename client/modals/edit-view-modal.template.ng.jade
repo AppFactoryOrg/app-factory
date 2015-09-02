@@ -38,7 +38,7 @@
 						span Filter
 					.filter-list
 						af-attribute-filter(
-							ng-repeat="attribute in filterAttributes"
+							ng-repeat="attribute in allAttributes"
 							filter="view.filter" 
 							attribute="attribute"
 						)
@@ -72,7 +72,7 @@
 						.add-limit-form.clearfix
 							select.form-control.input-sm.limit-attribute-select(
 								ng-model="newLimit.attribute"
-								ng-options="attribute as attribute.name for attribute in filterAttributes"
+								ng-options="attribute as attribute.name for attribute in allAttributes"
 							)
 							af-attribute-filter(
 								ng-if="newLimit.attribute"
