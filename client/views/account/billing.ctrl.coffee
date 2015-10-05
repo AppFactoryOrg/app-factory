@@ -10,7 +10,7 @@ angular.module('app-factory').controller('AccountBillingCtrl', ['$scope', '$mete
 		$state.go('account.login')
 
 	$scope.shouldShowBilling = ->
-		return Meteor.settings.public.billing_is_enabled
+		return Meteor.settings?.public?.billing_is_enabled
 
 	$scope.editCreditCard = ->
 		modal = $modal.open(new EditCreditCardModal())

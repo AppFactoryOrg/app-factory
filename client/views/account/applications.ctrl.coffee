@@ -17,7 +17,7 @@ angular.module('app-factory').controller('AccountApplicationsCtrl', ['$scope', '
 		$state.go('account.login')
 
 	$scope.shouldShowBilling = ->
-		return Meteor.settings.public.billing_is_enabled
+		return Meteor.settings?.public?.billing_is_enabled
 
 	$scope.userCanEditApplication = (application) ->
 		user_id = $rootScope.currentUser['_id']

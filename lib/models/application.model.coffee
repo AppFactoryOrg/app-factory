@@ -23,9 +23,9 @@
 				'max_users': null
 				'max_db': null
 
-		if Meteor.settings.public.application_limits.should_enforce
-			application['limits']['max_users'] = Meteor.settings.public.application_limits.default_max_users
-			application['limits']['max_db'] = Meteor.settings.public.application_limits.default_max_db
+		if Meteor.settings?.public?.public?.public.application_limits.should_enforce
+			application['limits']['max_users'] = Meteor.settings?.public?.public?.public.application_limits.default_max_users
+			application['limits']['max_db'] = Meteor.settings?.public?.public?.public.application_limits.default_max_db
 
 		return application
 

@@ -1,7 +1,7 @@
 Future = Npm.require('fibers/future')
 
-if Meteor.settings.public.billing_is_enabled
-	Stripe = StripeAPI(Meteor.settings.private.stripe_secret_key)
+if Meteor.settings?.public?.billing_is_enabled
+	Stripe = StripeAPI(Meteor.settings?.private?.stripe_secret_key)
 
 Meteor.methods
 	'Billing.getCustomerId': ->
@@ -16,7 +16,7 @@ Meteor.methods
 		return customer_id
 
 	'Billing.createCustomer': (user) ->
-		return unless Meteor.settings.public.billing_is_enabled
+		return unless Meteor.settings?.public?.billing_is_enabled
 		throw new Meteor.Error('validation', 'User is required') unless user?
 
 		promise = new Future
@@ -43,7 +43,7 @@ Meteor.methods
 		return promise.wait()
 
 	'Billing.getUserInfo': ->
-		return unless Meteor.settings.public.billing_is_enabled
+		return unless Meteor.settings?.public?.billing_is_enabled
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 
 		user_info = {}
@@ -118,7 +118,7 @@ Meteor.methods
 	'Billing.updateCreditCard': (token) ->
 		throw new Meteor.Error('security', 'Unauthorized') unless Meteor.user()?
 		throw new Meteor.Error('validation', 'Token is required') unless token?
-		return unless Meteor.settings.public.billing_is_enabled
+		return unless Meteor.settings?.public?.billing_is_enabled
 
 		customer_id = Meteor.call('Billing.getCustomerId')
 
@@ -163,7 +163,7 @@ Meteor.methods
 		database_subscription = _.find(subscriptions, (sub) -> sub['plan']['metadata']['type'] is 'database')
 		throw new Meteor.Error('validation', 'A database subscription was not specified') unless database_subscription?
 
-		if Meteor.settings.public.application_limits.should_enforce
+		if Meteor.settings?.public?.application_limits.should_enforce
 			base_users = parseInt(main_subscription['plan']['metadata']['base_users'])
 			users_per_quantity = parseInt(user_subscription['plan']['metadata']['users_per_quantity'])
 			additional_user_quantity = parseInt(user_subscription['quantity'])
@@ -201,7 +201,7 @@ Meteor.methods
 				Meteor.call('Billing.createSubscription', ({application_id, subscription}))
 				return
 
-		if Meteor.settings.public.application_limits.should_enforce
+		if Meteor.settings?.public?.application_limits.should_enforce
 			Application.db.update(application_id, {
 				$set: {
 					'limits.max_users': max_users

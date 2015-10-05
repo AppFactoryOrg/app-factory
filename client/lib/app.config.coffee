@@ -58,5 +58,5 @@ angular.module('app-factory').factory('$exceptionHandler', ->
 )
 
 Meteor.startup ->
-	if Meteor.settings.public.billing_is_enabled
+	if Meteor.settings?.public?.billing_is_enabled
 		Stripe.setPublishableKey(Meteor.settings.public.stripe_publishable_key)
